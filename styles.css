@@ -248,6 +248,7 @@ h1, h2, h3 {
 .contact-links {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
   justify-content: center;
   margin-top: 1.5rem;
 }
