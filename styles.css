@@ -492,6 +492,14 @@ h1, h2, h3 {
   position: relative;
 }
 
+/* Em telas largas o contêiner padrão deixa muita margem sobrando e os
+   cards parecem pequenos; o carrossel ganha espaço extra. */
+@media (min-width: 1400px) {
+  .portfolio .container {
+    max-width: 1400px;
+  }
+}
+
 .portfolio-grid {
   display: flex;
   gap: 1.25rem;
@@ -520,11 +528,11 @@ h1, h2, h3 {
 }
 
 .mode-short .portfolio-item {
-  width: 232px;
+  width: 300px;
 }
 
 .mode-long .portfolio-item {
-  width: 468px;
+  width: 620px;
 }
 
 .portfolio-item[hidden] {
