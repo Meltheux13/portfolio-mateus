@@ -247,7 +247,7 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 3rem 0 5rem;
+  padding: 3rem 0;
 }
 
 .hero-glow {
@@ -356,39 +356,6 @@ h1, h2, h3 {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-}
-
-/* --- Indicador de scroll --- */
-.scroll-cue {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  color: var(--color-text-muted);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.28em;
-  opacity: 0.65;
-  transition: opacity 0.3s var(--ease);
-}
-
-.scroll-cue:hover {
-  opacity: 1;
-}
-
-.chevron {
-  font-size: 1.4rem;
-  line-height: 0.6;
-  animation: bob 2s ease-in-out infinite;
-}
-
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
 }
 
 /* --- Cabeçalhos de seção --- */
@@ -938,7 +905,7 @@ h1, h2, h3 {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .badge-dot, .chevron { animation: none; }
+  .badge-dot { animation: none; }
 }
 
 /* --- Lightbox do vídeo --- */
@@ -1057,12 +1024,11 @@ body.no-scroll {
 
 /* Telas baixas (notebooks): aperta o hero para caber sem cortar o "ROLAR" */
 @media (max-height: 820px) {
-  .hero { padding: 1.5rem 0 4rem; }
+  .hero { padding: 1.5rem 0; }
   .hero-badge { margin-bottom: 1.25rem; }
   .hero-subtitle { margin-bottom: 1.75rem; }
   .hero-actions { margin-bottom: 2.25rem; }
   .stat { padding: 1.2rem 1.75rem; }
-  .scroll-cue { bottom: 1.25rem; }
 }
 
 /* --- Responsivo --- */
