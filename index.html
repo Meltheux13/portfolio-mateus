@@ -10,7 +10,7 @@
 <body>
   <header class="site-header">
     <nav class="navbar">
-      <a href="#home" class="logo">Mateus Althiere</a>
+      <a href="#home" class="logo">Mateus Althiere <span class="logo-tag">| Editor</span></a>
       <ul class="nav-links">
         <li><a href="#home">Início</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
@@ -24,16 +24,16 @@
 
   <main>
     <section id="home" class="hero">
-      <p class="hero-badge">Disponível para novos projetos</p>
+      <p class="hero-badge"><span class="badge-dot"></span>Disponível para novos projetos</p>
       <h1>Vídeos que geram resultado</h1>
       <p class="hero-subtitle">Edição de vídeo para criadores de conteúdo e negócios.</p>
       <div class="hero-actions">
-        <a href="#portfolio" class="btn btn-primary">Ver meu trabalho</a>
-        <a href="#contact" class="btn btn-secondary">Entrar em contato</a>
+        <a href="#portfolio" class="btn btn-primary">Ver meu trabalho ↓</a>
+        <a href="#contact" class="btn-link">Entrar em contato</a>
       </div>
       <div class="stats">
         <div class="stat">
-          <span class="stat-number">0+</span>
+          <span class="stat-number">11+</span>
           <span class="stat-label">Projetos concluídos</span>
         </div>
         <div class="stat">
@@ -56,20 +56,82 @@
         <button class="filter-btn" data-filter="long">Vídeos longos</button>
       </div>
       <div class="portfolio-grid">
-        <article class="portfolio-item" data-category="shorts">
-          <div class="thumb">Projeto 1</div>
-          <h3>Nome do projeto</h3>
-          <p>Categoria do cliente</p>
+        <article class="portfolio-item" data-category="long">
+          <a class="thumb-link" href="https://www.youtube.com/watch?v=u1mLUbfrR4U" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/u1mLUbfrR4U/hqdefault.jpg" alt="Miniatura do vídeo: I Applied 100+ Hours of Hormozi's" loading="lazy">
+          </a>
+          <h3>I Applied 100+ Hours of Hormozi's</h3>
+          <p>Koehn Dyck · Marketing / Business</p>
         </article>
         <article class="portfolio-item" data-category="long">
-          <div class="thumb">Projeto 2</div>
-          <h3>Nome do projeto</h3>
-          <p>Categoria do cliente</p>
+          <a class="thumb-link" href="https://www.youtube.com/watch?v=iBlTvQnPzo8" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/iBlTvQnPzo8/hqdefault.jpg" alt="Miniatura do vídeo: If You Don't Understand This Principle" loading="lazy">
+          </a>
+          <h3>If You Don't Understand This Principle</h3>
+          <p>Koehn Dyck · Marketing / Business</p>
         </article>
         <article class="portfolio-item" data-category="shorts">
-          <div class="thumb">Projeto 3</div>
-          <h3>Nome do projeto</h3>
-          <p>Categoria do cliente</p>
+          <a class="thumb-link" href="https://youtube.com/shorts/n1ITJvI4Zac" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/n1ITJvI4Zac/hqdefault.jpg" alt="Miniatura do vídeo: Adrian - Direct Response" loading="lazy">
+          </a>
+          <h3>Adrian</h3>
+          <p>Direct Response</p>
+        </article>
+        <article class="portfolio-item" data-category="long">
+          <a class="thumb-link" href="https://youtu.be/zwzvbwhmS7E" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/zwzvbwhmS7E/hqdefault.jpg" alt="Miniatura do vídeo: 1000+ Hours of Building with Claude" loading="lazy">
+          </a>
+          <h3>1000+ Hours of Building with Claude</h3>
+          <p>Isaac · Tech / Educacional</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtu.be/f7AXhg_FGFE" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/f7AXhg_FGFE/hqdefault.jpg" alt="Miniatura do vídeo: Jawad x Josh - Personal Brand" loading="lazy">
+          </a>
+          <h3>Jawad x Josh</h3>
+          <p>Personal Brand</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtube.com/shorts/iyVLrjTALk8" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/iyVLrjTALk8/hqdefault.jpg" alt="Miniatura do vídeo: What Can We Do With Tracking?" loading="lazy">
+          </a>
+          <h3>What Can We Do With Tracking?</h3>
+          <p>Real Estate / Marketing</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtu.be/K6mCgeJdNU8" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/K6mCgeJdNU8/hqdefault.jpg" alt="Miniatura do vídeo: Dorian x Scott - Personal Brand" loading="lazy">
+          </a>
+          <h3>Dorian x Scott</h3>
+          <p>Personal Brand</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtu.be/Dxhp3i1hF-U" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/Dxhp3i1hF-U/hqdefault.jpg" alt="Miniatura do vídeo: Dorian x Sab - Personal Brand" loading="lazy">
+          </a>
+          <h3>Dorian x Sab</h3>
+          <p>Personal Brand</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtube.com/shorts/_ybfJBJznDE" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/_ybfJBJznDE/hqdefault.jpg" alt="Miniatura do vídeo: Scorpion Gamer - Gameplay" loading="lazy">
+          </a>
+          <h3>Scorpion Gamer</h3>
+          <p>Gameplay</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtube.com/shorts/koJ6ztf1IRI" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/koJ6ztf1IRI/hqdefault.jpg" alt="Miniatura do vídeo: Donos de Empresa e Editores de Vídeo" loading="lazy">
+          </a>
+          <h3>Donos de Empresa e Editores de Vídeo</h3>
+          <p>Uso de IA</p>
+        </article>
+        <article class="portfolio-item" data-category="shorts">
+          <a class="thumb-link" href="https://youtube.com/shorts/pTlQATOECLg" target="_blank" rel="noopener">
+            <img class="thumb" src="https://img.youtube.com/vi/pTlQATOECLg/hqdefault.jpg" alt="Miniatura do vídeo: Bilionário Americano - Direct Response" loading="lazy">
+          </a>
+          <h3>Bilionário Americano</h3>
+          <p>Direct Response</p>
         </article>
       </div>
     </section>
