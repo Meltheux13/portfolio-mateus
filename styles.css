@@ -699,6 +699,7 @@ h1, h2, h3 {
 }
 
 .contact-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -708,6 +709,13 @@ h1, h2, h3 {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  /* o card do Discord é <button>, então precisa herdar a tipografia;
+     sem line-height o botão usa "normal" e desalinha dos outros cards */
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: center;
+  cursor: pointer;
 }
 
 .contact-card:hover {
@@ -745,7 +753,7 @@ h1, h2, h3 {
 }
 
 .icon-instagram {
-  background: rgba(214, 41, 118, 0.14);
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
 }
 
 .is-instagram:hover {
@@ -753,14 +761,49 @@ h1, h2, h3 {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(214, 41, 118, 0.25);
 }
 
-.icon-mail {
-  background: rgba(255, 31, 53, 0.14);
-  color: var(--color-accent);
+.icon-discord {
+  background: #5865f2;
 }
 
-.is-mail:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 31, 53, 0.25);
+.is-discord:hover {
+  border-color: #5865f2;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(88, 101, 242, 0.28);
+}
+
+/* Aviso de "Copiado!" que substitui o usuário por um instante */
+.copied-flag {
+  position: absolute;
+  left: 50%;
+  bottom: 2.25rem;
+  transform: translate(-50%, 6px);
+  color: #7c88ff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.is-discord.is-copied .copied-flag {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.is-discord.is-copied .contact-sub {
+  opacity: 0;
+}
+
+.contact-sub {
+  transition: opacity 0.2s var(--ease);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .contact-name {

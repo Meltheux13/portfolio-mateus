@@ -77,6 +77,42 @@ catGroups.forEach((group) => {
 
 applyFilters();
 
+// --- Contato: copiar usuário (Discord não tem link de perfil público) ---
+const copyStatus = document.getElementById("copy-status");
+
+document.querySelectorAll(".contact-card[data-copy]").forEach((card) => {
+  let timer;
+
+  card.addEventListener("click", async () => {
+    const value = card.dataset.copy;
+
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      // clipboard API exige contexto seguro (https); em http o catch evita
+      // que o clique simplesmente não faça nada
+      const helper = document.createElement("textarea");
+      helper.value = value;
+      helper.setAttribute("readonly", "");
+      helper.style.position = "fixed";
+      helper.style.opacity = "0";
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand("copy");
+      helper.remove();
+    }
+
+    card.classList.add("is-copied");
+    copyStatus.textContent = `${value} copiado para a área de transferência.`;
+
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      card.classList.remove("is-copied");
+      copyStatus.textContent = "";
+    }, 1800);
+  });
+});
+
 // --- Lightbox: abre o vídeo na própria página ---
 const lightbox = document.getElementById("lightbox");
 const lightboxFrame = document.getElementById("lightbox-iframe");
