@@ -1,13 +1,15 @@
 :root {
-  --color-bg: #0b0e14;
-  --color-bg-deep: #070910;
+  --color-bg: #0a0708;
+  --color-bg-deep: #040303;
   --color-surface: rgba(255, 255, 255, 0.035);
   --color-surface-hover: rgba(255, 255, 255, 0.06);
-  --color-text: #f2f4f8;
-  --color-text-muted: #8b91a1;
-  --color-accent: #22c55e;
+  --color-text: #f7f4f5;
+  --color-text-muted: #948b8e;
+  --color-accent: #ff1f35;
+  --color-accent-deep: #b00d1d;
+  --color-accent-soft: rgba(255, 31, 53, 0.18);
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-border-strong: rgba(255, 70, 85, 0.35);
   --radius: 16px;
   --radius-lg: 20px;
   --radius-full: 999px;
@@ -45,14 +47,14 @@ img {
   display: block;
 }
 
-/* Fundo em camadas: gradiente navy + textura de pontos + vinheta */
+/* Fundo em camadas: brilho vermelho no topo + textura de pontos + vinheta */
 .page-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(60, 80, 130, 0.35), transparent 70%),
-    linear-gradient(180deg, #131a28 0%, var(--color-bg) 45%, var(--color-bg-deep) 100%);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255, 31, 53, 0.22), transparent 70%),
+    linear-gradient(180deg, #1a0508 0%, var(--color-bg) 45%, var(--color-bg-deep) 100%);
 }
 
 .page-bg::before {
@@ -107,14 +109,15 @@ h1, h2, h3 {
 }
 
 .btn-primary {
-  background: #fff;
-  color: #0a0a0d;
-  box-shadow: 0 4px 24px rgba(255, 255, 255, 0.12);
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 4px 26px rgba(255, 31, 53, 0.35);
 }
 
 .btn-primary:hover {
+  background: #ff3547;
   transform: translateY(-2px);
-  box-shadow: 0 10px 34px rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 38px rgba(255, 31, 53, 0.5);
 }
 
 .btn-primary .arrow {
@@ -182,7 +185,7 @@ h1, h2, h3 {
   justify-content: space-between;
   gap: 2rem;
   padding: 0.55rem 0.55rem 0.55rem 0.9rem;
-  background: rgba(16, 20, 30, 0.72);
+  background: rgba(20, 12, 14, 0.75);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   border: 1px solid var(--color-border);
@@ -205,7 +208,7 @@ h1, h2, h3 {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2b3a55, #16b364);
+  background: linear-gradient(135deg, var(--color-accent-deep), var(--color-accent));
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -252,7 +255,7 @@ h1, h2, h3 {
   transform: translateX(-50%);
   width: min(900px, 90vw);
   height: 460px;
-  background: radial-gradient(ellipse at center, rgba(34, 197, 94, 0.14), transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(255, 31, 53, 0.22), transparent 65%);
   filter: blur(50px);
   pointer-events: none;
 }
@@ -267,7 +270,7 @@ h1, h2, h3 {
   gap: 0.6rem;
   padding: 0.5rem 1.15rem;
   border-radius: var(--radius-full);
-  background: rgba(16, 20, 30, 0.75);
+  background: rgba(20, 12, 14, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
   font-size: 0.87rem;
@@ -280,13 +283,13 @@ h1, h2, h3 {
   height: 8px;
   border-radius: 50%;
   background: var(--color-accent);
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
   animation: pulse 2.4s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18); }
-  50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.05); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 31, 53, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 31, 53, 0.05); }
 }
 
 .hero h1 {
@@ -326,7 +329,7 @@ h1, h2, h3 {
   gap: 0.4rem;
   min-width: 220px;
   padding: 1.75rem 2rem;
-  background: rgba(10, 13, 20, 0.6);
+  background: rgba(16, 10, 12, 0.65);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -389,9 +392,9 @@ h1, h2, h3 {
 /* --- Cabeçalhos de seção --- */
 .eyebrow {
   text-align: center;
-  color: var(--color-text-muted);
+  color: var(--color-accent);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.24em;
   margin-bottom: 1rem;
 }
@@ -418,7 +421,7 @@ h1, h2, h3 {
   width: fit-content;
   margin: 0 auto 1.5rem;
   padding: 0.3rem;
-  background: rgba(10, 13, 20, 0.7);
+  background: rgba(16, 10, 12, 0.7);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
 }
@@ -441,7 +444,7 @@ h1, h2, h3 {
 }
 
 .format-btn.is-active {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 31, 53, 0.14);
   color: var(--color-text);
   box-shadow: inset 0 0 0 1px var(--color-border-strong);
 }
@@ -478,9 +481,10 @@ h1, h2, h3 {
 }
 
 .filter-btn.is-active {
-  background: #fff;
-  color: #0a0a0d;
-  border-color: #fff;
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+  box-shadow: 0 2px 16px rgba(255, 31, 53, 0.35);
 }
 
 /* --- Carrossel do portfólio --- */
@@ -539,7 +543,7 @@ h1, h2, h3 {
   padding-bottom: 3px;
   border: 1px solid var(--color-border-strong);
   border-radius: 50%;
-  background: rgba(16, 20, 30, 0.85);
+  background: rgba(22, 13, 15, 0.9);
   backdrop-filter: blur(10px);
   color: var(--color-text);
   font-size: 1.5rem;
@@ -549,7 +553,7 @@ h1, h2, h3 {
 }
 
 .rail-nav:hover:not(:disabled) {
-  background: rgba(30, 36, 50, 0.95);
+  background: rgba(46, 16, 22, 0.95);
   transform: translateY(-50%) scale(1.06);
 }
 
@@ -575,7 +579,7 @@ h1, h2, h3 {
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
-  background: #0d1018;
+  background: #120c0e;
   transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
@@ -589,8 +593,8 @@ h1, h2, h3 {
 
 .card:hover {
   transform: translateY(-6px);
-  border-color: var(--color-border-strong);
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.6);
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 31, 53, 0.22);
 }
 
 .thumb {
@@ -656,7 +660,7 @@ h1, h2, h3 {
   flex-direction: column;
   gap: 0.15rem;
   padding: 3.5rem 3rem 1.1rem 1.1rem;
-  background: linear-gradient(to top, rgba(5, 7, 12, 0.95) 12%, rgba(5, 7, 12, 0.6) 55%, transparent);
+  background: linear-gradient(to top, rgba(6, 3, 4, 0.95) 12%, rgba(6, 3, 4, 0.6) 55%, transparent);
 }
 
 .mode-long .card-overlay {
@@ -711,7 +715,7 @@ h1, h2, h3 {
 
 .step {
   padding: 2rem 1.75rem;
-  background: rgba(10, 13, 20, 0.6);
+  background: rgba(16, 10, 12, 0.65);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
@@ -727,9 +731,10 @@ h1, h2, h3 {
   place-items: center;
   width: 2.6rem;
   height: 2.6rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
+  background: rgba(255, 31, 53, 0.12);
+  border: 1px solid var(--color-accent);
   border-radius: 50%;
+  color: var(--color-accent);
   font-weight: 700;
   font-size: 0.95rem;
   margin-bottom: 1.25rem;
@@ -763,7 +768,7 @@ h1, h2, h3 {
 
 .pillar {
   padding: 1.75rem;
-  background: rgba(10, 13, 20, 0.6);
+  background: rgba(16, 10, 12, 0.65);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
