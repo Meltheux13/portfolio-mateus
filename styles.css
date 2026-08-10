@@ -575,6 +575,12 @@ h1, h2, h3 {
   height: auto;
 }
 
+/* O selo do Instagram é quadrado; um pouco menor para ter o mesmo peso
+   visual do selo retangular do YouTube. */
+.ig-badge {
+  width: 22px;
+}
+
 /* Faixa de texto sobre a imagem */
 .card-overlay {
   position: absolute;
