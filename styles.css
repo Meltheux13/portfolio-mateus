@@ -908,13 +908,45 @@ h1, h2, h3 {
   from { opacity: 0; transform: scale(0.96) translateY(10px); }
 }
 
+/* O brilho precisa vazar para fora do player, e o frame tem overflow
+   hidden — por isso os dois vivem dentro deste palco. */
+.lightbox-stage {
+  position: relative;
+  align-self: center;
+  max-width: 100%;
+}
+
+/* LED reativo ao áudio. O blur é fixo no CSS: só opacity e transform mudam
+   a cada quadro, e essas duas o navegador resolve no compositor, sem
+   repintar. Animar box-shadow ou filter aqui custaria caro. */
+.lightbox-glow {
+  position: absolute;
+  inset: -6%;
+  z-index: 0;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse at center, var(--color-accent), transparent 72%);
+  filter: blur(46px);
+  pointer-events: none;
+  will-change: opacity, transform;
+  opacity: calc(0.18 + var(--glow-intensity, 0) * 0.62);
+  transform: scale(calc(1 + var(--glow-intensity, 0) * 0.09));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-glow {
+    opacity: 0.3;
+    transform: none;
+  }
+}
+
 .lightbox-frame {
   position: relative;
+  z-index: 1;
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-strong);
   background: #000;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 31, 53, 0.15);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
   /* O vídeo tem que caber nas duas dimensões: a largura sai do menor entre
      a janela e o que a altura disponível permite. Só limitar pela altura
      estourava a lateral em telas mais baixas que largas. */
@@ -930,7 +962,9 @@ h1, h2, h3 {
   width: min(92vw, calc(var(--altura-livre) * 9 / 16));
 }
 
-.lightbox-frame iframe {
+/* o iframe é criado pela API do YouTube dentro de #lightbox-mount */
+.lightbox-frame iframe,
+.lightbox-frame > div {
   width: 100%;
   height: 100%;
   border: 0;
@@ -962,24 +996,12 @@ h1, h2, h3 {
 .lightbox-meta {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .lightbox-title {
   font-size: 1.05rem;
   font-weight: 700;
-}
-
-.lightbox-link {
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
-  transition: color 0.25s var(--ease);
-}
-
-.lightbox-link:hover {
-  color: var(--color-accent);
 }
 
 body.no-scroll {

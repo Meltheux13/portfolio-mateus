@@ -349,12 +349,14 @@
     <div class="lightbox-backdrop" data-close></div>
     <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
       <button class="lightbox-close" type="button" data-close aria-label="Fechar vídeo">✕</button>
-      <div class="lightbox-frame">
-        <iframe id="lightbox-iframe" title="Reprodutor de vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <div class="lightbox-stage">
+        <div class="lightbox-glow" aria-hidden="true"></div>
+        <div class="lightbox-frame">
+          <div id="lightbox-mount"></div>
+        </div>
       </div>
       <div class="lightbox-meta">
         <h3 class="lightbox-title" id="lightbox-title"></h3>
-        <a class="lightbox-link" target="_blank" rel="noopener">Abrir no YouTube ↗</a>
       </div>
     </div>
   </div>

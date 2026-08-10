@@ -123,37 +123,151 @@ document.querySelectorAll(".contact-card[data-copy]").forEach((card) => {
 
 // --- Lightbox: abre o vídeo na própria página ---
 const lightbox = document.getElementById("lightbox");
-const lightboxFrame = document.getElementById("lightbox-iframe");
+const lightboxFrameEl = lightbox.querySelector(".lightbox-frame");
+const lightboxGlow = lightbox.querySelector(".lightbox-glow");
 const lightboxTitle = lightbox.querySelector(".lightbox-title");
-const lightboxLink = lightbox.querySelector(".lightbox-link");
 const lightboxClose = lightbox.querySelector(".lightbox-close");
+const lightboxMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let lastFocused = null;
+let player = null;
 
-function openLightbox(card) {
+// Carrega a IFrame API uma vez só e reaproveita a promessa nas aberturas
+// seguintes.
+let youtubeApi = null;
+
+function loadYouTubeApi() {
+  if (youtubeApi) return youtubeApi;
+
+  youtubeApi = new Promise((resolve) => {
+    if (window.YT && window.YT.Player) {
+      resolve(window.YT);
+      return;
+    }
+    window.onYouTubeIframeAPIReady = () => resolve(window.YT);
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  });
+
+  return youtubeApi;
+}
+
+// --- Envelope de áudio pré-calculado (ver scripts/audio-envelope.js) ---
+// Não dá para ler o áudio do iframe: o YouTube é outra origem e a Web Audio
+// API não alcança. Por isso o volume da fala vem de um JSON gerado antes.
+//
+// Só busca quando o card declara data-envelope. Sondar a rede para descobrir
+// se o arquivo existe deixaria um 404 no console a cada vídeo sem envelope,
+// e o fetch não tem como esconder isso.
+const envelopeCache = new Map();
+
+function loadEnvelope(card) {
+  if (!card.hasAttribute("data-envelope")) return Promise.resolve(null);
+
+  const videoId = card.dataset.video;
+  if (envelopeCache.has(videoId)) return envelopeCache.get(videoId);
+
+  // caminho relativo: o site também funciona servido de um subdiretório
+  const request = fetch(`public/envelopes/${videoId}.json`)
+    .then((response) => (response.ok ? response.json() : null))
+    .catch(() => null);
+
+  envelopeCache.set(videoId, request);
+  return request;
+}
+
+let envelope = null;
+let glowFrame = null;
+let glowValue = 0;
+
+function setGlow(value) {
+  lightboxGlow.style.setProperty("--glow-intensity", value.toFixed(3));
+}
+
+function startGlow() {
+  if (glowFrame || !envelope || !player || lightboxMotion.matches) return;
+
+  const step = () => {
+    const index = Math.floor(player.getCurrentTime() * envelope.fps);
+    const target = envelope.values[index] ?? 0;
+    // suavização exponencial: sem ela o brilho fica tremido entre quadros
+    glowValue += (target - glowValue) * 0.25;
+    setGlow(glowValue);
+    glowFrame = requestAnimationFrame(step);
+  };
+
+  glowFrame = requestAnimationFrame(step);
+}
+
+function stopGlow() {
+  cancelAnimationFrame(glowFrame);
+  glowFrame = null;
+}
+
+async function openLightbox(card) {
   const id = card.dataset.video;
   const title = card.querySelector(".card-title").textContent;
+  // 0-100. Serve para abaixar os vídeos mais altos até o nível dos outros:
+  // setVolume não amplifica acima de 100.
+  const volume = Number(card.dataset.volume ?? 100);
 
   lastFocused = document.activeElement;
   lightboxTitle.textContent = title;
-  lightboxLink.href = card.href;
   // A proporção do card é a da miniatura, não a do vídeo: alguns shorts
   // foram gravados em 16:9 e ficariam com tarja no player vertical.
   const vertical = card.dataset.ratio ? card.dataset.ratio === "9:16" : card.classList.contains("is-vertical");
   lightbox.classList.toggle("is-vertical", vertical);
-  lightboxFrame.title = `Vídeo: ${title}`;
-  // nocookie evita rastreamento antes de o visitante decidir assistir
-  lightboxFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
 
+  glowValue = 0;
+  setGlow(0);
   lightbox.hidden = false;
   document.body.classList.add("no-scroll");
   lightboxClose.focus();
+
+  const [YT, loaded] = await Promise.all([loadYouTubeApi(), loadEnvelope(card)]);
+  // o visitante pode ter fechado enquanto a API carregava
+  if (lightbox.hidden) return;
+
+  envelope = loaded;
+
+  // ponto de montagem novo a cada abertura: destroy() remove o elemento
+  const mount = document.createElement("div");
+  lightboxFrameEl.replaceChildren(mount);
+
+  player = new YT.Player(mount, {
+    videoId: id,
+    host: "https://www.youtube-nocookie.com",
+    playerVars: { autoplay: 1, rel: 0, enablejsapi: 1, playsinline: 1 },
+    events: {
+      onReady: (event) => {
+        event.target.setVolume(volume);
+        event.target.getIframe().title = `Vídeo: ${title}`;
+      },
+      onStateChange: (event) => {
+        if (event.data === YT.PlayerState.PLAYING) {
+          // o YouTube reseta o volume no play e ao tirar o mudo
+          event.target.setVolume(volume);
+          startGlow();
+        } else {
+          stopGlow();
+        }
+      },
+    },
+  });
 }
 
 function closeLightbox() {
   lightbox.hidden = true;
-  // interrompe a reprodução: só esconder deixaria o áudio tocando.
-  // about:blank em vez de "", que faria o iframe recarregar a própria página.
-  lightboxFrame.src = "about:blank";
+  stopGlow();
+
+  if (player) {
+    // destroy também interrompe o áudio; só esconder deixaria tocando
+    player.destroy();
+    player = null;
+  }
+  lightboxFrameEl.replaceChildren();
+  envelope = null;
+
   document.body.classList.remove("no-scroll");
   if (lastFocused) lastFocused.focus();
 }
@@ -181,19 +295,11 @@ document.addEventListener("keydown", (event) => {
     return;
   }
 
-  // prende o Tab dentro do modal enquanto ele está aberto
+  // prende o Tab dentro do modal: fora o player, o botão de fechar é o
+  // único elemento focável que sobrou
   if (event.key === "Tab") {
-    const focusables = [lightboxClose, lightboxLink];
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
+    event.preventDefault();
+    lightboxClose.focus();
   }
 });
 
