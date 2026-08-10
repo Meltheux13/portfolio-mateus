@@ -77,6 +77,77 @@ catGroups.forEach((group) => {
 
 applyFilters();
 
+// --- Lightbox: abre o vídeo na própria página ---
+const lightbox = document.getElementById("lightbox");
+const lightboxFrame = document.getElementById("lightbox-iframe");
+const lightboxTitle = lightbox.querySelector(".lightbox-title");
+const lightboxLink = lightbox.querySelector(".lightbox-link");
+const lightboxClose = lightbox.querySelector(".lightbox-close");
+let lastFocused = null;
+
+function openLightbox(card) {
+  const id = card.dataset.video;
+  const title = card.querySelector(".card-title").textContent;
+
+  lastFocused = document.activeElement;
+  lightboxTitle.textContent = title;
+  lightboxLink.href = card.href;
+  lightbox.classList.toggle("is-vertical", card.classList.contains("is-vertical"));
+  lightboxFrame.title = `Vídeo: ${title}`;
+  // nocookie evita rastreamento antes de o visitante decidir assistir
+  lightboxFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+
+  lightbox.hidden = false;
+  document.body.classList.add("no-scroll");
+  lightboxClose.focus();
+}
+
+function closeLightbox() {
+  lightbox.hidden = true;
+  // interrompe a reprodução: só esconder deixaria o áudio tocando.
+  // about:blank em vez de "", que faria o iframe recarregar a própria página.
+  lightboxFrame.src = "about:blank";
+  document.body.classList.remove("no-scroll");
+  if (lastFocused) lastFocused.focus();
+}
+
+document.querySelectorAll(".card[data-video]").forEach((card) => {
+  card.addEventListener("click", (event) => {
+    // ctrl/cmd//meio mantêm o comportamento de abrir no YouTube em nova aba
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+    event.preventDefault();
+    openLightbox(card);
+  });
+});
+
+lightbox.querySelectorAll("[data-close]").forEach((el) => {
+  el.addEventListener("click", closeLightbox);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (lightbox.hidden) return;
+
+  if (event.key === "Escape") {
+    closeLightbox();
+    return;
+  }
+
+  // prende o Tab dentro do modal enquanto ele está aberto
+  if (event.key === "Tab") {
+    const focusables = [lightboxClose, lightboxLink];
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+});
+
 // Revela os elementos conforme entram na viewport
 const revealItems = document.querySelectorAll(".reveal");
 

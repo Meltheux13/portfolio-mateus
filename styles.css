@@ -939,6 +939,120 @@ h1, h2, h3 {
   .badge-dot, .chevron { animation: none; }
 }
 
+/* --- Lightbox do vídeo --- */
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 3, 3, 0.88);
+  backdrop-filter: blur(8px);
+  animation: fade-in 0.25s var(--ease);
+}
+
+.lightbox-panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 100%;
+  animation: pop-in 0.3s var(--ease);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+}
+
+.lightbox-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-strong);
+  background: #000;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 31, 53, 0.15);
+  /* o vídeo nunca passa da tela: limita pela altura e deixa a proporção
+     definir a largura */
+  height: min(78vh, 720px);
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+}
+
+.lightbox.is-vertical .lightbox-frame {
+  aspect-ratio: 9 / 16;
+}
+
+.lightbox-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -3.25rem;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: rgba(22, 13, 15, 0.9);
+  color: var(--color-text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.lightbox-close:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.lightbox-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.lightbox-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.lightbox-link {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  transition: color 0.25s var(--ease);
+}
+
+.lightbox-link:hover {
+  color: var(--color-accent);
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
 /* --- Responsivo --- */
 @media (max-width: 880px) {
   .nav-links { display: none; }
@@ -962,4 +1076,8 @@ h1, h2, h3 {
   .card-title { font-size: 0.86rem; }
   .card-cat { font-size: 0.75rem; }
   .play-cue { display: none; }
+  /* na tela pequena o vídeo cabe melhor pela largura */
+  .lightbox { padding: 1rem; }
+  .lightbox-frame { height: auto; width: 100%; }
+  .lightbox-close { top: -3rem; }
 }
