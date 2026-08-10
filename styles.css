@@ -314,48 +314,6 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 3.25rem;
-}
-
-/* --- Cards de estatística --- */
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  min-width: 220px;
-  padding: 1.75rem 2rem;
-  background: rgba(16, 10, 12, 0.65);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
-}
-
-.stat:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-border-strong);
-}
-
-.stat-number {
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-}
-
-.stat-label {
-  color: var(--color-text-muted);
-  font-size: 0.73rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
 }
 
 /* --- Cabeçalhos de seção --- */
@@ -1022,15 +980,6 @@ body.no-scroll {
   overflow: hidden;
 }
 
-/* Telas baixas (notebooks): aperta o hero para caber sem cortar o "ROLAR" */
-@media (max-height: 820px) {
-  .hero { padding: 1.5rem 0; }
-  .hero-badge { margin-bottom: 1.25rem; }
-  .hero-subtitle { margin-bottom: 1.75rem; }
-  .hero-actions { margin-bottom: 2.25rem; }
-  .stat { padding: 1.2rem 1.75rem; }
-}
-
 /* --- Responsivo --- */
 @media (max-width: 880px) {
   .nav-links { display: none; }
@@ -1039,11 +988,8 @@ body.no-scroll {
 
 @media (max-width: 640px) {
   section { padding: 5rem 0; }
-  .hero { padding-top: 7.5rem; }
   .logo-text { font-size: 0.92rem; }
   .logo-tag { display: none; }
-  .stat { min-width: 100%; }
-  .hero-actions { margin-bottom: 3.5rem; }
   /* No celular o carrossel rola com o dedo; as setas só atrapalhariam */
   .rail-nav { display: none; }
   .portfolio-grid { gap: 0.85rem; }
