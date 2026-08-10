@@ -9,11 +9,46 @@ const activeCat = { short: "all", long: "all" };
 const prevBtn = document.querySelector(".rail-nav.prev");
 const nextBtn = document.querySelector(".rail-nav.next");
 
+// Largura de uma volta completa: quando o scroll passa disso, subtraímos
+// esse valor e o visitante não percebe, porque a lista se repete.
+let loopWidth = 0;
+
+function originals() {
+  return [...grid.querySelectorAll(".portfolio-item:not([hidden]):not([data-clone])")];
+}
+
+// Duplica os cards visíveis para o avanço contínuo não ter fim aparente.
+// Sem isso o carrossel chegaria na última miniatura e voltaria com um salto.
+function buildLoop() {
+  grid.querySelectorAll("[data-clone]").forEach((node) => node.remove());
+  loopWidth = 0;
+
+  const items = originals();
+  if (!items.length) return;
+
+  const last = items[items.length - 1];
+  const setWidth = last.offsetLeft + last.offsetWidth - items[0].offsetLeft;
+  // se a lista já cabe na tela não há o que rolar, e clonar só duplicaria
+  // conteúdo à toa
+  if (setWidth <= grid.clientWidth) return;
+
+  items.forEach((item) => {
+    const clone = item.cloneNode(true);
+    clone.dataset.clone = "true";
+    clone.setAttribute("aria-hidden", "true");
+    clone.querySelectorAll("a, button").forEach((el) => el.setAttribute("tabindex", "-1"));
+    grid.appendChild(clone);
+  });
+
+  const firstClone = grid.querySelector("[data-clone]");
+  loopWidth = firstClone.offsetLeft - items[0].offsetLeft;
+}
+
 function updateNav() {
-  // 1px de folga: navegadores arredondam scrollLeft e o fim nunca bate exato
-  const max = grid.scrollWidth - grid.clientWidth - 1;
-  prevBtn.disabled = grid.scrollLeft <= 0;
-  nextBtn.disabled = grid.scrollLeft >= max;
+  const rolavel = grid.scrollWidth > grid.clientWidth;
+  // com o loop ativo as setas nunca travam: sempre há conteúdo dos dois lados
+  prevBtn.disabled = !rolavel;
+  nextBtn.disabled = !rolavel;
 }
 
 function applyFilters() {
@@ -31,14 +66,17 @@ function applyFilters() {
     group.hidden = group.dataset.for !== activeFormat;
   });
 
-  // volta ao início sem animar, senão a lista nova entra deslizando de lado
-  grid.style.scrollBehavior = "auto";
   grid.scrollLeft = 0;
-  grid.style.scrollBehavior = "";
+  buildLoop();
   updateNav();
 }
 
 function scrollByPage(direction) {
+  // indo para trás a partir do começo, salta uma volta antes de animar,
+  // senão a seta esbarra no zero e não anda
+  if (direction < 0 && loopWidth && grid.scrollLeft < 10) {
+    grid.scrollLeft += loopWidth;
+  }
   grid.scrollBy({ left: direction * grid.clientWidth * 0.85, behavior: "smooth" });
 }
 
@@ -117,13 +155,15 @@ function closeLightbox() {
   if (lastFocused) lastFocused.focus();
 }
 
-document.querySelectorAll(".card[data-video]").forEach((card) => {
-  card.addEventListener("click", (event) => {
-    // ctrl/cmd//meio mantêm o comportamento de abrir no YouTube em nova aba
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-    event.preventDefault();
-    openLightbox(card);
-  });
+// delegação: os clones do carrossel são criados depois, então não dá para
+// prender o clique em cada card na carga
+document.addEventListener("click", (event) => {
+  const card = event.target.closest(".card[data-video]");
+  if (!card) return;
+  // ctrl/cmd//meio mantêm o comportamento de abrir no YouTube em nova aba
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+  event.preventDefault();
+  openLightbox(card);
 });
 
 lightbox.querySelectorAll("[data-close]").forEach((el) => {
@@ -183,57 +223,52 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }
 
-// --- Avanço automático do carrossel ---
-const AUTOPLAY_MS = 3500;
+// --- Avanço contínuo do carrossel ---
+const SPEED_PX_PER_SECOND = 34;
 const carousel = document.querySelector(".carousel");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-let autoplayTimer = null;
 let pointerOver = false;
 let focusInside = false;
 let inViewport = true;
-
-function cardStep() {
-  const card = grid.querySelector(".portfolio-item:not([hidden])");
-  if (!card) return grid.clientWidth;
-  const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
-  return card.getBoundingClientRect().width + gap;
-}
+let lastFrame = 0;
+// Posição acumulada em ponto flutuante: scrollLeft arredonda o valor, então
+// somar 0,2px por quadro direto nele nunca sairia do lugar.
+let position = 0;
 
 function canAutoplay() {
   return (
+    loopWidth > 0 &&
     !reduceMotion.matches &&
     !pointerOver &&
     !focusInside &&
     inViewport &&
     !document.hidden &&
-    lightbox.hidden &&
-    grid.scrollWidth > grid.clientWidth
+    lightbox.hidden
   );
 }
 
-function autoplayTick() {
-  if (!canAutoplay()) return;
+function frame(now) {
+  const delta = lastFrame ? (now - lastFrame) / 1000 : 0;
+  lastFrame = now;
 
-  const max = grid.scrollWidth - grid.clientWidth - 1;
-  if (grid.scrollLeft >= max) {
-    grid.scrollTo({ left: 0, behavior: "smooth" });
-  } else {
-    grid.scrollBy({ left: cardStep(), behavior: "smooth" });
+  // se o visitante rolou por conta própria, adota a posição dele
+  if (Math.abs(grid.scrollLeft - position) > 2) position = grid.scrollLeft;
+
+  if (canAutoplay()) {
+    // delta limitado: se a aba ficou parada, voltaria com um salto gigante
+    position += SPEED_PX_PER_SECOND * Math.min(delta, 0.05);
+
+    if (position >= loopWidth) position -= loopWidth;
+    else if (position < 0) position += loopWidth;
+
+    grid.scrollLeft = position;
   }
+
+  requestAnimationFrame(frame);
 }
 
-function startAutoplay() {
-  if (autoplayTimer) return;
-  autoplayTimer = setInterval(autoplayTick, AUTOPLAY_MS);
-}
-
-function stopAutoplay() {
-  clearInterval(autoplayTimer);
-  autoplayTimer = null;
-}
-
-// Pausa enquanto o visitante está mexendo, para não brigar com ele
+// Pausa enquanto o visitante está com o mouse em cima ou navegando pelo teclado
 carousel.addEventListener("pointerenter", () => { pointerOver = true; });
 carousel.addEventListener("pointerleave", () => { pointerOver = false; });
 carousel.addEventListener("focusin", () => { focusInside = true; });
@@ -247,11 +282,8 @@ new IntersectionObserver(
   { threshold: 0.2 }
 ).observe(carousel);
 
-if (!reduceMotion.matches) startAutoplay();
-reduceMotion.addEventListener("change", () => {
-  if (reduceMotion.matches) stopAutoplay();
-  else startAutoplay();
-});
+window.addEventListener("resize", buildLoop);
+requestAnimationFrame(frame);
 
 formatButtons.forEach((button) => {
   button.addEventListener("click", () => {

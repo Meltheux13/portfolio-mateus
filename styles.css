@@ -431,9 +431,8 @@ h1, h2, h3 {
   display: flex;
   gap: 1.25rem;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  /* espaço para o card subir no hover sem ser cortado pelo overflow */
+  /* sem scroll-snap nem scroll-behavior: ambos brigam com o avanço
+     contínuo, que move o scroll quadro a quadro */
   padding: 0.75rem 0 1.25rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -451,7 +450,6 @@ h1, h2, h3 {
 
 .portfolio-item {
   flex: 0 0 auto;
-  scroll-snap-align: start;
 }
 
 .mode-short .portfolio-item {
