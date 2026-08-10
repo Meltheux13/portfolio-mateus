@@ -136,7 +136,10 @@ function openLightbox(card) {
   lastFocused = document.activeElement;
   lightboxTitle.textContent = title;
   lightboxLink.href = card.href;
-  lightbox.classList.toggle("is-vertical", card.classList.contains("is-vertical"));
+  // A proporção do card é a da miniatura, não a do vídeo: alguns shorts
+  // foram gravados em 16:9 e ficariam com tarja no player vertical.
+  const vertical = card.dataset.ratio ? card.dataset.ratio === "9:16" : card.classList.contains("is-vertical");
+  lightbox.classList.toggle("is-vertical", vertical);
   lightboxFrame.title = `Vídeo: ${title}`;
   // nocookie evita rastreamento antes de o visitante decidir assistir
   lightboxFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;

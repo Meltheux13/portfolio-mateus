@@ -915,15 +915,19 @@ h1, h2, h3 {
   border: 1px solid var(--color-border-strong);
   background: #000;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 31, 53, 0.15);
-  /* o vídeo nunca passa da tela: limita pela altura e deixa a proporção
-     definir a largura */
-  height: min(78vh, 720px);
+  /* O vídeo tem que caber nas duas dimensões: a largura sai do menor entre
+     a janela e o que a altura disponível permite. Só limitar pela altura
+     estourava a lateral em telas mais baixas que largas. */
   aspect-ratio: 16 / 9;
-  max-width: 100%;
+  --altura-livre: min(calc(100vh - 11rem), 720px);
+  width: min(92vw, calc(var(--altura-livre) * 16 / 9));
+  height: auto;
+  max-height: var(--altura-livre);
 }
 
 .lightbox.is-vertical .lightbox-frame {
   aspect-ratio: 9 / 16;
+  width: min(92vw, calc(var(--altura-livre) * 9 / 16));
 }
 
 .lightbox-frame iframe {
@@ -1002,8 +1006,8 @@ body.no-scroll {
   .card-title { font-size: 0.86rem; }
   .card-cat { font-size: 0.75rem; }
   .play-cue { display: none; }
-  /* na tela pequena o vídeo cabe melhor pela largura */
+  /* na tela pequena sobra menos espaço vertical para o cabeçalho do modal */
   .lightbox { padding: 1rem; }
-  .lightbox-frame { height: auto; width: 100%; }
+  .lightbox-frame { --altura-livre: calc(100vh - 9rem); }
   .lightbox-close { top: -3rem; }
 }
