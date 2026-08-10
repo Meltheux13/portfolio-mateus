@@ -483,23 +483,89 @@ h1, h2, h3 {
   border-color: #fff;
 }
 
-/* --- Grid do portfólio --- */
+/* --- Carrossel do portfólio --- */
+.carousel {
+  position: relative;
+}
+
 .portfolio-grid {
-  display: grid;
-  gap: 1.5rem;
-  justify-content: center;
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* espaço para o card subir no hover sem ser cortado pelo overflow */
+  padding: 0.75rem 0 1.25rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.portfolio-grid.mode-short {
-  grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+.portfolio-grid::-webkit-scrollbar {
+  display: none;
 }
 
-.portfolio-grid.mode-long {
-  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+.portfolio-grid:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+
+.portfolio-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.mode-short .portfolio-item {
+  width: 232px;
+}
+
+.mode-long .portfolio-item {
+  width: 468px;
 }
 
 .portfolio-item[hidden] {
   display: none;
+}
+
+/* Setas de navegação */
+.rail-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding-bottom: 3px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: rgba(16, 20, 30, 0.85);
+  backdrop-filter: blur(10px);
+  color: var(--color-text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.3s var(--ease), background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.rail-nav:hover:not(:disabled) {
+  background: rgba(30, 36, 50, 0.95);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.rail-nav.prev {
+  left: -14px;
+  transform: translateY(-50%);
+}
+
+.rail-nav.next {
+  right: -14px;
+  transform: translateY(-50%);
+}
+
+.rail-nav:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* --- Card --- */
@@ -793,9 +859,11 @@ h1, h2, h3 {
   .logo-tag { display: none; }
   .stat { min-width: 100%; }
   .hero-actions { margin-bottom: 3.5rem; }
-  /* Shorts em 9:16 ocupam a tela toda sozinhos — dois por linha rende melhor */
-  .portfolio-grid.mode-short { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
-  .portfolio-grid.mode-long { grid-template-columns: 1fr; }
+  /* No celular o carrossel rola com o dedo; as setas só atrapalhariam */
+  .rail-nav { display: none; }
+  .portfolio-grid { gap: 0.85rem; }
+  .mode-short .portfolio-item { width: 46vw; }
+  .mode-long .portfolio-item { width: 82vw; }
   .card-overlay { padding: 2.5rem 0.85rem 0.85rem; }
   .card-title { font-size: 0.86rem; }
   .card-cat { font-size: 0.75rem; }

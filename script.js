@@ -6,6 +6,16 @@ const portfolioItems = document.querySelectorAll(".portfolio-item");
 let activeFormat = "short";
 const activeCat = { short: "all", long: "all" };
 
+const prevBtn = document.querySelector(".rail-nav.prev");
+const nextBtn = document.querySelector(".rail-nav.next");
+
+function updateNav() {
+  // 1px de folga: navegadores arredondam scrollLeft e o fim nunca bate exato
+  const max = grid.scrollWidth - grid.clientWidth - 1;
+  prevBtn.disabled = grid.scrollLeft <= 0;
+  nextBtn.disabled = grid.scrollLeft >= max;
+}
+
 function applyFilters() {
   grid.classList.toggle("mode-short", activeFormat === "short");
   grid.classList.toggle("mode-long", activeFormat === "long");
@@ -20,7 +30,22 @@ function applyFilters() {
   catGroups.forEach((group) => {
     group.hidden = group.dataset.for !== activeFormat;
   });
+
+  // volta ao início sem animar, senão a lista nova entra deslizando de lado
+  grid.style.scrollBehavior = "auto";
+  grid.scrollLeft = 0;
+  grid.style.scrollBehavior = "";
+  updateNav();
 }
+
+function scrollByPage(direction) {
+  grid.scrollBy({ left: direction * grid.clientWidth * 0.85, behavior: "smooth" });
+}
+
+prevBtn.addEventListener("click", () => scrollByPage(-1));
+nextBtn.addEventListener("click", () => scrollByPage(1));
+grid.addEventListener("scroll", updateNav, { passive: true });
+window.addEventListener("resize", updateNav);
 
 formatButtons.forEach((button) => {
   button.addEventListener("click", () => {
