@@ -47,36 +47,6 @@ nextBtn.addEventListener("click", () => scrollByPage(1));
 grid.addEventListener("scroll", updateNav, { passive: true });
 window.addEventListener("resize", updateNav);
 
-formatButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    activeFormat = button.dataset.format;
-
-    formatButtons.forEach((btn) => {
-      const on = btn === button;
-      btn.classList.toggle("is-active", on);
-      btn.setAttribute("aria-selected", String(on));
-    });
-
-    applyFilters();
-  });
-});
-
-catGroups.forEach((group) => {
-  group.querySelectorAll(".filter-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeCat[group.dataset.for] = button.dataset.cat;
-
-      group.querySelectorAll(".filter-btn").forEach((btn) => {
-        btn.classList.toggle("is-active", btn === button);
-      });
-
-      applyFilters();
-    });
-  });
-});
-
-applyFilters();
-
 // --- Contato: copiar usuário (Discord não tem link de perfil público) ---
 const copyStatus = document.getElementById("copy-status");
 
@@ -212,3 +182,103 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }
+
+// --- Avanço automático do carrossel ---
+const AUTOPLAY_MS = 3500;
+const carousel = document.querySelector(".carousel");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+let autoplayTimer = null;
+let pointerOver = false;
+let focusInside = false;
+let inViewport = true;
+
+function cardStep() {
+  const card = grid.querySelector(".portfolio-item:not([hidden])");
+  if (!card) return grid.clientWidth;
+  const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+  return card.getBoundingClientRect().width + gap;
+}
+
+function canAutoplay() {
+  return (
+    !reduceMotion.matches &&
+    !pointerOver &&
+    !focusInside &&
+    inViewport &&
+    !document.hidden &&
+    lightbox.hidden &&
+    grid.scrollWidth > grid.clientWidth
+  );
+}
+
+function autoplayTick() {
+  if (!canAutoplay()) return;
+
+  const max = grid.scrollWidth - grid.clientWidth - 1;
+  if (grid.scrollLeft >= max) {
+    grid.scrollTo({ left: 0, behavior: "smooth" });
+  } else {
+    grid.scrollBy({ left: cardStep(), behavior: "smooth" });
+  }
+}
+
+function startAutoplay() {
+  if (autoplayTimer) return;
+  autoplayTimer = setInterval(autoplayTick, AUTOPLAY_MS);
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayTimer);
+  autoplayTimer = null;
+}
+
+// Pausa enquanto o visitante está mexendo, para não brigar com ele
+carousel.addEventListener("pointerenter", () => { pointerOver = true; });
+carousel.addEventListener("pointerleave", () => { pointerOver = false; });
+carousel.addEventListener("focusin", () => { focusInside = true; });
+carousel.addEventListener("focusout", () => { focusInside = false; });
+
+// Fora da tela ou aba em segundo plano não precisa rodar
+new IntersectionObserver(
+  ([entry]) => {
+    inViewport = entry.isIntersecting;
+  },
+  { threshold: 0.2 }
+).observe(carousel);
+
+if (!reduceMotion.matches) startAutoplay();
+reduceMotion.addEventListener("change", () => {
+  if (reduceMotion.matches) stopAutoplay();
+  else startAutoplay();
+});
+
+formatButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeFormat = button.dataset.format;
+
+    formatButtons.forEach((btn) => {
+      const on = btn === button;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-selected", String(on));
+    });
+
+    applyFilters();
+  });
+});
+
+catGroups.forEach((group) => {
+  group.querySelectorAll(".filter-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeCat[group.dataset.for] = button.dataset.cat;
+
+      group.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.classList.toggle("is-active", btn === button);
+      });
+
+      applyFilters();
+    });
+  });
+});
+
+applyFilters();
