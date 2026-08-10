@@ -67,126 +67,171 @@
         <p class="eyebrow reveal">PORTFÓLIO</p>
         <h2 class="reveal">Trabalhos em destaque</h2>
         <p class="section-subtitle reveal">Uma seleção de edições feitas para maximizar o engajamento em diferentes nichos e plataformas.</p>
-        <div class="filters reveal">
-          <button class="filter-btn active" data-filter="all">Todos</button>
-          <button class="filter-btn" data-filter="shorts">Vídeos curtos</button>
-          <button class="filter-btn" data-filter="long">Vídeos longos</button>
+
+        <div class="format-toggle reveal" role="tablist" aria-label="Formato dos vídeos">
+          <button class="format-btn is-active" data-format="short" role="tab" aria-selected="true">Vídeos curtos</button>
+          <button class="format-btn" data-format="long" role="tab" aria-selected="false">Vídeos longos</button>
         </div>
-        <div class="portfolio-grid">
-          <article class="portfolio-item reveal" data-category="long">
-            <a class="thumb-link" href="https://www.youtube.com/watch?v=u1mLUbfrR4U" target="_blank" rel="noopener">
-              <img class="thumb" src="https://i.ytimg.com/vi/u1mLUbfrR4U/hq720.jpg" alt="Miniatura do vídeo: I Applied 100+ Hours of Hormozi's" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
-            </a>
-            <div class="item-body">
-              <h3>I Applied 100+ Hours of Hormozi's</h3>
-              <p>Koehn Dyck <span class="dot-sep">·</span> Marketing / Business</p>
-            </div>
-          </article>
-          <article class="portfolio-item reveal" data-category="long">
-            <a class="thumb-link" href="https://www.youtube.com/watch?v=iBlTvQnPzo8" target="_blank" rel="noopener">
-              <img class="thumb" src="https://i.ytimg.com/vi/iBlTvQnPzo8/hq720.jpg" alt="Miniatura do vídeo: If You Don't Understand This Principle" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
-            </a>
-            <div class="item-body">
-              <h3>If You Don't Understand This Principle</h3>
-              <p>Koehn Dyck <span class="dot-sep">·</span> Marketing / Business</p>
-            </div>
-          </article>
-          <article class="portfolio-item reveal" data-category="long">
-            <a class="thumb-link" href="https://youtu.be/zwzvbwhmS7E" target="_blank" rel="noopener">
-              <img class="thumb" src="https://i.ytimg.com/vi/zwzvbwhmS7E/hq720.jpg" alt="Miniatura do vídeo: 1000+ Hours of Building with Claude" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
-            </a>
-            <div class="item-body">
-              <h3>1000+ Hours of Building with Claude</h3>
-              <p>Isaac <span class="dot-sep">·</span> Tech / Educacional</p>
-            </div>
-          </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link is-vertical" href="https://youtube.com/shorts/n1ITJvI4Zac" target="_blank" rel="noopener">
+
+        <div class="cat-filters reveal" data-for="short">
+          <button class="filter-btn is-active" data-cat="all">Todos</button>
+          <button class="filter-btn" data-cat="direct-response">Direct Response</button>
+          <button class="filter-btn" data-cat="personal-brand">Personal Brand</button>
+          <button class="filter-btn" data-cat="gameplay">Gameplay</button>
+          <button class="filter-btn" data-cat="marketing">Marketing</button>
+          <button class="filter-btn" data-cat="ia">IA</button>
+        </div>
+
+        <div class="cat-filters reveal" data-for="long" hidden>
+          <button class="filter-btn is-active" data-cat="all">Todos</button>
+          <button class="filter-btn" data-cat="business">Business</button>
+          <button class="filter-btn" data-cat="tech">Tech</button>
+        </div>
+
+        <div class="portfolio-grid mode-short">
+          <!-- Vídeos curtos -->
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" href="https://youtube.com/shorts/n1ITJvI4Zac" target="_blank" rel="noopener">
               <img class="thumb-bg" src="https://i.ytimg.com/vi/n1ITJvI4Zac/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
-              <img class="thumb" src="https://i.ytimg.com/vi/n1ITJvI4Zac/oardefault.jpg" alt="Miniatura do vídeo: Adrian - Direct Response" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+              <img class="thumb" src="https://i.ytimg.com/vi/n1ITJvI4Zac/oardefault.jpg" alt="Miniatura do vídeo Adrian" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Adrian</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Adrian</h3>
-              <p>Direct Response</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link" href="https://youtu.be/f7AXhg_FGFE" target="_blank" rel="noopener">
-              <img class="thumb" src="https://i.ytimg.com/vi/f7AXhg_FGFE/hq720.jpg" alt="Miniatura do vídeo: Jawad x Josh - Personal Brand" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card" href="https://youtu.be/f7AXhg_FGFE" target="_blank" rel="noopener">
+              <img class="thumb-bg" src="https://i.ytimg.com/vi/f7AXhg_FGFE/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" src="https://i.ytimg.com/vi/f7AXhg_FGFE/hq720.jpg" alt="Miniatura do vídeo Jawad x Josh" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Jawad x Josh</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Jawad x Josh</h3>
-              <p>Personal Brand</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link is-vertical" href="https://youtube.com/shorts/iyVLrjTALk8" target="_blank" rel="noopener">
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" href="https://youtube.com/shorts/iyVLrjTALk8" target="_blank" rel="noopener">
               <img class="thumb-bg" src="https://i.ytimg.com/vi/iyVLrjTALk8/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
-              <img class="thumb" src="https://i.ytimg.com/vi/iyVLrjTALk8/oardefault.jpg" alt="Miniatura do vídeo: What Can We Do With Tracking?" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+              <img class="thumb" src="https://i.ytimg.com/vi/iyVLrjTALk8/oardefault.jpg" alt="Miniatura do vídeo What Can We Do With Tracking?" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">What Can We Do With Tracking?</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>What Can We Do With Tracking?</h3>
-              <p>Real Estate / Marketing</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link" href="https://youtu.be/K6mCgeJdNU8" target="_blank" rel="noopener">
-              <img class="thumb" src="https://i.ytimg.com/vi/K6mCgeJdNU8/hq720.jpg" alt="Miniatura do vídeo: Dorian x Scott - Personal Brand" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card" href="https://youtu.be/K6mCgeJdNU8" target="_blank" rel="noopener">
+              <img class="thumb-bg" src="https://i.ytimg.com/vi/K6mCgeJdNU8/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" src="https://i.ytimg.com/vi/K6mCgeJdNU8/hq720.jpg" alt="Miniatura do vídeo Dorian x Scott" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Dorian x Scott</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Dorian x Scott</h3>
-              <p>Personal Brand</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link" href="https://youtu.be/Dxhp3i1hF-U" target="_blank" rel="noopener">
-              <img class="thumb" src="https://i.ytimg.com/vi/Dxhp3i1hF-U/hq720.jpg" alt="Miniatura do vídeo: Dorian x Sab - Personal Brand" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card" href="https://youtu.be/Dxhp3i1hF-U" target="_blank" rel="noopener">
+              <img class="thumb-bg" src="https://i.ytimg.com/vi/Dxhp3i1hF-U/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" src="https://i.ytimg.com/vi/Dxhp3i1hF-U/hq720.jpg" alt="Miniatura do vídeo Dorian x Sab" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Dorian x Sab</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Dorian x Sab</h3>
-              <p>Personal Brand</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link is-vertical" href="https://youtube.com/shorts/_ybfJBJznDE" target="_blank" rel="noopener">
+
+          <article class="portfolio-item" data-format="short" data-cat="gameplay">
+            <a class="card is-vertical" href="https://youtube.com/shorts/_ybfJBJznDE" target="_blank" rel="noopener">
               <img class="thumb-bg" src="https://i.ytimg.com/vi/_ybfJBJznDE/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
-              <img class="thumb" src="https://i.ytimg.com/vi/_ybfJBJznDE/oardefault.jpg" alt="Miniatura do vídeo: Scorpion Gamer - Gameplay" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+              <img class="thumb" src="https://i.ytimg.com/vi/_ybfJBJznDE/oardefault.jpg" alt="Miniatura do vídeo Scorpion Gamer" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Scorpion Gamer</h3>
+                <span class="card-cat">Gameplay</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Scorpion Gamer</h3>
-              <p>Gameplay</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link is-vertical" href="https://youtube.com/shorts/koJ6ztf1IRI" target="_blank" rel="noopener">
+
+          <article class="portfolio-item" data-format="short" data-cat="ia">
+            <a class="card is-vertical" href="https://youtube.com/shorts/koJ6ztf1IRI" target="_blank" rel="noopener">
               <img class="thumb-bg" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
-              <img class="thumb" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="Miniatura do vídeo: Donos de Empresa e Editores de Vídeo" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+              <img class="thumb" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="Miniatura do vídeo Donos de Empresa e Editores de Vídeo" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Donos de Empresa e Editores de Vídeo</h3>
+                <span class="card-cat">IA</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Donos de Empresa e Editores de Vídeo</h3>
-              <p>Uso de IA</p>
-            </div>
           </article>
-          <article class="portfolio-item reveal" data-category="shorts">
-            <a class="thumb-link is-vertical" href="https://youtube.com/shorts/pTlQATOECLg" target="_blank" rel="noopener">
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" href="https://youtube.com/shorts/pTlQATOECLg" target="_blank" rel="noopener">
               <img class="thumb-bg" src="https://i.ytimg.com/vi/pTlQATOECLg/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
-              <img class="thumb" src="https://i.ytimg.com/vi/pTlQATOECLg/oardefault.jpg" alt="Miniatura do vídeo: Bilionário Americano - Direct Response" loading="lazy">
-              <span class="play-icon" aria-hidden="true">▶</span>
+              <img class="thumb" src="https://i.ytimg.com/vi/pTlQATOECLg/oardefault.jpg" alt="Miniatura do vídeo Bilionário Americano" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Bilionário Americano</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
             </a>
-            <div class="item-body">
-              <h3>Bilionário Americano</h3>
-              <p>Direct Response</p>
-            </div>
+          </article>
+
+          <!-- Vídeos longos -->
+          <article class="portfolio-item" data-format="long" data-cat="business" hidden>
+            <a class="card" href="https://www.youtube.com/watch?v=u1mLUbfrR4U" target="_blank" rel="noopener">
+              <img class="thumb-bg" src="https://i.ytimg.com/vi/u1mLUbfrR4U/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" src="https://i.ytimg.com/vi/u1mLUbfrR4U/hq720.jpg" alt="Miniatura do vídeo I Applied 100+ Hours of Hormozi's" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">I Applied 100+ Hours of Hormozi's</h3>
+                <span class="card-cat">Koehn Dyck · Business</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="long" data-cat="business" hidden>
+            <a class="card" href="https://www.youtube.com/watch?v=iBlTvQnPzo8" target="_blank" rel="noopener">
+              <img class="thumb-bg" src="https://i.ytimg.com/vi/iBlTvQnPzo8/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" src="https://i.ytimg.com/vi/iBlTvQnPzo8/hq720.jpg" alt="Miniatura do vídeo If You Don't Understand This Principle" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">If You Don't Understand This Principle</h3>
+                <span class="card-cat">Koehn Dyck · Business</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="long" data-cat="tech" hidden>
+            <a class="card" href="https://youtu.be/zwzvbwhmS7E" target="_blank" rel="noopener">
+              <img class="thumb-bg" src="https://i.ytimg.com/vi/zwzvbwhmS7E/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" src="https://i.ytimg.com/vi/zwzvbwhmS7E/hq720.jpg" alt="Miniatura do vídeo 1000+ Hours of Building with Claude" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">1000+ Hours of Building with Claude</h3>
+                <span class="card-cat">Isaac · Tech</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
           </article>
         </div>
       </div>

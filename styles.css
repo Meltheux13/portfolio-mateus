@@ -411,24 +411,63 @@ h1, h2, h3 {
   font-size: 1.05rem;
 }
 
-/* --- Filtros --- */
-.filters {
+/* --- Alternador de formato (segmented control) --- */
+.format-toggle {
+  display: flex;
+  gap: 0.25rem;
+  width: fit-content;
+  margin: 0 auto 1.5rem;
+  padding: 0.3rem;
+  background: rgba(10, 13, 20, 0.7);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.format-btn {
+  font-family: inherit;
+  padding: 0.6rem 1.6rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.format-btn:hover {
+  color: var(--color-text);
+}
+
+.format-btn.is-active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+}
+
+/* --- Chips de categoria --- */
+.cat-filters {
   display: flex;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 3rem;
 }
 
+.cat-filters[hidden] {
+  display: none;
+}
+
 .filter-btn {
   font-family: inherit;
-  padding: 0.6rem 1.4rem;
+  padding: 0.5rem 1.15rem;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text-muted);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.3s var(--ease);
 }
@@ -438,7 +477,7 @@ h1, h2, h3 {
   border-color: var(--color-border-strong);
 }
 
-.filter-btn.active {
+.filter-btn.is-active {
   background: #fff;
   color: #0a0a0d;
   border-color: #fff;
@@ -447,30 +486,45 @@ h1, h2, h3 {
 /* --- Grid do portfólio --- */
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+  justify-content: center;
 }
 
-.portfolio-item {
-  background: rgba(10, 13, 20, 0.6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+.portfolio-grid.mode-short {
+  grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+}
+
+.portfolio-grid.mode-long {
+  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+}
+
+.portfolio-item[hidden] {
+  display: none;
+}
+
+/* --- Card --- */
+.card {
+  position: relative;
+  display: block;
   overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: #0d1018;
   transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
-.portfolio-item:hover {
-  transform: translateY(-6px);
-  border-color: var(--color-border-strong);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+.mode-short .card {
+  aspect-ratio: 9 / 16;
 }
 
-.thumb-link {
-  position: relative;
-  display: block;
+.mode-long .card {
   aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, #171c28, #232a3a);
-  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-border-strong);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.6);
 }
 
 .thumb {
@@ -479,77 +533,100 @@ h1, h2, h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--ease), filter 0.4s var(--ease);
+  transition: transform 0.6s var(--ease);
 }
 
-.thumb-link:hover .thumb {
-  transform: scale(1.07);
-  filter: brightness(0.72);
+.card:hover .thumb {
+  transform: scale(1.05);
 }
 
-/* Vídeos verticais: imagem nítida centralizada sobre um fundo desfocado */
-.thumb-link.is-vertical .thumb {
+/* Miniatura cujo formato não bate com o do card: mostra inteira sobre
+   um fundo desfocado, em vez de cortar ou deixar barra preta. */
+.mode-short .card:not(.is-vertical) .thumb,
+.mode-long .card.is-vertical .thumb {
   object-fit: contain;
-}
-
-.thumb-link.is-vertical:hover .thumb {
-  transform: scale(1.03);
 }
 
 .thumb-bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transform: scale(1.25);
-  filter: blur(22px) brightness(0.6) saturate(140%);
-  z-index: 0;
+  filter: blur(24px) brightness(0.55) saturate(140%);
 }
 
-.play-icon {
+/* Selo do YouTube */
+.yt-badge {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.75);
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  padding-left: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.95);
-  color: #0a0a0d;
-  font-size: 1.1rem;
-  opacity: 0;
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-  pointer-events: none;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 3;
+  display: block;
+  width: 26px;
+  line-height: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
 }
 
-.thumb-link:hover .play-icon {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+.yt-badge svg {
+  width: 100%;
+  height: auto;
 }
 
-.item-body {
-  padding: 1.25rem 1.35rem 1.5rem;
+/* Faixa de texto sobre a imagem */
+.card-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 3.5rem 3rem 1.1rem 1.1rem;
+  background: linear-gradient(to top, rgba(5, 7, 12, 0.95) 12%, rgba(5, 7, 12, 0.6) 55%, transparent);
 }
 
-.portfolio-item h3 {
-  font-size: 1.02rem;
-  font-weight: 600;
+.mode-long .card-overlay {
+  padding: 4.5rem 3.25rem 1.35rem 1.35rem;
+}
+
+.mode-long .card-title {
+  font-size: 1.12rem;
+}
+
+.card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
   letter-spacing: -0.015em;
-  margin-bottom: 0.35rem;
+  line-height: 1.25;
 }
 
-.portfolio-item p {
+.card-cat {
   color: var(--color-text-muted);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
 }
 
-.dot-sep {
-  opacity: 0.5;
-  margin: 0 0.15rem;
+.play-cue {
+  position: absolute;
+  right: 1.1rem;
+  bottom: 1.35rem;
+  z-index: 4;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+  transition: transform 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.card:hover .play-cue {
+  color: #fff;
+  transform: scale(1.25);
+}
+
+.portfolio-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 3rem 0;
 }
 
 /* --- Etapas (serviços) --- */
@@ -710,4 +787,11 @@ h1, h2, h3 {
   .logo-tag { display: none; }
   .stat { min-width: 100%; }
   .hero-actions { margin-bottom: 3.5rem; }
+  /* Shorts em 9:16 ocupam a tela toda sozinhos — dois por linha rende melhor */
+  .portfolio-grid.mode-short { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+  .portfolio-grid.mode-long { grid-template-columns: 1fr; }
+  .card-overlay { padding: 2.5rem 0.85rem 0.85rem; }
+  .card-title { font-size: 0.86rem; }
+  .card-cat { font-size: 0.75rem; }
+  .play-cue { display: none; }
 }

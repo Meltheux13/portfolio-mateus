@@ -1,19 +1,56 @@
-const filterButtons = document.querySelectorAll(".filter-btn");
+const grid = document.querySelector(".portfolio-grid");
+const formatButtons = document.querySelectorAll(".format-btn");
+const catGroups = document.querySelectorAll(".cat-filters");
 const portfolioItems = document.querySelectorAll(".portfolio-item");
 
-filterButtons.forEach((button) => {
+let activeFormat = "short";
+const activeCat = { short: "all", long: "all" };
+
+function applyFilters() {
+  grid.classList.toggle("mode-short", activeFormat === "short");
+  grid.classList.toggle("mode-long", activeFormat === "long");
+
+  portfolioItems.forEach((item) => {
+    const matchesFormat = item.dataset.format === activeFormat;
+    const cat = activeCat[activeFormat];
+    const matchesCat = cat === "all" || item.dataset.cat === cat;
+    item.hidden = !(matchesFormat && matchesCat);
+  });
+
+  catGroups.forEach((group) => {
+    group.hidden = group.dataset.for !== activeFormat;
+  });
+}
+
+formatButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    filterButtons.forEach((btn) => btn.classList.remove("active"));
-    button.classList.add("active");
+    activeFormat = button.dataset.format;
 
-    const filter = button.dataset.filter;
+    formatButtons.forEach((btn) => {
+      const on = btn === button;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-selected", String(on));
+    });
 
-    portfolioItems.forEach((item) => {
-      const matches = filter === "all" || item.dataset.category === filter;
-      item.style.display = matches ? "" : "none";
+    applyFilters();
+  });
+});
+
+catGroups.forEach((group) => {
+  group.querySelectorAll(".filter-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeCat[group.dataset.for] = button.dataset.cat;
+
+      group.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.classList.toggle("is-active", btn === button);
+      });
+
+      applyFilters();
     });
   });
 });
+
+applyFilters();
 
 // Revela os elementos conforme entram na viewport
 const revealItems = document.querySelectorAll(".reveal");
