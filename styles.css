@@ -239,13 +239,15 @@ h1, h2, h3 {
 /* --- Hero --- */
 .hero {
   position: relative;
-  min-height: 100vh;
+  /* a navbar fica acima no fluxo (sticky ocupa espaço), então 100vh cheio
+     empurrava a primeira tela para além da janela */
+  min-height: calc(100vh - 5.5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 9rem 0 5rem;
+  padding: 3rem 0 5rem;
 }
 
 .hero-glow {
@@ -275,7 +277,7 @@ h1, h2, h3 {
   border: 1px solid var(--color-border);
   font-size: 0.87rem;
   font-weight: 500;
-  margin-bottom: 2.25rem;
+  margin-bottom: 1.75rem;
 }
 
 .badge-dot {
@@ -303,7 +305,7 @@ h1, h2, h3 {
 .hero-subtitle {
   color: var(--color-text-muted);
   font-size: clamp(1.05rem, 2vw, 1.3rem);
-  margin-bottom: 2.75rem;
+  margin-bottom: 2.25rem;
 }
 
 .hero-actions {
@@ -312,7 +314,7 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 5rem;
+  margin-bottom: 3.25rem;
 }
 
 /* --- Cards de estatística --- */
@@ -1051,6 +1053,16 @@ h1, h2, h3 {
 
 body.no-scroll {
   overflow: hidden;
+}
+
+/* Telas baixas (notebooks): aperta o hero para caber sem cortar o "ROLAR" */
+@media (max-height: 820px) {
+  .hero { padding: 1.5rem 0 4rem; }
+  .hero-badge { margin-bottom: 1.25rem; }
+  .hero-subtitle { margin-bottom: 1.75rem; }
+  .hero-actions { margin-bottom: 2.25rem; }
+  .stat { padding: 1.2rem 1.75rem; }
+  .scroll-cue { bottom: 1.25rem; }
 }
 
 /* --- Responsivo --- */
