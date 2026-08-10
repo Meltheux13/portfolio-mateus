@@ -803,17 +803,97 @@ h1, h2, h3 {
   text-align: center;
 }
 
-.contact-links {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+  gap: 1.25rem;
   justify-content: center;
 }
 
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 2.25rem 1.5rem;
+  background: rgba(16, 10, 12, 0.65);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+.contact-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.9rem;
+  border-radius: 50%;
+  transition: transform 0.35s var(--ease);
+}
+
+.contact-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.contact-card:hover .contact-icon {
+  transform: scale(1.08);
+}
+
+/* Cada plataforma mantém a própria cor; o vermelho do site fica só no
+   e-mail, para os logos não brigarem com o tema. */
+.icon-whatsapp {
+  background: #25d366;
+}
+
+.is-whatsapp:hover {
+  border-color: #25d366;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(37, 211, 102, 0.22);
+}
+
+.icon-instagram {
+  background: rgba(214, 41, 118, 0.14);
+}
+
+.is-instagram:hover {
+  border-color: #d62976;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(214, 41, 118, 0.25);
+}
+
+.icon-mail {
+  background: rgba(255, 31, 53, 0.14);
+  color: var(--color-accent);
+}
+
+.is-mail:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 31, 53, 0.25);
+}
+
+.contact-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.contact-sub {
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  word-break: break-word;
+}
+
 .contact-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   color: var(--color-text-muted);
   font-size: 0.88rem;
-  margin-top: 1.75rem;
+  margin-top: 2.25rem;
 }
 
 /* --- Rodapé --- */
@@ -877,6 +957,7 @@ h1, h2, h3 {
   .portfolio-grid { gap: 0.85rem; }
   .mode-short .portfolio-item { width: 46vw; }
   .mode-long .portfolio-item { width: 82vw; }
+  .contact-cards { grid-template-columns: 1fr; }
   .card-overlay { padding: 2.5rem 0.85rem 0.85rem; }
   .card-title { font-size: 0.86rem; }
   .card-cat { font-size: 0.75rem; }
