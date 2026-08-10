@@ -326,7 +326,7 @@ h1, h2, h3 {
   margin-bottom: 1rem;
 }
 
-.portfolio h2, .services h2, .about h2, .contact h2 {
+.portfolio h2, .services h2, .contact h2 {
   text-align: center;
   font-size: clamp(2rem, 4.5vw, 3rem);
   font-weight: 800;
@@ -684,45 +684,6 @@ h1, h2, h3 {
 .step p {
   color: var(--color-text-muted);
   font-size: 0.92rem;
-}
-
-/* --- Sobre --- */
-.about-text {
-  text-align: center;
-  color: var(--color-text-muted);
-  max-width: 680px;
-  margin: 0 auto 3.5rem;
-  font-size: 1.05rem;
-}
-
-.pillars {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.25rem;
-}
-
-.pillar {
-  padding: 1.75rem;
-  background: rgba(16, 10, 12, 0.65);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
-}
-
-.pillar:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-border-strong);
-}
-
-.pillar h3 {
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.pillar p {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
 }
 
 /* --- Contato --- */
