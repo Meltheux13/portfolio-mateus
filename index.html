@@ -48,16 +48,23 @@
   <header class="site-header">
     <nav class="navbar">
       <a href="#home" class="logo">
-        <img class="logo-mark" src="assets/avatar.jpg" alt="Foto de Mateus Althiery" width="34" height="34">
+        <img class="logo-mark" src="assets/avatar.jpg" alt="Foto de Mateus Althiery" width="44" height="44">
         <span class="logo-text">Mateus Althiery <span class="logo-tag">| Editor</span></span>
       </a>
       <ul class="nav-links">
-        <li><a href="#home">Início</a></li>
-        <li><a href="#portfolio">Portfólio</a></li>
-        <li><a href="#services">Serviços</a></li>
-        <li><a href="#contact">Contato</a></li>
+        <li><a href="#home" data-i18n="nav.home">Início</a></li>
+        <li><a href="#portfolio" data-i18n="nav.portfolio">Portfólio</a></li>
+        <li><a href="#services" data-i18n="nav.services">Serviços</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
       </ul>
-      <a href="#contact" class="btn btn-primary btn-sm">Começar</a>
+      <div class="nav-end">
+        <button class="lang-switch" type="button" role="switch" aria-checked="false" aria-label="Mudar idioma para inglês">
+          <span class="lang-label" data-lang="en">EN</span>
+          <span class="lang-track"><span class="lang-knob"></span></span>
+          <span class="lang-label is-on" data-lang="pt">PT</span>
+        </button>
+        <a href="#contact" class="btn btn-primary btn-sm" data-i18n="nav.cta">Começar</a>
+      </div>
     </nav>
   </header>
 
@@ -65,45 +72,45 @@
     <section id="home" class="hero">
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container hero-inner">
-        <p class="hero-badge reveal"><span class="badge-dot"></span>Disponível para novos projetos</p>
-        <h1 class="reveal">Vídeos que geram<br>resultados</h1>
-        <p class="hero-subtitle reveal">Edição de vídeo para criadores de conteúdo e empresas</p>
+        <p class="hero-badge reveal"><span class="badge-dot"></span><span data-i18n="hero.badge">Disponível para novos projetos</span></p>
+        <h1 class="reveal" data-i18n-html="hero.title">Vídeos que geram<br>resultados</h1>
+        <p class="hero-subtitle reveal" data-i18n="hero.subtitle">Edição de vídeo para criadores de conteúdo e empresas</p>
         <div class="hero-actions reveal">
-          <a href="#portfolio" class="btn btn-primary">Veja meu trabalho <span class="arrow">↓</span></a>
-          <a href="#contact" class="btn-link">Entre em contato</a>
+          <a href="#portfolio" class="btn btn-primary"><span data-i18n="hero.cta1">Veja meu trabalho</span> <span class="arrow">↓</span></a>
+          <a href="#contact" class="btn-link" data-i18n="hero.cta2">Entre em contato</a>
         </div>
       </div>
     </section>
 
     <section id="portfolio" class="portfolio">
       <div class="container">
-        <p class="eyebrow reveal">PORTFÓLIO</p>
-        <h2 class="reveal">Trabalhos em destaque</h2>
-        <p class="section-subtitle reveal">Uma seleção de edições feitas para maximizar o engajamento em diferentes nichos e plataformas.</p>
+        <p class="eyebrow reveal" data-i18n="portfolio.eyebrow">PORTFÓLIO</p>
+        <h2 class="reveal" data-i18n="portfolio.title">Trabalhos em destaque</h2>
+        <p class="section-subtitle reveal" data-i18n="portfolio.subtitle">Uma seleção de edições feitas para maximizar o engajamento em diferentes nichos e plataformas.</p>
 
         <div class="format-toggle reveal" role="tablist" aria-label="Formato dos vídeos">
-          <button class="format-btn is-active" data-format="short" role="tab" aria-selected="true">Vídeos curtos</button>
-          <button class="format-btn" data-format="long" role="tab" aria-selected="false">Vídeos longos</button>
+          <button class="format-btn is-active" data-format="short" role="tab" aria-selected="true" data-i18n="format.short">Vídeos curtos</button>
+          <button class="format-btn" data-format="long" role="tab" aria-selected="false" data-i18n="format.long">Vídeos longos</button>
         </div>
 
         <div class="cat-filters reveal" data-for="short">
-          <button class="filter-btn is-active" data-cat="all">Todos</button>
-          <button class="filter-btn" data-cat="direct-response">Direct Response</button>
-          <button class="filter-btn" data-cat="personal-brand">Personal Brand</button>
-          <button class="filter-btn" data-cat="gameplay">Gameplay</button>
-          <button class="filter-btn" data-cat="marketing">Marketing</button>
-          <button class="filter-btn" data-cat="ia">IA</button>
+          <button class="filter-btn is-active" data-cat="all" data-i18n="cat.all">Todos</button>
+          <button class="filter-btn" data-cat="direct-response" data-i18n="cat.direct-response">Direct Response</button>
+          <button class="filter-btn" data-cat="personal-brand" data-i18n="cat.personal-brand">Personal Brand</button>
+          <button class="filter-btn" data-cat="gameplay" data-i18n="cat.gameplay">Gameplay</button>
+          <button class="filter-btn" data-cat="marketing" data-i18n="cat.marketing">Marketing</button>
+          <button class="filter-btn" data-cat="ia" data-i18n="cat.ia">IA</button>
         </div>
 
         <div class="cat-filters reveal" data-for="long" hidden>
-          <button class="filter-btn is-active" data-cat="all">Todos</button>
-          <button class="filter-btn" data-cat="business">Business</button>
-          <button class="filter-btn" data-cat="tech">Tech</button>
+          <button class="filter-btn is-active" data-cat="all" data-i18n="cat.all">Todos</button>
+          <button class="filter-btn" data-cat="business" data-i18n="cat.business">Business</button>
+          <button class="filter-btn" data-cat="tech" data-i18n="cat.tech">Tech</button>
         </div>
 
         <div class="carousel">
-          <button class="rail-nav prev" type="button" aria-label="Ver trabalhos anteriores">‹</button>
-          <button class="rail-nav next" type="button" aria-label="Ver próximos trabalhos">›</button>
+          <button class="rail-nav prev" type="button" aria-label="Ver trabalhos anteriores" data-i18n-aria="nav.prev">‹</button>
+          <button class="rail-nav next" type="button" aria-label="Ver próximos trabalhos" data-i18n-aria="nav.next">›</button>
           <div class="portfolio-grid mode-short" tabindex="0" role="group" aria-label="Trabalhos em destaque">
           <!-- Vídeos curtos -->
           <article class="portfolio-item" data-format="short" data-cat="personal-brand">
@@ -240,7 +247,7 @@
               <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
               <span class="card-overlay">
                 <h3 class="card-title">Donos de Empresa e Editores de Vídeo</h3>
-                <span class="card-cat">IA</span>
+                <span class="card-cat" data-i18n="cat.ia">IA</span>
               </span>
               <span class="play-cue" aria-hidden="true">▶</span>
             </a>
@@ -292,28 +299,28 @@
 
     <section id="services" class="services">
       <div class="container">
-        <p class="eyebrow reveal">SERVIÇOS</p>
-        <h2 class="reveal">Como funciona</h2>
+        <p class="eyebrow reveal" data-i18n="services.eyebrow">SERVIÇOS</p>
+        <h2 class="reveal" data-i18n="services.title">Como funciona</h2>
         <div class="steps reveal">
           <div class="step">
             <span class="step-number">1</span>
-            <h3>Envie o material</h3>
-            <p>Me envie os clipes brutos e eu cuido do resto.</p>
+            <h3 data-i18n="step1.title">Envie o material</h3>
+            <p data-i18n="step1.desc">Me envie os clipes brutos e eu cuido do resto.</p>
           </div>
           <div class="step">
             <span class="step-number">2</span>
-            <h3>Edição</h3>
-            <p>Gancho, legendas, som e transições — o pacote completo.</p>
+            <h3 data-i18n="step2.title">Edição</h3>
+            <p data-i18n="step2.desc">Gancho, legendas, som e transições — o pacote completo.</p>
           </div>
           <div class="step">
             <span class="step-number">3</span>
-            <h3>Revisão</h3>
-            <p>Entrega rápida e revisões combinadas.</p>
+            <h3 data-i18n="step3.title">Revisão</h3>
+            <p data-i18n="step3.desc">Entrega rápida e revisões combinadas.</p>
           </div>
           <div class="step">
             <span class="step-number">4</span>
-            <h3>Você publica</h3>
-            <p>Suba o vídeo e acompanhe os resultados.</p>
+            <h3 data-i18n="step4.title">Você publica</h3>
+            <p data-i18n="step4.desc">Suba o vídeo e acompanhe os resultados.</p>
           </div>
         </div>
       </div>
@@ -321,9 +328,9 @@
 
     <section id="contact" class="contact">
       <div class="container">
-        <p class="eyebrow reveal">CONTATO</p>
-        <h2 class="reveal">Pronto para ter resultados?</h2>
-        <p class="section-subtitle reveal">Escolha a plataforma de sua preferência para iniciar a conversa.</p>
+        <p class="eyebrow reveal" data-i18n="contact.eyebrow">CONTATO</p>
+        <h2 class="reveal" data-i18n="contact.title">Pronto para ter resultados?</h2>
+        <p class="section-subtitle reveal" data-i18n="contact.subtitle">Escolha a plataforma de sua preferência para iniciar a conversa.</p>
         <div class="contact-cards">
           <a class="contact-card is-whatsapp reveal" href="https://wa.me/5584991848134" target="_blank" rel="noopener">
             <span class="contact-icon icon-whatsapp" aria-hidden="true">
@@ -347,27 +354,27 @@
             </span>
             <span class="contact-name">Discord</span>
             <span class="contact-sub">meltheux133</span>
-            <span class="copied-flag">Copiado!</span>
+            <span class="copied-flag" data-i18n="contact.copied">Copiado!</span>
           </button>
         </div>
         <p class="visually-hidden" role="status" aria-live="polite" id="copy-status"></p>
-        <p class="contact-note reveal"><span class="badge-dot"></span>Costumo responder em até 24h.</p>
+        <p class="contact-note reveal"><span class="badge-dot"></span><span data-i18n="contact.note">Costumo responder em até 24h.</span></p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p class="footer-name">Mateus Althiery <span class="logo-tag">| Editor de Vídeo</span></p>
+      <p class="footer-name">Mateus Althiery <span class="logo-tag" data-i18n="footer.role">| Editor de Vídeo</span></p>
       <p><a href="mailto:mateusalthiere@gmail.com">mateusalthiere@gmail.com</a></p>
-      <p class="footer-copy">&copy; 2026. Todos os direitos reservados.</p>
+      <p class="footer-copy" data-i18n="footer.rights">&copy; 2026. Todos os direitos reservados.</p>
     </div>
   </footer>
 
   <div class="lightbox" id="lightbox" hidden>
     <div class="lightbox-backdrop" data-close></div>
     <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
-      <button class="lightbox-close" type="button" data-close aria-label="Fechar vídeo">✕</button>
+      <button class="lightbox-close" type="button" data-close aria-label="Fechar vídeo" data-i18n-aria="lightbox.close">✕</button>
       <div class="lightbox-stage">
         <div class="lightbox-glow" aria-hidden="true"></div>
         <div class="lightbox-frame">

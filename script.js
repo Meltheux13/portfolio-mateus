@@ -7,6 +7,102 @@
 // ---------------------------------------------------------------------
 const DEFAULT_VOLUME = 60;
 
+// ---------------------------------------------------------------------
+// Traduções. A chave vem do atributo data-i18n no index.html.
+// O português é o que já está escrito no HTML; aqui mora só a versão em
+// inglês, e voltar ao português é restaurar o texto original.
+// ---------------------------------------------------------------------
+const EN = {
+  "nav.home": "Home",
+  "nav.portfolio": "Portfolio",
+  "nav.services": "Services",
+  "nav.contact": "Contact",
+  "nav.cta": "Get started",
+  "nav.prev": "Previous works",
+  "nav.next": "Next works",
+  "hero.badge": "Available for new projects",
+  "hero.title": "Videos that drive<br>results",
+  "hero.subtitle": "Video editing for content creators and businesses",
+  "hero.cta1": "See my work",
+  "hero.cta2": "Get in touch",
+  "portfolio.eyebrow": "PORTFOLIO",
+  "portfolio.title": "Featured work",
+  "portfolio.subtitle": "A selection of edits made to maximize engagement across different niches and platforms.",
+  "format.short": "Short form",
+  "format.long": "Long form",
+  "cat.all": "All",
+  "cat.direct-response": "Direct Response",
+  "cat.personal-brand": "Personal Brand",
+  "cat.gameplay": "Gameplay",
+  "cat.marketing": "Marketing",
+  "cat.ia": "AI",
+  "cat.business": "Business",
+  "cat.tech": "Tech",
+  "services.eyebrow": "SERVICES",
+  "services.title": "How it works",
+  "step1.title": "Send the footage",
+  "step1.desc": "Send me the raw clips and I take care of the rest.",
+  "step2.title": "Editing",
+  "step2.desc": "Hook, captions, sound and transitions — the full package.",
+  "step3.title": "Review",
+  "step3.desc": "Fast delivery and the revisions we agree on.",
+  "step4.title": "You publish",
+  "step4.desc": "Upload the video and watch the results.",
+  "contact.eyebrow": "CONTACT",
+  "contact.title": "Ready to get results?",
+  "contact.subtitle": "Pick your preferred platform to start the conversation.",
+  "contact.note": "I usually reply within 24h.",
+  "contact.copied": "Copied!",
+  "footer.role": "| Video Editor",
+  "footer.rights": "&copy; 2026. All rights reserved.",
+  "lightbox.close": "Close video",
+};
+
+const langSwitch = document.querySelector(".lang-switch");
+const i18nNodes = document.querySelectorAll("[data-i18n], [data-i18n-html], [data-i18n-aria]");
+
+// guarda o português original, para dispensar um segundo dicionário
+i18nNodes.forEach((node) => {
+  if (node.dataset.i18n) node.dataset.pt = node.textContent;
+  if (node.dataset.i18nHtml) node.dataset.ptHtml = node.innerHTML;
+  if (node.dataset.i18nAria) node.dataset.ptAria = node.getAttribute("aria-label");
+});
+
+function applyLanguage(lang) {
+  const en = lang === "en";
+
+  i18nNodes.forEach((node) => {
+    if (node.dataset.i18n) {
+      node.textContent = en ? EN[node.dataset.i18n] ?? node.dataset.pt : node.dataset.pt;
+    }
+    if (node.dataset.i18nHtml) {
+      node.innerHTML = en ? EN[node.dataset.i18nHtml] ?? node.dataset.ptHtml : node.dataset.ptHtml;
+    }
+    if (node.dataset.i18nAria) {
+      const valor = en ? EN[node.dataset.i18nAria] ?? node.dataset.ptAria : node.dataset.ptAria;
+      node.setAttribute("aria-label", valor);
+    }
+  });
+
+  document.documentElement.lang = en ? "en" : "pt-BR";
+  langSwitch.setAttribute("aria-checked", String(en));
+  langSwitch.setAttribute("aria-label", en ? "Switch language to Portuguese" : "Mudar idioma para inglês");
+  langSwitch.classList.toggle("is-en", en);
+  langSwitch.querySelectorAll(".lang-label").forEach((el) => {
+    el.classList.toggle("is-on", (el.dataset.lang === "en") === en);
+  });
+
+  localStorage.setItem("lang", lang);
+}
+
+langSwitch.addEventListener("click", () => {
+  applyLanguage(document.documentElement.lang === "en" ? "pt" : "en");
+});
+
+// escolha anterior; na primeira visita, segue o idioma do navegador
+const idiomaSalvo = localStorage.getItem("lang");
+applyLanguage(idiomaSalvo || (navigator.language.startsWith("pt") ? "pt" : "en"));
+
 const grid = document.querySelector(".portfolio-grid");
 const formatButtons = document.querySelectorAll(".format-btn");
 const catGroups = document.querySelectorAll(".cat-filters");
