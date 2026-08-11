@@ -203,16 +203,15 @@ h1, h2, h3 {
 }
 
 .logo-mark {
-  display: grid;
-  place-items: center;
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-accent-deep), var(--color-accent));
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  object-fit: cover;
   flex-shrink: 0;
+  border: 1px solid var(--color-border-strong);
+  /* cor sólida por baixo: enquanto a foto não carrega fica um disco, não
+     um buraco na barra */
+  background: var(--color-accent-deep);
 }
 
 .logo-tag {
