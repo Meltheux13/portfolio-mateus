@@ -639,6 +639,19 @@ h1, h2, h3 {
 }
 
 /* --- Etapas (serviços) --- */
+
+/* Traço só aqui: nas outras seções há um subtítulo logo abaixo do título,
+   e o traço no meio dos dois deixaria o bloco carregado. */
+.services h2::after {
+  content: "";
+  display: block;
+  width: 62px;
+  height: 3px;
+  margin: 1.5rem auto 0;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
 .steps {
   position: relative;
   display: grid;
@@ -659,16 +672,11 @@ h1, h2, h3 {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(2rem + 1.3rem);
+  top: 50%;
   height: 2px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-accent) 12%,
-    var(--color-accent) 88%,
-    transparent
-  );
-  opacity: 0.55;
+  /* mais forte do que a borda dos cards: em vãos de 20px um traço sutil
+     simplesmente não é visto */
+  background: rgba(255, 70, 85, 0.55);
 }
 
 /* abaixo disso as quatro etapas não cabem em uma fileira só */
@@ -678,8 +686,10 @@ h1, h2, h3 {
 
 .step {
   position: relative;
-  padding: 2rem 1.75rem;
-  background: rgba(16, 10, 12, 0.65);
+  padding: 2.5rem 1.75rem 3rem;
+  text-align: center;
+  /* opaco: a linha passa atrás e só aparece nos vãos entre os cards */
+  background: #110c0e;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
@@ -693,23 +703,21 @@ h1, h2, h3 {
 .step-number {
   display: grid;
   place-items: center;
-  width: 2.6rem;
-  height: 2.6rem;
-  /* opaco de propósito: a linha das etapas passa atrás e some sob o
-     número, em vez de atravessá-lo */
-  background: linear-gradient(rgba(255, 31, 53, 0.12) 0 100%), #0d090b;
-  border: 1px solid var(--color-accent);
+  width: 2.9rem;
+  height: 2.9rem;
+  margin: 0 auto 1.5rem;
+  background: #070405;
+  border: 1px solid var(--color-border);
   border-radius: 50%;
-  color: var(--color-accent);
+  color: var(--color-text);
   font-weight: 700;
-  font-size: 0.95rem;
-  margin-bottom: 1.25rem;
+  font-size: 1rem;
 }
 
 .step h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
 
 .step p {
