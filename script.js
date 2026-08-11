@@ -1,3 +1,12 @@
+// ---------------------------------------------------------------------
+// Volume dos vídeos do portfólio, de 0 a 100.
+//
+// Vale para todos. Para acertar um vídeo específico que ainda destoe, use
+// data-volume no card dele, no index.html — ele sobrescreve este padrão:
+//   <a class="card ..." data-video="ID" data-volume="45" ...>
+// ---------------------------------------------------------------------
+const DEFAULT_VOLUME = 60;
+
 const grid = document.querySelector(".portfolio-grid");
 const formatButtons = document.querySelectorAll(".format-btn");
 const catGroups = document.querySelectorAll(".cat-filters");
@@ -209,9 +218,8 @@ function stopGlow() {
 async function openLightbox(card) {
   const id = card.dataset.video;
   const title = card.querySelector(".card-title").textContent;
-  // 0-100. Serve para abaixar os vídeos mais altos até o nível dos outros:
-  // setVolume não amplifica acima de 100.
-  const volume = Number(card.dataset.volume ?? 100);
+  // data-volume no card sobrescreve o padrão, para acertar quem destoa
+  const volume = Number(card.dataset.volume ?? DEFAULT_VOLUME);
 
   lastFocused = document.activeElement;
   lightboxTitle.textContent = title;
@@ -239,11 +247,15 @@ async function openLightbox(card) {
   player = new YT.Player(mount, {
     videoId: id,
     host: "https://www.youtube-nocookie.com",
-    playerVars: { autoplay: 1, rel: 0, enablejsapi: 1, playsinline: 1 },
+    // autoplay desligado de propósito: com ele o player começa sozinho e o
+    // primeiro instante de áudio sai no volume do YouTube, antes de o
+    // onReady conseguir baixar. O play é dado abaixo, já com o volume certo.
+    playerVars: { autoplay: 0, rel: 0, enablejsapi: 1, playsinline: 1 },
     events: {
       onReady: (event) => {
         event.target.setVolume(volume);
         event.target.getIframe().title = `Vídeo: ${title}`;
+        event.target.playVideo();
       },
       onStateChange: (event) => {
         if (event.data === YT.PlayerState.PLAYING) {
