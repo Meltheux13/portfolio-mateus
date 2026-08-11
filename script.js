@@ -67,8 +67,10 @@ function applyFilters() {
   });
 
   grid.scrollLeft = 0;
+  position = 0;
   buildLoop();
   updateNav();
+  resumeAutoplay();
 }
 
 function scrollByPage(direction) {
@@ -270,6 +272,7 @@ function closeLightbox() {
 
   document.body.classList.remove("no-scroll");
   if (lastFocused) lastFocused.focus();
+  resumeAutoplay();
 }
 
 // delegação: os clones do carrossel são criados depois, então não dá para
@@ -357,42 +360,77 @@ function canAutoplay() {
   );
 }
 
+let autoplayFrame = null;
+
 function frame(now) {
+  // Sai do loop em vez de rodar em vazio: seguir chamando rAF só para ler
+  // scrollLeft forçaria o navegador a recalcular layout 60x por segundo,
+  // de graça, inclusive com a seção fora da tela.
+  if (!canAutoplay()) {
+    autoplayFrame = null;
+    return;
+  }
+
   const delta = lastFrame ? (now - lastFrame) / 1000 : 0;
   lastFrame = now;
 
   // se o visitante rolou por conta própria, adota a posição dele
   if (Math.abs(grid.scrollLeft - position) > 2) position = grid.scrollLeft;
 
-  if (canAutoplay()) {
-    // delta limitado: se a aba ficou parada, voltaria com um salto gigante
-    position += SPEED_PX_PER_SECOND * Math.min(delta, 0.05);
+  // delta limitado: se a aba ficou parada, voltaria com um salto gigante
+  position += SPEED_PX_PER_SECOND * Math.min(delta, 0.05);
+  position = wrapPosition(position);
+  grid.scrollLeft = position;
 
-    if (position >= loopWidth) position -= loopWidth;
-    else if (position < 0) position += loopWidth;
+  autoplayFrame = requestAnimationFrame(frame);
+}
 
-    grid.scrollLeft = position;
-  }
+function wrapPosition(value) {
+  if (loopWidth <= 0) return value;
+  if (value >= loopWidth) return value - loopWidth;
+  if (value < 0) return value + loopWidth;
+  return value;
+}
 
-  requestAnimationFrame(frame);
+function resumeAutoplay() {
+  if (autoplayFrame || !canAutoplay()) return;
+  lastFrame = 0; // sem isso o primeiro quadro usaria o delta da última pausa
+  autoplayFrame = requestAnimationFrame(frame);
 }
 
 // Pausa enquanto o visitante está com o mouse em cima ou navegando pelo teclado
 carousel.addEventListener("pointerenter", () => { pointerOver = true; });
-carousel.addEventListener("pointerleave", () => { pointerOver = false; });
+carousel.addEventListener("pointerleave", () => { pointerOver = false; resumeAutoplay(); });
 carousel.addEventListener("focusin", () => { focusInside = true; });
-carousel.addEventListener("focusout", () => { focusInside = false; });
+carousel.addEventListener("focusout", () => { focusInside = false; resumeAutoplay(); });
 
 // Fora da tela ou aba em segundo plano não precisa rodar
 new IntersectionObserver(
   ([entry]) => {
     inViewport = entry.isIntersecting;
+    resumeAutoplay();
   },
   { threshold: 0.2 }
 ).observe(carousel);
 
-window.addEventListener("resize", buildLoop);
-requestAnimationFrame(frame);
+document.addEventListener("visibilitychange", resumeAutoplay);
+
+window.addEventListener("resize", () => {
+  buildLoop();
+  resumeAutoplay();
+});
+
+// Com o loop parado ninguém mais normaliza a rolagem manual.
+// A condição é canAutoplay() e não autoplayFrame: entre pausar e o loop
+// perceber passa um quadro, e nessa brecha o wrap se perdia.
+grid.addEventListener("scroll", () => {
+  if (canAutoplay()) return;
+  const wrapped = wrapPosition(grid.scrollLeft);
+  if (wrapped !== grid.scrollLeft) grid.scrollLeft = wrapped;
+  position = wrapped;
+}, { passive: true });
+
+resumeAutoplay();
 
 formatButtons.forEach((button) => {
   button.addEventListener("click", () => {
