@@ -35,8 +35,6 @@ const EN = {
   "cat.personal-brand": "Personal Brand",
   "cat.marketing": "Marketing",
   "cat.ia": "AI",
-  "cat.business": "Business",
-  "cat.tech": "Tech",
   "services.eyebrow": "SERVICES",
   "services.title": "How it works",
   "step1.title": "Briefing",
