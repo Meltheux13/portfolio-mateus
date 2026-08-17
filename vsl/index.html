@@ -398,6 +398,21 @@
         <div class="lightbox-frame">
           <div id="lightbox-mount"></div>
         </div>
+        <!-- Controles próprios por cima do vídeo. Também servem de escudo:
+             sem o ponteiro chegar no iframe, o YouTube não mostra a barra
+             dele durante a reprodução. -->
+        <div class="player-ui" id="player-ui">
+          <button class="player-hit" type="button" aria-label="Pausar vídeo"></button>
+          <div class="player-bar">
+            <button class="player-toggle" type="button" aria-label="Pausar vídeo">
+              <span class="icon-pause" aria-hidden="true"></span>
+            </button>
+            <div class="player-track" role="slider" tabindex="0" aria-label="Posição do vídeo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="player-fill"></div>
+            </div>
+            <span class="player-time">0:00</span>
+          </div>
+        </div>
       </div>
       <div class="lightbox-meta">
         <h3 class="lightbox-title" id="lightbox-title"></h3>

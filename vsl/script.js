@@ -291,6 +291,94 @@ function setGlow(value) {
   lightboxGlow.style.setProperty("--glow-intensity", value.toFixed(3));
 }
 
+// --- Controles próprios do player ---
+const playerUi = document.getElementById("player-ui");
+const playerHit = playerUi.querySelector(".player-hit");
+const playerToggle = playerUi.querySelector(".player-toggle");
+const playerIcon = playerToggle.querySelector("span");
+const playerTrack = playerUi.querySelector(".player-track");
+const playerFill = playerUi.querySelector(".player-fill");
+const playerTime = playerUi.querySelector(".player-time");
+let progressoTimer = null;
+
+function formatarTempo(segundos) {
+  const s = Math.max(0, Math.floor(segundos));
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+function marcarTocando(tocando) {
+  playerIcon.className = tocando ? "icon-pause" : "icon-play";
+  const rotulo = tocando ? "Pausar vídeo" : "Reproduzir vídeo";
+  playerToggle.setAttribute("aria-label", rotulo);
+  playerHit.setAttribute("aria-label", rotulo);
+}
+
+function atualizarProgresso() {
+  if (!player || !player.getDuration) return;
+
+  const duracao = player.getDuration();
+  if (!duracao) return;
+
+  const atual = player.getCurrentTime();
+  const pct = Math.min(100, (atual / duracao) * 100);
+  playerFill.style.width = `${pct}%`;
+  playerTime.textContent = formatarTempo(atual);
+  playerTrack.setAttribute("aria-valuenow", String(Math.round(pct)));
+}
+
+// intervalo, não requestAnimationFrame: a barra não precisa de 60 quadros
+// por segundo, e assim não disputa com o loop do brilho
+function iniciarProgresso() {
+  if (progressoTimer) return;
+  progressoTimer = setInterval(atualizarProgresso, 250);
+}
+
+function pararProgresso() {
+  clearInterval(progressoTimer);
+  progressoTimer = null;
+}
+
+function zerarProgresso() {
+  playerFill.style.width = "0%";
+  playerTime.textContent = "0:00";
+  playerTrack.setAttribute("aria-valuenow", "0");
+}
+
+function alternarReproducao() {
+  if (!player || !player.getPlayerState) return;
+  const tocando = player.getPlayerState() === 1;
+  if (tocando) player.pauseVideo();
+  else player.playVideo();
+}
+
+playerHit.addEventListener("click", alternarReproducao);
+playerToggle.addEventListener("click", (event) => {
+  event.stopPropagation();
+  alternarReproducao();
+});
+
+function buscarPorPosicao(clientX) {
+  if (!player || !player.getDuration) return;
+  const caixa = playerTrack.getBoundingClientRect();
+  const razao = Math.min(1, Math.max(0, (clientX - caixa.left) / caixa.width));
+  player.seekTo(player.getDuration() * razao, true);
+  atualizarProgresso();
+}
+
+playerTrack.addEventListener("click", (event) => {
+  event.stopPropagation();
+  buscarPorPosicao(event.clientX);
+});
+
+playerTrack.addEventListener("keydown", (event) => {
+  if (!player || !player.getCurrentTime) return;
+  const passo = event.key === "ArrowRight" ? 5 : event.key === "ArrowLeft" ? -5 : 0;
+  if (!passo) return;
+  event.preventDefault();
+  player.seekTo(player.getCurrentTime() + passo, true);
+  atualizarProgresso();
+});
+
 function startGlow() {
   if (glowFrame || !envelope || !player || lightboxMotion.matches) return;
 
@@ -346,7 +434,9 @@ async function openLightbox(card) {
     // autoplay desligado de propósito: com ele o player começa sozinho e o
     // primeiro instante de áudio sai no volume do YouTube, antes de o
     // onReady conseguir baixar. O play é dado abaixo, já com o volume certo.
-    playerVars: { autoplay: 0, rel: 0, enablejsapi: 1, playsinline: 1 },
+    // controls: 0 tira a barra do YouTube — quem controla é a nossa, que
+    // só aparece com o ponteiro sobre o vídeo
+    playerVars: { autoplay: 0, rel: 0, enablejsapi: 1, playsinline: 1, controls: 0 },
     events: {
       onReady: (event) => {
         event.target.setVolume(volume);
@@ -354,12 +444,17 @@ async function openLightbox(card) {
         event.target.playVideo();
       },
       onStateChange: (event) => {
-        if (event.data === YT.PlayerState.PLAYING) {
+        const tocando = event.data === YT.PlayerState.PLAYING;
+        marcarTocando(tocando);
+
+        if (tocando) {
           // o YouTube reseta o volume no play e ao tirar o mudo
           event.target.setVolume(volume);
           startGlow();
+          iniciarProgresso();
         } else {
           stopGlow();
+          pararProgresso();
         }
       },
     },
@@ -369,6 +464,8 @@ async function openLightbox(card) {
 function closeLightbox() {
   lightbox.hidden = true;
   stopGlow();
+  pararProgresso();
+  zerarProgresso();
 
   if (player) {
     // destroy também interrompe o áudio; só esconder deixaria tocando
