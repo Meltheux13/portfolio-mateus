@@ -1,15 +1,15 @@
 :root {
-  --color-bg: #0a0708;
-  --color-bg-deep: #040303;
+  --color-bg: #070a12;
+  --color-bg-deep: #03050a;
   --color-surface: rgba(255, 255, 255, 0.035);
   --color-surface-hover: rgba(255, 255, 255, 0.06);
-  --color-text: #f7f4f5;
-  --color-text-muted: #948b8e;
-  --color-accent: #ff1f35;
-  --color-accent-deep: #b00d1d;
-  --color-accent-soft: rgba(255, 31, 53, 0.18);
+  --color-text: #f2f5fa;
+  --color-text-muted: #8c95ab;
+  --color-accent: #2f7bff;
+  --color-accent-deep: #0d3fa8;
+  --color-accent-soft: rgba(47, 123, 255, 0.18);
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-strong: rgba(255, 70, 85, 0.35);
+  --color-border-strong: rgba(90, 150, 255, 0.38);
   --radius: 16px;
   --radius-lg: 20px;
   --radius-full: 999px;
@@ -53,8 +53,8 @@ img {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255, 31, 53, 0.22), transparent 70%),
-    linear-gradient(180deg, #1a0508 0%, var(--color-bg) 45%, var(--color-bg-deep) 100%);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(47, 123, 255, 0.24), transparent 70%),
+    linear-gradient(180deg, #0a1533 0%, var(--color-bg) 45%, var(--color-bg-deep) 100%);
 }
 
 .page-bg::before {
@@ -72,6 +72,65 @@ img {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse 100% 80% at 50% 40%, transparent 30%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Fundo animado: três manchas azuis que vagam devagar.
+   Só o transform muda a cada quadro — o desfoque fica fixo, senão o
+   navegador repintaria o borrão inteiro o tempo todo. Elas ficam entre a
+   textura de pontos (::before) e a vinheta (::after), que segue
+   escurecendo as bordas por cima. */
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.blob-1 {
+  width: 46vmax;
+  height: 46vmax;
+  top: -14vmax;
+  left: -10vmax;
+  background: radial-gradient(circle, rgba(47, 123, 255, 0.5), transparent 68%);
+  animation: vagar-1 26s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+  width: 38vmax;
+  height: 38vmax;
+  top: 20vmax;
+  right: -12vmax;
+  background: radial-gradient(circle, rgba(13, 63, 168, 0.55), transparent 68%);
+  animation: vagar-2 32s ease-in-out infinite alternate;
+}
+
+.blob-3 {
+  width: 32vmax;
+  height: 32vmax;
+  bottom: -12vmax;
+  left: 26vmax;
+  background: radial-gradient(circle, rgba(90, 150, 255, 0.3), transparent 70%);
+  animation: vagar-3 38s ease-in-out infinite alternate;
+}
+
+@keyframes vagar-1 {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(8vmax, 6vmax, 0) scale(1.15); }
+}
+
+@keyframes vagar-2 {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to { transform: translate3d(-10vmax, -8vmax, 0) scale(1); }
+}
+
+@keyframes vagar-3 {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-6vmax, -10vmax, 0) scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-blob { animation: none; }
 }
 
 .container {
@@ -111,13 +170,13 @@ h1, h2, h3 {
 .btn-primary {
   background: var(--color-accent);
   color: #fff;
-  box-shadow: 0 4px 26px rgba(255, 31, 53, 0.35);
+  box-shadow: 0 4px 26px rgba(47, 123, 255, 0.35);
 }
 
 .btn-primary:hover {
-  background: #ff3547;
+  background: #4a8dff;
   transform: translateY(-2px);
-  box-shadow: 0 10px 38px rgba(255, 31, 53, 0.5);
+  box-shadow: 0 10px 38px rgba(47, 123, 255, 0.5);
 }
 
 .btn-primary .arrow {
@@ -185,7 +244,7 @@ h1, h2, h3 {
   justify-content: space-between;
   gap: 2rem;
   padding: 0.75rem 0.75rem 0.75rem 1.1rem;
-  background: rgba(20, 12, 14, 0.75);
+  background: rgba(12, 18, 32, 0.78);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   border: 1px solid var(--color-border);
@@ -268,7 +327,7 @@ h1, h2, h3 {
 }
 
 .lang-switch.is-en .lang-track {
-  background: rgba(255, 31, 53, 0.35);
+  background: rgba(47, 123, 255, 0.35);
   border-color: var(--color-accent);
 }
 
@@ -324,7 +383,7 @@ h1, h2, h3 {
   transform: translateX(-50%);
   width: min(900px, 90vw);
   height: 460px;
-  background: radial-gradient(ellipse at center, rgba(255, 31, 53, 0.22), transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(47, 123, 255, 0.24), transparent 65%);
   filter: blur(50px);
   pointer-events: none;
 }
@@ -339,7 +398,7 @@ h1, h2, h3 {
   gap: 0.6rem;
   padding: 0.5rem 1.15rem;
   border-radius: var(--radius-full);
-  background: rgba(20, 12, 14, 0.8);
+  background: rgba(12, 18, 32, 0.8);
   backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
   font-size: 0.87rem;
@@ -357,8 +416,8 @@ h1, h2, h3 {
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 31, 53, 0.2); }
-  50% { box-shadow: 0 0 0 8px rgba(255, 31, 53, 0.05); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(47, 123, 255, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(47, 123, 255, 0.05); }
 }
 
 .hero h1 {
@@ -415,7 +474,7 @@ h1, h2, h3 {
   width: fit-content;
   margin: 0 auto 1.5rem;
   padding: 0.3rem;
-  background: rgba(16, 10, 12, 0.7);
+  background: rgba(10, 15, 27, 0.7);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
 }
@@ -438,7 +497,7 @@ h1, h2, h3 {
 }
 
 .format-btn.is-active {
-  background: rgba(255, 31, 53, 0.14);
+  background: rgba(47, 123, 255, 0.14);
   color: var(--color-text);
   box-shadow: inset 0 0 0 1px var(--color-border-strong);
 }
@@ -478,7 +537,7 @@ h1, h2, h3 {
   background: var(--color-accent);
   color: #fff;
   border-color: var(--color-accent);
-  box-shadow: 0 2px 16px rgba(255, 31, 53, 0.35);
+  box-shadow: 0 2px 16px rgba(47, 123, 255, 0.35);
 }
 
 /* --- Carrossel do portfólio --- */
@@ -543,7 +602,7 @@ h1, h2, h3 {
   padding-bottom: 3px;
   border: 1px solid var(--color-border-strong);
   border-radius: 50%;
-  background: rgba(22, 13, 15, 0.9);
+  background: rgba(14, 20, 36, 0.9);
   backdrop-filter: blur(10px);
   color: var(--color-text);
   font-size: 1.5rem;
@@ -553,7 +612,7 @@ h1, h2, h3 {
 }
 
 .rail-nav:hover:not(:disabled) {
-  background: rgba(46, 16, 22, 0.95);
+  background: rgba(22, 38, 74, 0.95);
   transform: translateY(-50%) scale(1.06);
 }
 
@@ -579,7 +638,7 @@ h1, h2, h3 {
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
-  background: #120c0e;
+  background: #0c1220;
   transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
@@ -594,7 +653,7 @@ h1, h2, h3 {
 .card:hover {
   transform: translateY(-6px);
   border-color: var(--color-accent);
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65), 0 0 28px rgba(255, 31, 53, 0.22);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65), 0 0 28px rgba(47, 123, 255, 0.24);
 }
 
 .thumb {
@@ -660,7 +719,7 @@ h1, h2, h3 {
   flex-direction: column;
   gap: 0.15rem;
   padding: 3.5rem 3rem 1.1rem 1.1rem;
-  background: linear-gradient(to top, rgba(6, 3, 4, 0.95) 12%, rgba(6, 3, 4, 0.6) 55%, transparent);
+  background: linear-gradient(to top, rgba(3, 6, 12, 0.95) 12%, rgba(3, 6, 12, 0.6) 55%, transparent);
 }
 
 .mode-long .card-overlay {
@@ -743,7 +802,7 @@ h1, h2, h3 {
   height: 2px;
   /* mais forte do que a borda dos cards: em vãos de 20px um traço sutil
      simplesmente não é visto */
-  background: rgba(255, 70, 85, 0.55);
+  background: rgba(90, 150, 255, 0.6);
 }
 
 /* abaixo disso as quatro etapas não cabem em uma fileira só */
@@ -756,7 +815,7 @@ h1, h2, h3 {
   padding: 2.5rem 1.75rem 3rem;
   text-align: center;
   /* opaco: a linha passa atrás e só aparece nos vãos entre os cards */
-  background: #110c0e;
+  background: #0b111e;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
@@ -773,7 +832,7 @@ h1, h2, h3 {
   width: 2.9rem;
   height: 2.9rem;
   margin: 0 auto 1.5rem;
-  background: #070405;
+  background: #050912;
   border: 1px solid var(--color-border);
   border-radius: 50%;
   color: var(--color-text);
@@ -811,7 +870,7 @@ h1, h2, h3 {
   align-items: center;
   gap: 0.35rem;
   padding: 2.25rem 1.5rem;
-  background: rgba(16, 10, 12, 0.65);
+  background: rgba(10, 15, 27, 0.68);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
@@ -882,7 +941,7 @@ h1, h2, h3 {
   left: 50%;
   bottom: 2.25rem;
   transform: translate(-50%, 6px);
-  color: #7c88ff;
+  color: #8fb6ff;
   font-size: 0.86rem;
   font-weight: 600;
   opacity: 0;
@@ -993,7 +1052,7 @@ h1, h2, h3 {
 .lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(4, 3, 3, 0.88);
+  background: rgba(3, 5, 11, 0.9);
   backdrop-filter: blur(8px);
   animation: fade-in 0.25s var(--ease);
 }
@@ -1093,7 +1152,7 @@ h1, h2, h3 {
   height: 40px;
   border: 1px solid var(--color-border);
   border-radius: 50%;
-  background: rgba(22, 13, 15, 0.9);
+  background: rgba(14, 20, 36, 0.9);
   color: var(--color-text);
   font-size: 1rem;
   cursor: pointer;
