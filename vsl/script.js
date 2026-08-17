@@ -28,7 +28,7 @@ const EN = {
   "portfolio.eyebrow": "PORTFOLIO",
   "portfolio.title": "VSLs and creatives",
   "portfolio.subtitle": "Work made for one thing only: turning views into sales.",
-  "format.short": "Ads",
+  "format.short": "ADS",
   "format.long": "VSL",
   "cat.all": "All",
   "cat.direct-response": "Direct Response",
