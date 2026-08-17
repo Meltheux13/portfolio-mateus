@@ -126,13 +126,18 @@ function buildLoop() {
   loopWidth = 0;
 
   const items = originals();
+  grid.classList.remove("is-static");
   if (!items.length) return;
 
   const last = items[items.length - 1];
   const setWidth = last.offsetLeft + last.offsetWidth - items[0].offsetLeft;
   // se a lista já cabe na tela não há o que rolar, e clonar só duplicaria
-  // conteúdo à toa
-  if (setWidth <= grid.clientWidth) return;
+  // conteúdo à toa. Nesse caso os cards ficam centralizados: encostados à
+  // esquerda com muito vazio ao lado, parecia recorte de página.
+  if (setWidth <= grid.clientWidth) {
+    grid.classList.add("is-static");
+    return;
+  }
 
   items.forEach((item) => {
     const clone = item.cloneNode(true);

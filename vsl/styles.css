@@ -568,6 +568,12 @@ h1, h2, h3 {
   display: none;
 }
 
+/* Só quando não há o que rolar. Centralizar um trilho que transborda
+   deixaria o começo da lista inalcançável em alguns navegadores. */
+.portfolio-grid.is-static {
+  justify-content: center;
+}
+
 .portfolio-grid:focus-visible {
   outline: 2px solid var(--color-border-strong);
   outline-offset: 4px;
