@@ -306,24 +306,6 @@ function formatarTempo(segundos) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-// O YouTube esconde a interface dele sozinho depois de alguns segundos de
-// reprodução, e o escudo de ponteiro impede que ela volte. Até lá, as
-// faixas cobrem.
-let limparTimer = null;
-
-function agendarLimpeza() {
-  if (limparTimer) return;
-  limparTimer = setTimeout(() => {
-    playerUi.classList.add("is-clean");
-  }, 3500);
-}
-
-function cancelarLimpeza() {
-  clearTimeout(limparTimer);
-  limparTimer = null;
-  playerUi.classList.remove("is-clean");
-}
-
 function marcarTocando(tocando) {
   playerIcon.className = tocando ? "icon-pause" : "icon-play";
   const rotulo = tocando ? "Pausar vídeo" : "Reproduzir vídeo";
@@ -470,12 +452,9 @@ async function openLightbox(card) {
           event.target.setVolume(volume);
           startGlow();
           iniciarProgresso();
-          agendarLimpeza();
         } else {
           stopGlow();
           pararProgresso();
-          // pausado, o YouTube reexibe a interface dele: cobre de novo
-          cancelarLimpeza();
         }
       },
     },
@@ -487,7 +466,6 @@ function closeLightbox() {
   stopGlow();
   pararProgresso();
   zerarProgresso();
-  cancelarLimpeza();
 
   if (player) {
     // destroy também interrompe o áudio; só esconder deixaria tocando
