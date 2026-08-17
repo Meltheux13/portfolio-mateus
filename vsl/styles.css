@@ -1151,6 +1151,34 @@ h1, h2, h3 {
   overflow: hidden;
 }
 
+/* Faixas que escondem a interface do YouTube enquanto ela está na tela.
+   Ficam opacas na borda e desmancham para dentro, então cobrem o
+   cabeçalho e a barra sem cortar o vídeo com uma linha dura. */
+.player-mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease);
+}
+
+.mask-top {
+  top: 0;
+  height: 84px;
+  background: linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%);
+}
+
+.mask-bottom {
+  bottom: 0;
+  height: 68px;
+  background: linear-gradient(to top, #000 0%, #000 55%, transparent 100%);
+}
+
+/* somem quando o player do YouTube já escondeu a interface dele */
+.player-ui.is-clean .player-mask {
+  opacity: 0;
+}
+
 /* área de clique cobrindo o vídeo: alterna play e pause, e impede o
    ponteiro de chegar ao iframe, que é o que faz o YouTube revelar a
    barra dele */
