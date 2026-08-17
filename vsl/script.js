@@ -33,7 +33,6 @@ const EN = {
   "cat.all": "All",
   "cat.direct-response": "Direct Response",
   "cat.personal-brand": "Personal Brand",
-  "cat.gameplay": "Gameplay",
   "cat.marketing": "Marketing",
   "cat.ia": "AI",
   "cat.business": "Business",
