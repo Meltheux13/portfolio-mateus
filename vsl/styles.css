@@ -74,6 +74,25 @@ img {
   background: radial-gradient(ellipse 100% 80% at 50% 40%, transparent 30%, rgba(0, 0, 0, 0.55) 100%);
 }
 
+/* Fumaça gerada por shader. Fica sobre as manchas em CSS e as substitui
+   quando o WebGL inicia — a classe entra pelo script. */
+.bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+
+.page-bg.has-shader .bg-canvas {
+  opacity: 1;
+}
+
+.page-bg.has-shader .bg-blob {
+  display: none;
+}
+
 /* Fundo animado: três manchas azuis que vagam devagar.
    Só o transform muda a cada quadro — o desfoque fica fixo, senão o
    navegador repintaria o borrão inteiro o tempo todo. Elas ficam entre a

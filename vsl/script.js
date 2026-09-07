@@ -668,3 +668,173 @@ catGroups.forEach((group) => {
 });
 
 applyFilters();
+
+// --- Fumaça de fundo em WebGL ---
+// Ruído fractal (fbm) animado, na cor de destaque do site. Se qualquer
+// etapa falhar, o canvas some e as manchas em CSS continuam valendo.
+(function () {
+  const canvas = document.getElementById("bg-canvas");
+  if (!canvas) return;
+
+  const pageBg = canvas.parentElement;
+  const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const gl = canvas.getContext("webgl", { alpha: true, antialias: false, premultipliedAlpha: false });
+  if (!gl) return;
+
+  const vertexSrc = `
+    attribute vec2 a_pos;
+    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+  `;
+
+  const fragmentSrc = `
+    precision highp float;
+    uniform vec2 u_res;
+    uniform float u_time;
+    uniform vec3 u_cor;
+
+    float hash(vec2 p) {
+      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+                 mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+    }
+
+    // soma de oitavas: cada camada com o dobro da frequência e metade do
+    // peso, que é o que dá o aspecto de fumaça em vez de borrão
+    float fbm(vec2 p) {
+      float v = 0.0;
+      float a = 0.5;
+      for (int i = 0; i < 5; i++) {
+        v += a * noise(p);
+        p *= 2.02;
+        a *= 0.5;
+      }
+      return v;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / u_res;
+      vec2 p = uv * 1.9;
+      p.x *= u_res.x / u_res.y;
+
+      float t = u_time * 0.035;
+      // deslocar o ruído por outro ruído deixa o movimento sinuoso, não linear
+      vec2 desvio = vec2(fbm(p + t), fbm(p - t * 0.8));
+      float n = fbm(p + desvio * 1.4 + vec2(0.0, t * 0.5));
+
+      // sem esticar a faixa útil, o fbm fica todo em torno de 0.5 e o
+      // resultado é uma névoa chapada em vez de fumaça
+      n = smoothstep(0.30, 0.72, n);
+
+      // concentra o brilho no alto, atrás do título. No WebGL o eixo Y
+      // cresce para cima, então o topo é uv.y perto de 1.
+      float alto = smoothstep(-0.15, 0.95, uv.y);
+      // borda mais escura, para a fumaça não encostar nos cantos
+      float vinheta = smoothstep(1.45, 0.25, distance(uv, vec2(0.5, 0.85)));
+      float brilho = n * alto * vinheta;
+
+      // o miolo mais quente puxa para o branco-azulado, como um clarão
+      vec3 cor = mix(u_cor * 0.55, mix(u_cor, vec3(1.0), 0.35), n);
+
+      gl_FragColor = vec4(cor * brilho, brilho * 0.95);
+    }
+  `;
+
+  function compilar(tipo, src) {
+    const s = gl.createShader(tipo);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) return null;
+    return s;
+  }
+
+  const vs = compilar(gl.VERTEX_SHADER, vertexSrc);
+  const fs = compilar(gl.FRAGMENT_SHADER, fragmentSrc);
+  if (!vs || !fs) return;
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+
+  // dois triângulos cobrindo a tela inteira
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, "a_pos");
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes = gl.getUniformLocation(prog, "u_res");
+  const uTime = gl.getUniformLocation(prog, "u_time");
+  const uCor = gl.getUniformLocation(prog, "u_cor");
+
+  // a cor sai do próprio tema: trocar --color-accent troca a fumaça
+  function corDoTema() {
+    const hex = getComputedStyle(document.documentElement)
+      .getPropertyValue("--color-accent").trim().replace("#", "");
+    if (hex.length !== 6) return [0.18, 0.48, 1.0];
+    return [
+      parseInt(hex.slice(0, 2), 16) / 255,
+      parseInt(hex.slice(2, 4), 16) / 255,
+      parseInt(hex.slice(4, 6), 16) / 255,
+    ];
+  }
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  gl.uniform3fv(uCor, corDoTema());
+
+  function redimensionar() {
+    // teto de 1.5x: em telas retina, renderizar na resolução cheia dobraria
+    // o custo sem diferença visível num efeito borrado
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const w = Math.floor(canvas.clientWidth * dpr);
+    const h = Math.floor(canvas.clientHeight * dpr);
+    if (canvas.width === w && canvas.height === h) return;
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
+    gl.uniform2f(uRes, w, h);
+  }
+
+  let quadro = null;
+  let inicio = null;
+
+  function desenhar(agora) {
+    if (inicio === null) inicio = agora;
+    redimensionar();
+    gl.uniform1f(uTime, (agora - inicio) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    quadro = requestAnimationFrame(desenhar);
+  }
+
+  function ligar() {
+    if (quadro || semMovimento.matches || document.hidden) return;
+    quadro = requestAnimationFrame(desenhar);
+  }
+
+  function desligar() {
+    cancelAnimationFrame(quadro);
+    quadro = null;
+  }
+
+  // aba em segundo plano não precisa desenhar
+  document.addEventListener("visibilitychange", () => (document.hidden ? desligar() : ligar()));
+  semMovimento.addEventListener("change", () => (semMovimento.matches ? desligar() : ligar()));
+
+  redimensionar();
+  // um quadro parado já serve para quem pediu menos movimento
+  gl.uniform1f(uTime, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+  pageBg.classList.add("has-shader");
+  ligar();
+})();
