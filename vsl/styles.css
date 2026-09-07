@@ -77,13 +77,16 @@ img {
    da página fica no preto liso. */
 .bg-canvas {
   position: absolute;
-  /* a navbar ocupa lugar no fluxo, então o hero começa 5.5rem abaixo do
-     topo da janela. Sem esticar o canvas para cima sobrava uma faixa preta
-     atrás dela, e a fumaça parecia cortada. */
-  inset: -5.5rem 0 0;
+  /* Esticado dos dois lados. Em cima, porque a navbar ocupa lugar no fluxo
+     e sem isso sobrava uma faixa preta atrás dela. Embaixo, porque a borda
+     do canvas terminava num corte reto no meio da fumaça — passando dela
+     para dentro da faixa de ferramentas, o shader tem espaço para apagar
+     sozinho e o fim vira um esmaecido, não uma linha. */
+  inset: -5.5rem 0 auto;
   z-index: -1;
+  pointer-events: none;
   width: 100%;
-  height: calc(100% + 5.5rem);
+  height: calc(100% + 5.5rem + 11rem);
   opacity: 0;
   transition: opacity 1.2s var(--ease);
 }
@@ -1352,9 +1355,10 @@ body.no-scroll {
    (os itens caminham para a direita), velocidade constante em px/s e
    desbotado largo nas pontas, que apaga os itens bem antes da borda em vez
    de cortá-los secos. */
+/* sem borda embaixo: quem separa da próxima seção agora é a fumaça
+   apagando, e um risco ali no meio do esmaecido leria como corte */
 .tools {
   padding: 2.5rem 0 1.5rem;
-  border-bottom: 1px solid var(--color-border);
 }
 
 .tools-eyebrow {

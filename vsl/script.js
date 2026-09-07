@@ -758,8 +758,10 @@ applyFilters();
       float lum = dot(col, vec3(0.299, 0.587, 0.114));
       col += (n - 0.5) * (0.2 * (1.0 - abs(lum * 2.0 - 1.0)));
 
-      // forte em cima, apagando para baixo
-      float body = smoothstep(-0.25, 0.35, uv.y);
+      // forte em cima, apagando para baixo. O segundo termo é o que mata a
+      // fumaça na borda de baixo: sem ele o alfa ainda chegava perto de 0.4
+      // ali e o fim do canvas aparecia como um risco reto.
+      float body = smoothstep(-0.25, 0.35, uv.y) * smoothstep(0.0, 0.26, uv.y);
       float a = clamp(max(m1, m2) * body + (n - 0.5) * 0.06 * body, 0.0, 1.0);
 
       gl_FragColor = vec4(max(col, vec3(0.0)), a);
