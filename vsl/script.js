@@ -678,7 +678,7 @@ applyFilters();
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
 
-  const pageBg = canvas.parentElement;
+  const pageBg = document.querySelector(".page-bg");
   const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
   const gl = canvas.getContext("webgl", {
     alpha: true,
@@ -727,21 +727,22 @@ applyFilters();
     void main() {
       vec2 uv = vUv;
       vec2 p = (uv - 0.5) * vec2(uAspect, 1.0);
-      float t = uTime * 0.028;
+      float t = uTime * 0.075;
 
       vec2 warp = vec2(fbm(p * 0.8 + vec2(t, -t * 0.5)),
                        fbm(p * 0.8 + vec2(-t * 0.6, t * 0.75)));
-      float f = fbm(p * 1.05 + warp * 1.15);
+      float f = fbm(p * 0.85 + warp * 1.15);
       float g = fbm(p * 0.62 - warp * 0.75 + vec2(t * 0.4, t * 0.22));
 
       // amostras espelhadas, para nascer luz dos dois lados
       vec2 q = vec2(-p.x, p.y);
-      float f2 = fbm(q * 1.05 + warp * 1.15 + vec2(4.3, -2.7));
-      float g2 = fbm(q * 0.62 - warp * 0.75 + vec2(-5.1 + t * 0.34, 3.6 + t * 0.2));
+      vec2 warpQ = vec2(-warp.x, warp.y);
+      float f2 = fbm(q * 0.85 + warpQ * 1.15 + vec2(4.3, -2.7));
+      float g2 = fbm(q * 0.62 - warpQ * 0.75 + vec2(-5.1 + t * 0.34, 3.6 + t * 0.2));
 
       // smoothstep curto: campos de cor com borda definida, não degradê mole
-      float m1 = max(smoothstep(0.02, 0.30, f), smoothstep(0.02, 0.30, f2));
-      float m2 = max(smoothstep(0.05, 0.34, g), smoothstep(0.05, 0.34, g2));
+      float m1 = max(smoothstep(-0.08, 0.24, f), smoothstep(-0.08, 0.24, f2));
+      float m2 = max(smoothstep(-0.04, 0.28, g), smoothstep(-0.04, 0.28, g2));
 
       vec3 col = mix(uB, uA, m1);
       col = mix(col, uC, m2 * 0.55);
@@ -753,7 +754,7 @@ applyFilters();
       col += (n - 0.5) * (0.34 * (1.0 - abs(lum * 2.0 - 1.0)));
 
       // forte em cima, apagando para baixo
-      float body = smoothstep(0.02, 0.42, uv.y);
+      float body = smoothstep(-0.25, 0.35, uv.y);
       float a = clamp(max(m1, m2) * body + (n - 0.5) * 0.06 * body, 0.0, 1.0);
 
       gl_FragColor = vec4(max(col, vec3(0.0)), a);
@@ -850,6 +851,7 @@ applyFilters();
   gl.uniform1f(uTime, 0);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-  pageBg.classList.add("has-shader");
+  if (pageBg) pageBg.classList.add("has-shader");
+  canvas.classList.add("is-on");
   ligar();
 })();
