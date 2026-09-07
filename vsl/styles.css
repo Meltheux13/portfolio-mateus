@@ -77,10 +77,13 @@ img {
    da página fica no preto liso. */
 .bg-canvas {
   position: absolute;
-  inset: 0;
+  /* a navbar ocupa lugar no fluxo, então o hero começa 5.5rem abaixo do
+     topo da janela. Sem esticar o canvas para cima sobrava uma faixa preta
+     atrás dela, e a fumaça parecia cortada. */
+  inset: -5.5rem 0 0;
   z-index: -1;
   width: 100%;
-  height: 100%;
+  height: calc(100% + 5.5rem);
   opacity: 0;
   transition: opacity 1.2s var(--ease);
 }
