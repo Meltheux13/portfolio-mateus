@@ -1418,8 +1418,9 @@ body.no-scroll {
   display: block;
 }
 
-/* o logo do Drive não tem moldura, então sozinho ele parece menor que os
-   quadrados da Adobe ao lado */
+/* Drive e Frame.io são marcas soltas, sem moldura: ao lado dos quadrados
+   cheios da Adobe elas pesam menos, então ocupam a caixa toda menos a
+   margem que os quadrados já têm de borda */
 .tool-logo-plain svg {
   width: 30px;
   height: 30px;
