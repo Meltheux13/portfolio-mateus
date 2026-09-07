@@ -411,6 +411,18 @@ h1, h2, h3 {
   position: relative;
 }
 
+/* Véu atrás do texto do hero. A fumaça vaga por toda a tela e às vezes
+   passa clara bem atrás do subtítulo; sem isso a leitura depende da
+   posição do ruído no momento. */
+.hero-inner::before {
+  content: "";
+  position: absolute;
+  inset: -12% -14%;
+  z-index: -1;
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(3, 5, 11, 0.72), transparent 72%);
+  pointer-events: none;
+}
+
 .hero-badge {
   display: inline-flex;
   align-items: center;

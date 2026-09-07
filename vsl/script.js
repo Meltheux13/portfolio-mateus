@@ -669,79 +669,95 @@ catGroups.forEach((group) => {
 
 applyFilters();
 
-// --- Fumaça de fundo em WebGL ---
-// Ruído fractal (fbm) animado, na cor de destaque do site. Se qualquer
-// etapa falhar, o canvas some e as manchas em CSS continuam valendo.
+// --- Fundo animado em WebGL ---
+// Shader adaptado do site do SalesHookAI, com autorização. Lá ele roda em
+// three.js; aqui foi portado para WebGL puro, porque a biblioteca inteira
+// pesa centenas de KB e o efeito precisa só de um quad em tela cheia.
+// As cores saem do tema, no lugar do roxo do original.
 (function () {
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
 
   const pageBg = canvas.parentElement;
   const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const gl = canvas.getContext("webgl", { alpha: true, antialias: false, premultipliedAlpha: false });
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: false,
+    powerPreference: "low-power",
+  });
   if (!gl) return;
 
   const vertexSrc = `
     attribute vec2 a_pos;
-    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+    varying vec2 vUv;
+    void main() {
+      vUv = a_pos * 0.5 + 0.5;
+      gl_Position = vec4(a_pos, 0.0, 1.0);
+    }
   `;
 
   const fragmentSrc = `
     precision highp float;
-    uniform vec2 u_res;
-    uniform float u_time;
-    uniform vec3 u_cor;
+    varying vec2 vUv;
+    uniform float uTime, uAspect;
+    uniform vec2 uMouse;
+    uniform vec3 uA, uB, uC;
 
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+    vec2 h2(vec2 p) {
+      p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+      return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
     }
 
+    // ruído de gradiente: mais orgânico que o de valor, que tende a
+    // deixar um xadrez visível nas frequências baixas
     float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
+      vec2 i = floor(p), f = fract(p);
       vec2 u = f * f * (3.0 - 2.0 * f);
-      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
-                 mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+      return mix(mix(dot(h2(i + vec2(0, 0)), f - vec2(0, 0)),
+                     dot(h2(i + vec2(1, 0)), f - vec2(1, 0)), u.x),
+                 mix(dot(h2(i + vec2(0, 1)), f - vec2(0, 1)),
+                     dot(h2(i + vec2(1, 1)), f - vec2(1, 1)), u.x), u.y);
     }
 
-    // soma de oitavas: cada camada com o dobro da frequência e metade do
-    // peso, que é o que dá o aspecto de fumaça em vez de borrão
     float fbm(vec2 p) {
-      float v = 0.0;
-      float a = 0.5;
-      for (int i = 0; i < 5; i++) {
-        v += a * noise(p);
-        p *= 2.02;
-        a *= 0.5;
-      }
+      float v = 0.0, a = 0.5;
+      for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.02; a *= 0.5; }
       return v;
     }
 
     void main() {
-      vec2 uv = gl_FragCoord.xy / u_res;
-      vec2 p = uv * 1.9;
-      p.x *= u_res.x / u_res.y;
+      vec2 uv = vUv;
+      vec2 p = (uv - 0.5) * vec2(uAspect, 1.0);
+      float t = uTime * 0.028;
 
-      float t = u_time * 0.035;
-      // deslocar o ruído por outro ruído deixa o movimento sinuoso, não linear
-      vec2 desvio = vec2(fbm(p + t), fbm(p - t * 0.8));
-      float n = fbm(p + desvio * 1.4 + vec2(0.0, t * 0.5));
+      vec2 warp = vec2(fbm(p * 0.8 + vec2(t, -t * 0.5)),
+                       fbm(p * 0.8 + vec2(-t * 0.6, t * 0.75)));
+      float f = fbm(p * 1.05 + warp * 1.15 + uMouse * 0.18);
+      float g = fbm(p * 0.62 - warp * 0.75 + vec2(t * 0.4, t * 0.22));
 
-      // sem esticar a faixa útil, o fbm fica todo em torno de 0.5 e o
-      // resultado é uma névoa chapada em vez de fumaça
-      n = smoothstep(0.30, 0.72, n);
+      // amostras espelhadas, para nascer luz dos dois lados
+      vec2 q = vec2(-p.x, p.y);
+      float f2 = fbm(q * 1.05 + warp * 1.15 + vec2(4.3, -2.7) - uMouse * 0.18);
+      float g2 = fbm(q * 0.62 - warp * 0.75 + vec2(-5.1 + t * 0.34, 3.6 + t * 0.2));
 
-      // concentra o brilho no alto, atrás do título. No WebGL o eixo Y
-      // cresce para cima, então o topo é uv.y perto de 1.
-      float alto = smoothstep(-0.15, 0.95, uv.y);
-      // borda mais escura, para a fumaça não encostar nos cantos
-      float vinheta = smoothstep(1.45, 0.25, distance(uv, vec2(0.5, 0.85)));
-      float brilho = n * alto * vinheta;
+      // smoothstep curto: campos de cor com borda definida, não degradê mole
+      float m1 = max(smoothstep(0.02, 0.30, f), smoothstep(0.02, 0.30, f2));
+      float m2 = max(smoothstep(0.05, 0.34, g), smoothstep(0.05, 0.34, g2));
 
-      // o miolo mais quente puxa para o branco-azulado, como um clarão
-      vec3 cor = mix(u_cor * 0.55, mix(u_cor, vec3(1.0), 0.35), n);
+      vec3 col = mix(uB, uA, m1);
+      col = mix(col, uC, m2 * 0.55);
+      col *= max(m1, m2 * 0.8);
 
-      gl_FragColor = vec4(cor * brilho, brilho * 0.95);
+      // grão, mais forte nos meios-tons
+      float n = fract(sin(dot(floor(uv * vec2(1600.0, 900.0)), vec2(12.9898, 78.233))) * 43758.5453);
+      float lum = dot(col, vec3(0.299, 0.587, 0.114));
+      col += (n - 0.5) * (0.34 * (1.0 - abs(lum * 2.0 - 1.0)));
+
+      // forte em cima, apagando para baixo
+      float body = smoothstep(0.02, 0.42, uv.y);
+      float a = clamp(max(m1, m2) * body + (n - 0.5) * 0.06 * body, 0.0, 1.0);
+
+      gl_FragColor = vec4(max(col, vec3(0.0)), a);
     }
   `;
 
@@ -749,8 +765,7 @@ applyFilters();
     const s = gl.createShader(tipo);
     gl.shaderSource(s, src);
     gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) return null;
-    return s;
+    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
   }
 
   const vs = compilar(gl.VERTEX_SHADER, vertexSrc);
@@ -764,7 +779,7 @@ applyFilters();
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
   gl.useProgram(prog);
 
-  // dois triângulos cobrindo a tela inteira
+  // um triângulo só, grande o bastante para cobrir a tela
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
@@ -772,37 +787,47 @@ applyFilters();
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-  const uRes = gl.getUniformLocation(prog, "u_res");
-  const uTime = gl.getUniformLocation(prog, "u_time");
-  const uCor = gl.getUniformLocation(prog, "u_cor");
+  const uTime = gl.getUniformLocation(prog, "uTime");
+  const uAspect = gl.getUniformLocation(prog, "uAspect");
+  const uMouse = gl.getUniformLocation(prog, "uMouse");
 
-  // a cor sai do próprio tema: trocar --color-accent troca a fumaça
-  function corDoTema() {
+  // as três cores vêm do tema: mexer em --color-accent muda a fumaça
+  function rgb(varName, padrao) {
     const hex = getComputedStyle(document.documentElement)
-      .getPropertyValue("--color-accent").trim().replace("#", "");
-    if (hex.length !== 6) return [0.18, 0.48, 1.0];
+      .getPropertyValue(varName).trim().replace("#", "");
+    const fonte = hex.length === 6 ? hex : padrao;
     return [
-      parseInt(hex.slice(0, 2), 16) / 255,
-      parseInt(hex.slice(2, 4), 16) / 255,
-      parseInt(hex.slice(4, 6), 16) / 255,
+      parseInt(fonte.slice(0, 2), 16) / 255,
+      parseInt(fonte.slice(2, 4), 16) / 255,
+      parseInt(fonte.slice(4, 6), 16) / 255,
     ];
   }
 
+  gl.uniform3fv(gl.getUniformLocation(prog, "uA"), rgb("--color-accent", "2f7bff"));
+  gl.uniform3fv(gl.getUniformLocation(prog, "uB"), rgb("--color-bg", "070a12"));
+  gl.uniform3fv(gl.getUniformLocation(prog, "uC"), [0.81, 0.88, 1.0]);
+
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-  gl.uniform3fv(uCor, corDoTema());
+
+  let mouseX = 0;
+  let mouseY = 0;
+  window.addEventListener("pointermove", (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (0.5 - e.clientY / window.innerHeight) * 2;
+  }, { passive: true });
 
   function redimensionar() {
-    // teto de 1.5x: em telas retina, renderizar na resolução cheia dobraria
-    // o custo sem diferença visível num efeito borrado
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    // teto de 1.25x: em tela retina, a resolução cheia dobra o custo sem
+    // diferença visível num efeito borrado
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     const w = Math.floor(canvas.clientWidth * dpr);
     const h = Math.floor(canvas.clientHeight * dpr);
     if (canvas.width === w && canvas.height === h) return;
     canvas.width = w;
     canvas.height = h;
     gl.viewport(0, 0, w, h);
-    gl.uniform2f(uRes, w, h);
+    gl.uniform1f(uAspect, w / h);
   }
 
   let quadro = null;
@@ -812,6 +837,7 @@ applyFilters();
     if (inicio === null) inicio = agora;
     redimensionar();
     gl.uniform1f(uTime, (agora - inicio) / 1000);
+    gl.uniform2f(uMouse, mouseX, mouseY);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     quadro = requestAnimationFrame(desenhar);
   }
@@ -826,13 +852,13 @@ applyFilters();
     quadro = null;
   }
 
-  // aba em segundo plano não precisa desenhar
   document.addEventListener("visibilitychange", () => (document.hidden ? desligar() : ligar()));
   semMovimento.addEventListener("change", () => (semMovimento.matches ? desligar() : ligar()));
 
   redimensionar();
   // um quadro parado já serve para quem pediu menos movimento
   gl.uniform1f(uTime, 0);
+  gl.uniform2f(uMouse, 0, 0);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
   pageBg.classList.add("has-shader");
