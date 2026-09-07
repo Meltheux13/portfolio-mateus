@@ -25,6 +25,7 @@ const EN = {
   "hero.subtitle": "VSL and creative editing for people who live on paid traffic",
   "hero.cta1": "See my work",
   "hero.cta2": "Get in touch",
+  "tools.eyebrow": "TOOLS I WORK WITH",
   "portfolio.eyebrow": "PORTFOLIO",
   "portfolio.title": "VSLs and creatives",
   "portfolio.subtitle": "Work made for one thing only: turning views into sales.",
@@ -858,4 +859,23 @@ applyFilters();
   if (pageBg) pageBg.classList.add("has-shader");
   canvas.classList.add("is-on");
   ligar();
+})();
+
+// --- Esteira de ferramentas ---
+// A lista existe uma vez só no HTML, para não repetir o markup à mão.
+// Duplicá-la aqui é o que permite animar até -50% e voltar ao início sem
+// emenda visível; se o JS não rodar, a faixa fica parada e legível.
+(function () {
+  const track = document.querySelector(".tools-track");
+  if (!track) return;
+
+  const itens = Array.from(track.children);
+  itens.forEach((item) => {
+    const copia = item.cloneNode(true);
+    // a cópia é decorativa: leitor de tela já leu a original
+    copia.setAttribute("aria-hidden", "true");
+    track.appendChild(copia);
+  });
+
+  track.classList.add("is-looping");
 })();
