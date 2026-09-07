@@ -700,7 +700,6 @@ applyFilters();
     precision highp float;
     varying vec2 vUv;
     uniform float uTime, uAspect;
-    uniform vec2 uMouse;
     uniform vec3 uA, uB, uC;
 
     vec2 h2(vec2 p) {
@@ -732,12 +731,12 @@ applyFilters();
 
       vec2 warp = vec2(fbm(p * 0.8 + vec2(t, -t * 0.5)),
                        fbm(p * 0.8 + vec2(-t * 0.6, t * 0.75)));
-      float f = fbm(p * 1.05 + warp * 1.15 + uMouse * 0.18);
+      float f = fbm(p * 1.05 + warp * 1.15);
       float g = fbm(p * 0.62 - warp * 0.75 + vec2(t * 0.4, t * 0.22));
 
       // amostras espelhadas, para nascer luz dos dois lados
       vec2 q = vec2(-p.x, p.y);
-      float f2 = fbm(q * 1.05 + warp * 1.15 + vec2(4.3, -2.7) - uMouse * 0.18);
+      float f2 = fbm(q * 1.05 + warp * 1.15 + vec2(4.3, -2.7));
       float g2 = fbm(q * 0.62 - warp * 0.75 + vec2(-5.1 + t * 0.34, 3.6 + t * 0.2));
 
       // smoothstep curto: campos de cor com borda definida, não degradê mole
@@ -789,7 +788,6 @@ applyFilters();
 
   const uTime = gl.getUniformLocation(prog, "uTime");
   const uAspect = gl.getUniformLocation(prog, "uAspect");
-  const uMouse = gl.getUniformLocation(prog, "uMouse");
 
   // as três cores vêm do tema: mexer em --color-accent muda a fumaça
   function rgb(varName, padrao) {
@@ -809,13 +807,6 @@ applyFilters();
 
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-  let mouseX = 0;
-  let mouseY = 0;
-  window.addEventListener("pointermove", (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (0.5 - e.clientY / window.innerHeight) * 2;
-  }, { passive: true });
 
   function redimensionar() {
     // teto de 1.25x: em tela retina, a resolução cheia dobra o custo sem
@@ -837,7 +828,6 @@ applyFilters();
     if (inicio === null) inicio = agora;
     redimensionar();
     gl.uniform1f(uTime, (agora - inicio) / 1000);
-    gl.uniform2f(uMouse, mouseX, mouseY);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     quadro = requestAnimationFrame(desenhar);
   }
@@ -858,7 +848,6 @@ applyFilters();
   redimensionar();
   // um quadro parado já serve para quem pediu menos movimento
   gl.uniform1f(uTime, 0);
-  gl.uniform2f(uMouse, 0, 0);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
   pageBg.classList.add("has-shader");
