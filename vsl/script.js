@@ -862,20 +862,63 @@ applyFilters();
 })();
 
 // --- Esteira de ferramentas ---
-// A lista existe uma vez só no HTML, para não repetir o markup à mão.
-// Duplicá-la aqui é o que permite animar até -50% e voltar ao início sem
-// emenda visível; se o JS não rodar, a faixa fica parada e legível.
+// A lista existe uma vez só no HTML; repeti-la aqui é o que permite a faixa
+// correr em laço. Três contas importam:
+//
+// 1. o passo. A esteira desliza exatamente a largura de uma repetição —
+//    os seis itens mais o espaço que vem depois do último. Usar -50%, como
+//    é comum, deixa meio espaço de erro na emenda, porque o vão só existe
+//    entre itens e não depois do último.
+// 2. quantas cópias. A esteira precisa cobrir a janela inteira mesmo no fim
+//    do passo, senão sobra um vazio na direita antes de ela reiniciar.
+// 3. a duração. Se fosse fixa, a faixa correria mais devagar numa tela
+//    larga, com mais px para percorrer no mesmo tempo. Fixando px/s ela
+//    anda igual em qualquer lugar.
 (function () {
   const track = document.querySelector(".tools-track");
   if (!track) return;
 
-  const itens = Array.from(track.children);
-  itens.forEach((item) => {
-    const copia = item.cloneNode(true);
-    // a cópia é decorativa: leitor de tela já leu a original
-    copia.setAttribute("aria-hidden", "true");
-    track.appendChild(copia);
-  });
+  const marquee = track.parentElement;
+  const original = Array.from(track.children);
+  const VELOCIDADE = 66; // px/s, o mesmo passo da faixa que serviu de modelo
 
-  track.classList.add("is-looping");
+  function montar() {
+    // volta ao estado do HTML antes de medir, senão as cópias da vez
+    // anterior entrariam na conta
+    track.classList.remove("is-looping");
+    Array.from(track.children).forEach((item, i) => {
+      if (i >= original.length) item.remove();
+    });
+
+    const vao = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const passo = track.scrollWidth + vao;
+    if (passo <= vao) return;
+
+    const copias = Math.max(2, Math.ceil(marquee.clientWidth / passo) + 1);
+    for (let c = 1; c < copias; c++) {
+      original.forEach((item) => {
+        const copia = item.cloneNode(true);
+        // a cópia é decorativa: o leitor de tela já leu a original
+        copia.setAttribute("aria-hidden", "true");
+        track.appendChild(copia);
+      });
+    }
+
+    track.style.setProperty("--tools-passo", passo + "px");
+    track.style.animationDuration = passo / VELOCIDADE + "s";
+    track.classList.add("is-looping");
+  }
+
+  montar();
+
+  // só refaz quando a largura muda de verdade: no celular a barra do
+  // navegador some ao rolar e dispara resize sem nada ter mudado
+  let largura = window.innerWidth;
+  let espera;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === largura) return;
+    largura = window.innerWidth;
+    clearTimeout(espera);
+    espera = setTimeout(montar, 200);
+  });
 })();
