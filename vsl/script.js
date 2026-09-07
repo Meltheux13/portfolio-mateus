@@ -743,15 +743,19 @@ applyFilters();
       // smoothstep curto: campos de cor com borda definida, não degradê mole
       float m1 = max(smoothstep(-0.08, 0.24, f), smoothstep(-0.08, 0.24, f2));
       float m2 = max(smoothstep(-0.04, 0.28, g), smoothstep(-0.04, 0.28, g2));
+      // o branco entra só nas cristas do ruído mais fino. Antes ele era
+      // misturado em toda a área de m2 e lavava a fumaça de cinza; no site
+      // de origem o roxo domina e o branco aparece em pontos soltos.
+      float cristas = smoothstep(0.26, 0.44, max(g, g2));
 
       vec3 col = mix(uB, uA, m1);
-      col = mix(col, uC, m2 * 0.55);
+      col = mix(col, uC, cristas * 0.4);
       col *= max(m1, m2 * 0.8);
 
       // grão, mais forte nos meios-tons
       float n = fract(sin(dot(floor(uv * vec2(1600.0, 900.0)), vec2(12.9898, 78.233))) * 43758.5453);
       float lum = dot(col, vec3(0.299, 0.587, 0.114));
-      col += (n - 0.5) * (0.34 * (1.0 - abs(lum * 2.0 - 1.0)));
+      col += (n - 0.5) * (0.2 * (1.0 - abs(lum * 2.0 - 1.0)));
 
       // forte em cima, apagando para baixo
       float body = smoothstep(-0.25, 0.35, uv.y);
