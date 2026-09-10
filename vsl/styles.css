@@ -773,6 +773,23 @@ h1, h2, h3 {
   padding: 3rem 0;
 }
 
+/* Filete marcando onde uma seção acaba e a outra começa. É pseudo-elemento
+   e não border-top porque a seção tem perspective e canvas dentro; uma
+   borda entraria na conta da altura e empurraria a fumaça 1px.
+
+   Para usar em outra seção, basta somar o seletor aqui. */
+.reviews::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  /* 12% e não os 8% da --color-border: aqui a linha atravessa a fumaça, e
+     no claro dela a borda padrão sumia */
+  background: rgba(255, 255, 255, 0.12);
+}
+
 /* --- Avaliações --- */
 /* Medidas tiradas do site que serviu de referência, não estimadas: grade de
    3px, cartão quase transparente, filete de 2px na cor de destaque à
@@ -866,7 +883,7 @@ h1, h2, h3 {
    vão, para que o card do fim de uma fileira mostre a linha como se fosse
    a borda dele em vez de um risco solto no ar. */
 .review:not(:last-child)::after {
-  content: ;
+  content: "";
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1227,7 +1244,7 @@ h1, h2, h3 {
 }
 
 .site-footer::before {
-  content: ;
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
