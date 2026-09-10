@@ -309,6 +309,24 @@ function stopGlow() {
   glowFrame = null;
 }
 
+// O YouTube decide a resolução pelo tamanho em que o player é desenhado, e
+// não atende a setPlaybackQuality — medido aqui: com o iframe em 403px de
+// largura ele entrega "medium", 360p, mesmo com hd2160 entre as opções.
+//
+// A saída é desenhar o iframe grande e encolhê-lo por transform no CSS. Este
+// cálculo só decide o quanto: a largura que costuma destravar o 720p é 720
+// no vídeo em pé (o 720p vertical tem 720 de largura) e 1280 no deitado.
+// Sem teto, uma janela estreita pediria um fator absurdo e o YouTube mandaria
+// 4K para uma caixa de palmo — banda jogada fora.
+function ajustarZoomDoPlayer(vertical) {
+  const largura = lightboxFrameEl.getBoundingClientRect().width;
+  if (!largura) return;
+
+  const alvo = vertical ? 720 : 1280;
+  const fator = Math.min(3, Math.max(1, alvo / largura));
+  lightboxFrameEl.style.setProperty("--zoom-player", fator.toFixed(3));
+}
+
 async function openLightbox(card) {
   const id = card.dataset.video;
   const title = card.querySelector(".card-title").textContent;
@@ -327,6 +345,9 @@ async function openLightbox(card) {
   lightbox.hidden = false;
   document.body.classList.add("no-scroll");
   lightboxClose.focus();
+
+  // depois de sair do hidden, senão a caixa ainda não tem largura para medir
+  ajustarZoomDoPlayer(vertical);
 
   const [YT, loaded] = await Promise.all([loadYouTubeApi(), loadEnvelope(card)]);
   // o visitante pode ter fechado enquanto a API carregava
