@@ -100,16 +100,16 @@ img {
   height: calc(100% + 5.5rem + 11rem);
 }
 
-/* A de trás das avaliações some nas duas pontas por máscara, e não pelo
-   shader: ali ela nasce e morre no meio da página, sem hero nem faixa para
-   esconder as bordas. Fica mais apagada que a do hero, senão brigaria com
-   o texto dos depoimentos por cima. */
-.bg-canvas-reviews {
+/* As do miolo da página (avaliações e contato) somem nas duas pontas por
+   máscara, e não pelo shader: ali elas nascem e morrem no meio do rolar,
+   sem hero nem faixa para esconder as bordas. Ficam mais apagadas que a do
+   hero, senão brigariam com o texto por cima. */
+.bg-canvas-secao {
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 26%, #000 74%, transparent);
   mask-image: linear-gradient(180deg, transparent, #000 26%, #000 74%, transparent);
 }
 
-.bg-canvas-reviews.is-on {
+.bg-canvas-secao.is-on {
   opacity: 0.5;
 }
 
@@ -1041,6 +1041,7 @@ h1, h2, h3 {
 
 /* --- Contato --- */
 .contact {
+  position: relative;
   text-align: center;
 }
 
