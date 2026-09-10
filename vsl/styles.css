@@ -335,67 +335,13 @@ h1, h2, h3 {
   gap: 1.1rem;
 }
 
-/* --- Alternador de idioma --- */
-.lang-switch {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-family: inherit;
-  cursor: pointer;
-}
 
-.lang-label {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--color-text-muted);
-  transition: color 0.25s var(--ease);
-}
 
-.lang-label.is-on {
-  color: var(--color-text);
-}
 
-.lang-track {
-  position: relative;
-  width: 46px;
-  height: 25px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid var(--color-border);
-  transition: background 0.25s var(--ease);
-}
 
-.lang-switch.is-en .lang-track {
-  background: rgba(47, 123, 255, 0.35);
-  border-color: var(--color-accent);
-}
 
-.lang-knob {
-  position: absolute;
-  top: 50%;
-  /* parado à direita = PT, que é o idioma padrão do site */
-  right: 3px;
-  width: 17px;
-  height: 17px;
-  margin-top: -8.5px;
-  border-radius: 50%;
-  background: #fff;
-  transition: transform 0.28s var(--ease);
-}
 
-.lang-switch.is-en .lang-knob {
-  transform: translateX(-21px);
-}
 
-.lang-switch:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 4px;
-  border-radius: var(--radius-full);
-}
 
 .nav-links a {
   transition: color 0.25s var(--ease);
@@ -1530,9 +1476,6 @@ body.no-scroll {
   .logo-text { display: none; }
   .navbar { padding-left: 0.75rem; gap: 0.75rem; }
   .nav-end { gap: 0.7rem; }
-  .lang-track { width: 40px; height: 22px; }
-  .lang-knob { width: 15px; height: 15px; margin-top: -7.5px; }
-  .lang-switch.is-en .lang-knob { transform: translateX(-18px); }
   /* No celular o carrossel rola com o dedo; as setas só atrapalhariam */
   .rail-nav { display: none; }
   .portfolio-grid { gap: 0.85rem; }
