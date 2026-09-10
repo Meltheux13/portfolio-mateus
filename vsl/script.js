@@ -38,6 +38,7 @@ const EN = {
   "cat.ia": "AI",
   "reviews.eyebrow": "REVIEWS",
   "reviews.title": "What clients say",
+  "review.pendente": "Gabriel's testimonial text is still missing.",
   "review.vazio.texto": "Paste the client testimonial here.",
   "review.vazio.nome": "Client name",
   "review.vazio.papel": "Company or niche",
