@@ -491,7 +491,7 @@ h1, h2, h3 {
   margin-bottom: 1rem;
 }
 
-.portfolio h2, .services h2, .contact h2 {
+.portfolio h2, .reviews h2, .contact h2 {
   text-align: center;
   font-size: clamp(2rem, 4.5vw, 3rem);
   font-weight: 800;
@@ -809,11 +809,11 @@ h1, h2, h3 {
   padding: 3rem 0;
 }
 
-/* --- Etapas (serviços) --- */
+/* --- Avaliações --- */
 
 /* Traço só aqui: nas outras seções há um subtítulo logo abaixo do título,
    e o traço no meio dos dois deixaria o bloco carregado. */
-.services h2::after {
+.reviews h2::after {
   content: "";
   display: block;
   width: 62px;
@@ -823,77 +823,109 @@ h1, h2, h3 {
   background: var(--color-accent);
 }
 
-.steps {
-  position: relative;
+.review-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
   margin-top: 3rem;
 }
 
-/* Linha ligando as quatro etapas, na altura do centro dos números
-   (2rem de padding do card + metade do círculo). Fica atrás dos cards e
-   some sob os números, que são opacos.
-
-   Só faz sentido com as quatro em uma fileira: quebrando em duas linhas,
-   ela cruzaria a segunda fileira numa altura arbitrária — ver o media
-   query logo abaixo. */
-.steps::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 2px;
-  /* mais forte do que a borda dos cards: em vãos de 20px um traço sutil
-     simplesmente não é visto */
-  background: rgba(90, 150, 255, 0.6);
-}
-
-/* abaixo disso as quatro etapas não cabem em uma fileira só */
-@media (max-width: 1060px) {
-  .steps::before { display: none; }
-}
-
-.step {
-  position: relative;
-  padding: 2.5rem 1.75rem 3rem;
-  text-align: center;
-  /* opaco: a linha passa atrás e só aparece nos vãos entre os cards */
+.review {
+  display: flex;
+  flex-direction: column;
+  /* o rodapé com o nome desce sozinho, então depoimentos de tamanhos
+     diferentes ainda alinham a assinatura na mesma linha de base */
+  gap: 1.25rem;
+  padding: 2rem 1.75rem;
+  margin: 0;
   background: #0b111e;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
 }
 
-.step:hover {
+.review:hover {
   transform: translateY(-4px);
   border-color: var(--color-border-strong);
 }
 
-.step-number {
+.review-stars {
+  color: var(--color-accent);
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  line-height: 1;
+}
+
+.review blockquote {
+  flex: 1;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.review-quem {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.review-inicial {
   display: grid;
   place-items: center;
-  width: 2.9rem;
-  height: 2.9rem;
-  margin: 0 auto 1.5rem;
+  flex: 0 0 auto;
+  width: 2.6rem;
+  height: 2.6rem;
   background: #050912;
   border: 1px solid var(--color-border);
   border-radius: 50%;
-  color: var(--color-text);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
-.step h3 {
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
+.review-dados {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+  min-width: 0;
 }
 
-.step p {
+.review-nome {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.review-papel {
   color: var(--color-text-muted);
-  font-size: 0.92rem;
+  font-size: 0.85rem;
+}
+
+/* Enquanto o depoimento não chegou: borda tracejada e texto apagado, para
+   ninguém publicar sem perceber que o conteúdo ainda é de mentira. Some
+   sozinho quando a classe sair do HTML. */
+.review.is-vazia {
+  border-style: dashed;
+  border-color: rgba(140, 149, 171, 0.35);
+}
+
+.review.is-vazia:hover {
+  transform: none;
+  border-color: rgba(140, 149, 171, 0.35);
+}
+
+.review.is-vazia .review-stars,
+.review.is-vazia blockquote,
+.review.is-vazia .review-nome,
+.review.is-vazia .review-papel {
+  color: var(--color-text-muted);
+}
+
+.review.is-vazia blockquote,
+.review.is-vazia .review-nome {
+  font-style: italic;
+  font-weight: 500;
 }
 
 /* --- Contato --- */
