@@ -938,7 +938,10 @@ h1, h2, h3 {
 .review-corpo {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Alinhado pelo topo de propósito. Centralizado, cada card começava numa
+     altura diferente conforme o tamanho do depoimento, e os nomes ficavam
+     desencontrados na fileira. A sobra vai toda para o pé, onde o fundo
+     translúcido deixa passar a fumaça e ela não incomoda. */
   gap: 1.15rem;
   padding: 1.9rem 1.5rem;
   min-width: 0;
