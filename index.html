@@ -3,124 +3,405 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mateus Althiere | Editor de Vídeo</title>
-  <meta name="description" content="Portfólio de Mateus Althiere, editor de vídeo especializado em conteúdo de alto engajamento.">
-  <link rel="stylesheet" href="styles.css">
+  <title>Mateus Althiery | Editor de Vídeo</title>
+  <meta name="description" content="Portfólio de Mateus Althiery, editor de vídeo especializado em conteúdo de alto engajamento.">
+  <meta name="theme-color" content="#0a0708">
+
+  <!-- Prévia ao compartilhar o link no WhatsApp, Instagram, Discord etc.
+       Falta og:image: os leitores de prévia (WhatsApp e Facebook em
+       especial) exigem URL absoluta, que só dá para escrever quando o site
+       tiver domínio. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mateus Althiery | Editor de Vídeo">
+  <meta property="og:description" content="Edição de vídeo para criadores de conteúdo e empresas.">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- favicon.ico fica na raiz de propósito: é o caminho que o navegador
+       pede sozinho, mesmo sem tag nenhuma, e serve de rede de segurança
+       para quem ignora o PNG ou já guardou em cache que o site não tinha. -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=mtrpxr8b">
 </head>
 <body>
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <!-- Gradiente do selo do Instagram, definido uma vez e reusado nos cards -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#feda75"/>
+        <stop offset="0.25" stop-color="#fa7e1e"/>
+        <stop offset="0.5" stop-color="#d62976"/>
+        <stop offset="0.75" stop-color="#962fbf"/>
+        <stop offset="1" stop-color="#4f5bd5"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
   <header class="site-header">
     <nav class="navbar">
-      <a href="#home" class="logo">Mateus Althiere</a>
+      <a href="#home" class="logo">
+        <img class="logo-mark" src="assets/avatar.jpg" alt="Foto de Mateus Althiery" width="44" height="44">
+        <span class="logo-text">Mateus Althiery <span class="logo-tag">| Editor</span></span>
+      </a>
       <ul class="nav-links">
-        <li><a href="#home">Início</a></li>
-        <li><a href="#portfolio">Portfólio</a></li>
-        <li><a href="#services">Serviços</a></li>
-        <li><a href="#about">Sobre</a></li>
-        <li><a href="#contact">Contato</a></li>
+        <li><a href="#home" data-i18n="nav.home">Início</a></li>
+        <li><a href="#portfolio" data-i18n="nav.portfolio">Portfólio</a></li>
+        <li><a href="#services" data-i18n="nav.services">Serviços</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
       </ul>
-      <a href="#contact" class="btn btn-primary">Começar</a>
+      <div class="nav-end">
+        <button class="lang-switch" type="button" role="switch" aria-checked="false" aria-label="Mudar idioma para inglês">
+          <span class="lang-label" data-lang="en">EN</span>
+          <span class="lang-track"><span class="lang-knob"></span></span>
+          <span class="lang-label is-on" data-lang="pt">PT</span>
+        </button>
+        <a href="#contact" class="btn btn-primary btn-sm" data-i18n="nav.cta">Começar</a>
+      </div>
     </nav>
   </header>
 
   <main>
     <section id="home" class="hero">
-      <p class="hero-badge">Disponível para novos projetos</p>
-      <h1>Vídeos que geram resultado</h1>
-      <p class="hero-subtitle">Edição de vídeo para criadores de conteúdo e negócios.</p>
-      <div class="hero-actions">
-        <a href="#portfolio" class="btn btn-primary">Ver meu trabalho</a>
-        <a href="#contact" class="btn btn-secondary">Entrar em contato</a>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <span class="stat-number">0+</span>
-          <span class="stat-label">Projetos concluídos</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">0M+</span>
-          <span class="stat-label">Visualizações geradas</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number">0%</span>
-          <span class="stat-label">Satisfação dos clientes</span>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <p class="hero-badge reveal"><span class="badge-dot"></span><span data-i18n="hero.badge">Disponível para novos projetos</span></p>
+        <h1 class="reveal" data-i18n-html="hero.title">Vídeos que geram<br>resultados</h1>
+        <p class="hero-subtitle reveal" data-i18n="hero.subtitle">Edição de vídeo para criadores de conteúdo e empresas</p>
+        <div class="hero-actions reveal">
+          <a href="#portfolio" class="btn btn-primary"><span data-i18n="hero.cta1">Veja meu trabalho</span> <span class="arrow">↓</span></a>
+          <a href="#contact" class="btn-link" data-i18n="hero.cta2">Entre em contato</a>
         </div>
       </div>
     </section>
 
     <section id="portfolio" class="portfolio">
-      <h2>Trabalhos em destaque</h2>
-      <p class="section-subtitle">Uma seleção de edições feitas para maximizar o engajamento em diferentes nichos e plataformas.</p>
-      <div class="filters">
-        <button class="filter-btn active" data-filter="all">Todos</button>
-        <button class="filter-btn" data-filter="shorts">Vídeos curtos</button>
-        <button class="filter-btn" data-filter="long">Vídeos longos</button>
-      </div>
-      <div class="portfolio-grid">
-        <article class="portfolio-item" data-category="shorts">
-          <div class="thumb">Projeto 1</div>
-          <h3>Nome do projeto</h3>
-          <p>Categoria do cliente</p>
-        </article>
-        <article class="portfolio-item" data-category="long">
-          <div class="thumb">Projeto 2</div>
-          <h3>Nome do projeto</h3>
-          <p>Categoria do cliente</p>
-        </article>
-        <article class="portfolio-item" data-category="shorts">
-          <div class="thumb">Projeto 3</div>
-          <h3>Nome do projeto</h3>
-          <p>Categoria do cliente</p>
-        </article>
+      <div class="container">
+        <p class="eyebrow reveal" data-i18n="portfolio.eyebrow">PORTFÓLIO</p>
+        <h2 class="reveal" data-i18n="portfolio.title">Trabalhos em destaque</h2>
+        <p class="section-subtitle reveal" data-i18n="portfolio.subtitle">Uma seleção de edições feitas para maximizar o engajamento em diferentes nichos e plataformas.</p>
+
+        <div class="format-toggle reveal" role="tablist" aria-label="Formato dos vídeos">
+          <button class="format-btn is-active" data-format="short" role="tab" aria-selected="true" data-i18n="format.short">Vídeos curtos</button>
+          <button class="format-btn" data-format="long" role="tab" aria-selected="false" data-i18n="format.long">Vídeos longos</button>
+        </div>
+
+        <div class="cat-filters reveal" data-for="short">
+          <button class="filter-btn is-active" data-cat="all" data-i18n="cat.all">Todos</button>
+          <button class="filter-btn" data-cat="direct-response" data-i18n="cat.direct-response">Direct Response</button>
+          <button class="filter-btn" data-cat="personal-brand" data-i18n="cat.personal-brand">Personal Brand</button>
+          <button class="filter-btn" data-cat="gameplay" data-i18n="cat.gameplay">Gameplay</button>
+          <button class="filter-btn" data-cat="marketing" data-i18n="cat.marketing">Marketing</button>
+          <button class="filter-btn" data-cat="ia" data-i18n="cat.ia">IA</button>
+        </div>
+
+        <div class="cat-filters reveal" data-for="long" hidden>
+          <button class="filter-btn is-active" data-cat="all" data-i18n="cat.all">Todos</button>
+          <button class="filter-btn" data-cat="business" data-i18n="cat.business">Business</button>
+          <button class="filter-btn" data-cat="tech" data-i18n="cat.tech">Tech</button>
+        </div>
+
+        <div class="carousel">
+          <button class="rail-nav prev" type="button" aria-label="Ver trabalhos anteriores" data-i18n-aria="nav.prev">‹</button>
+          <button class="rail-nav next" type="button" aria-label="Ver próximos trabalhos" data-i18n-aria="nav.next">›</button>
+          <div class="portfolio-grid mode-short" tabindex="0" role="group" aria-label="Trabalhos em destaque">
+          <!-- Vídeos curtos -->
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="f7AXhg_FGFE" data-ratio="16:9" href="https://youtu.be/f7AXhg_FGFE" target="_blank" rel="noopener">
+              <img class="thumb" width="1080" height="1920" src="assets/jawad-x-josh.jpg" alt="Miniatura do vídeo Jawad x Josh: Build your brand around the right clients" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Jawad x Josh</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="n1ITJvI4Zac" href="https://youtube.com/shorts/n1ITJvI4Zac" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/n1ITJvI4Zac/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/n1ITJvI4Zac/oardefault.jpg" alt="Miniatura do vídeo Adrian" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Adrian</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="K6mCgeJdNU8" data-ratio="16:9" href="https://youtu.be/K6mCgeJdNU8" target="_blank" rel="noopener">
+              <img class="thumb" width="1080" height="1920" src="assets/dorian-x-scott.jpg" alt="Miniatura do vídeo Dorian x Scott: You don't get what you want, you get what you need" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Dorian x Scott</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="cpbBHUYB6ok" href="https://youtube.com/shorts/cpbBHUYB6ok" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/cpbBHUYB6ok/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/cpbBHUYB6ok/oardefault.jpg" alt="Miniatura do vídeo O Segredo das Clínicas que Nunca Param de Crescer" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">O Segredo das Clínicas que Nunca Param de Crescer</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="Dxhp3i1hF-U" data-ratio="16:9" href="https://youtu.be/Dxhp3i1hF-U" target="_blank" rel="noopener">
+              <img class="thumb" width="1080" height="1920" src="assets/dorian-x-sab.jpg" alt="Miniatura do vídeo Dorian x Sab: You don't have business problems, you have personal problems" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Dorian x Sab</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="gameplay">
+            <a class="card is-vertical" data-video="_ybfJBJznDE" href="https://youtube.com/shorts/_ybfJBJznDE" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/_ybfJBJznDE/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/_ybfJBJznDE/oardefault.jpg" alt="Miniatura do vídeo Scorpion Gamer" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Scorpion Gamer</h3>
+                <span class="card-cat">Gameplay</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="_UD3Il69Qkc" href="https://youtube.com/shorts/_UD3Il69Qkc" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/_UD3Il69Qkc/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/_UD3Il69Qkc/oardefault.jpg" alt="Miniatura do vídeo Você Não É Fraco, Você Tá Preso num Loop" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Você Não É Fraco, Você Tá Preso num Loop</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="GDoVMyQNGU0" href="https://youtube.com/shorts/GDoVMyQNGU0" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/GDoVMyQNGU0/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/GDoVMyQNGU0/oardefault.jpg" alt="Miniatura do vídeo 22 Clínicas Faturando: O Método por Trás do Power Clinic" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">22 Clínicas Faturando: O Método por Trás do Power Clinic</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="BJxW_Jw5yh4" href="https://youtube.com/shorts/BJxW_Jw5yh4" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/BJxW_Jw5yh4/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/BJxW_Jw5yh4/oardefault.jpg" alt="Miniatura do vídeo Como Manter a Clareza Mental Sendo Dona de Clínica" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Como Manter a Clareza Mental Sendo Dona de Clínica</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="pTlQATOECLg" href="https://youtube.com/shorts/pTlQATOECLg" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/pTlQATOECLg/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/pTlQATOECLg/oardefault.jpg" alt="Miniatura do vídeo Bilionário Americano" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Bilionário Americano</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="ia">
+            <a class="card is-vertical" data-video="koJ6ztf1IRI" href="https://youtube.com/shorts/koJ6ztf1IRI" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="Miniatura do vídeo Donos de Empresa e Editores de Vídeo" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Donos de Empresa e Editores de Vídeo</h3>
+                <span class="card-cat" data-i18n="cat.ia">IA</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <!-- Vídeos longos -->
+          <article class="portfolio-item" data-format="long" data-cat="business" hidden>
+            <a class="card" data-video="u1mLUbfrR4U" href="https://www.youtube.com/watch?v=u1mLUbfrR4U" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1280" height="720" src="https://i.ytimg.com/vi/u1mLUbfrR4U/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1280" height="720" src="https://i.ytimg.com/vi/u1mLUbfrR4U/hq720.jpg" alt="Miniatura do vídeo I Applied 100+ Hours of Hormozi's" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">I Applied 100+ Hours of Hormozi's</h3>
+                <span class="card-cat">Koehn Dyck · Business</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="long" data-cat="business" hidden>
+            <a class="card" data-video="iBlTvQnPzo8" href="https://www.youtube.com/watch?v=iBlTvQnPzo8" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1280" height="720" src="https://i.ytimg.com/vi/iBlTvQnPzo8/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1280" height="720" src="https://i.ytimg.com/vi/iBlTvQnPzo8/hq720.jpg" alt="Miniatura do vídeo If You Don't Understand This Principle" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">If You Don't Understand This Principle</h3>
+                <span class="card-cat">Koehn Dyck · Business</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="long" data-cat="tech" hidden>
+            <a class="card" data-video="zwzvbwhmS7E" href="https://youtu.be/zwzvbwhmS7E" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1280" height="720" src="https://i.ytimg.com/vi/zwzvbwhmS7E/hq720.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1280" height="720" src="https://i.ytimg.com/vi/zwzvbwhmS7E/hq720.jpg" alt="Miniatura do vídeo 1000+ Hours of Building with Claude" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">1000+ Hours of Building with Claude</h3>
+                <span class="card-cat">Isaac · Tech</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="services" class="services">
-      <h2>Como funciona</h2>
-      <div class="steps">
-        <div class="step">
-          <span class="step-number">1</span>
-          <h3>Envie o material</h3>
-          <p>Me envie os clipes brutos e eu cuido do resto.</p>
-        </div>
-        <div class="step">
-          <span class="step-number">2</span>
-          <h3>Edição</h3>
-          <p>Gancho, legendas, som e transições — o pacote completo.</p>
-        </div>
-        <div class="step">
-          <span class="step-number">3</span>
-          <h3>Revisão</h3>
-          <p>Entrega rápida e revisões combinadas.</p>
-        </div>
-        <div class="step">
-          <span class="step-number">4</span>
-          <h3>Você publica</h3>
-          <p>Suba o vídeo e acompanhe os resultados.</p>
+      <div class="container">
+        <p class="eyebrow reveal" data-i18n="services.eyebrow">SERVIÇOS</p>
+        <h2 class="reveal" data-i18n="services.title">Como funciona</h2>
+        <div class="steps reveal">
+          <div class="step">
+            <span class="step-number">1</span>
+            <h3 data-i18n="step1.title">Envie o material</h3>
+            <p data-i18n="step1.desc">Me envie os clipes brutos e eu cuido do resto.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <h3 data-i18n="step2.title">Edição</h3>
+            <p data-i18n="step2.desc">Gancho, legendas, som e transições — o pacote completo.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <h3 data-i18n="step3.title">Revisão</h3>
+            <p data-i18n="step3.desc">Entrega rápida e revisões combinadas.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <h3 data-i18n="step4.title">Você publica</h3>
+            <p data-i18n="step4.desc">Suba o vídeo e acompanhe os resultados.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="about">
-      <h2>Sobre mim</h2>
-      <p>Meu nome é Mateus Althiere. Sou editor de vídeo e gosto de transformar material bruto em conteúdo que prende a atenção do público do início ao fim.</p>
-    </section>
-
     <section id="contact" class="contact">
-      <h2>Pronto para começar?</h2>
-      <p>Escolha a plataforma de sua preferência para iniciar a conversa.</p>
-      <div class="contact-links">
-        <a href="https://wa.me/5584991848134" target="_blank" rel="noopener" class="btn btn-primary">WhatsApp</a>
-        <a href="https://www.instagram.com/mateus_althiery/" target="_blank" rel="noopener" class="btn btn-secondary">Instagram</a>
-        <a href="mailto:mateusalthiere@gmail.com" class="btn btn-secondary">E-mail</a>
+      <div class="container">
+        <p class="eyebrow reveal" data-i18n="contact.eyebrow">CONTATO</p>
+        <h2 class="reveal" data-i18n="contact.title">Pronto para ter resultados?</h2>
+        <p class="section-subtitle reveal" data-i18n="contact.subtitle">Escolha a plataforma de sua preferência para iniciar a conversa.</p>
+        <div class="contact-cards">
+          <a class="contact-card is-whatsapp reveal" href="https://wa.me/5584991848134" target="_blank" rel="noopener">
+            <span class="contact-icon icon-whatsapp" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path fill="#fff" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.18.2-.35.23-.65.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.18-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26A9.88 9.88 0 0 1 18.9 4.95a9.83 9.83 0 0 1 2.9 7 9.88 9.88 0 0 1-9.75 9.84M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.49-8.42"/></svg>
+            </span>
+            <span class="contact-name">WhatsApp</span>
+            <span class="contact-sub">+55 84 99184-8134</span>
+          </a>
+
+          <a class="contact-card is-instagram reveal" href="https://www.instagram.com/mateus_althiery/" target="_blank" rel="noopener">
+            <span class="contact-icon icon-instagram" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="17.1" cy="6.9" r="1.25" fill="#fff"/></svg>
+            </span>
+            <span class="contact-name">Instagram</span>
+            <span class="contact-sub">@mateus_althiery</span>
+          </a>
+
+          <button class="contact-card is-discord reveal" type="button" data-copy="meltheux133">
+            <span class="contact-icon icon-discord" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path fill="#fff" d="M20.32 4.37a19.79 19.79 0 0 0-4.89-1.51.07.07 0 0 0-.7.04c-.22.37-.45.86-.61 1.25a18.27 18.27 0 0 0-5.49 0c-.16-.4-.4-.88-.62-1.25a.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.51.07.07 0 0 0-.4.03C.53 9.05-.32 13.58.1 18.06c0 .02.01.04.03.05a19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .09-.03c.46-.63.87-1.3 1.22-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1 0-.13l.37-.29a.07.07 0 0 1 .08-.01 14.19 14.19 0 0 0 12.06 0 .07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.65-1.88.89a.08.08 0 0 0-.4.11c.36.7.77 1.36 1.22 1.99a.08.08 0 0 0 .09.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.05c.5-5.18-.84-9.68-3.55-13.66a.06.06 0 0 0-.03-.03M8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.96 2.42-2.16 2.42m7.97 0c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.95 2.42-2.16 2.42"/></svg>
+            </span>
+            <span class="contact-name">Discord</span>
+            <span class="contact-sub">meltheux133</span>
+            <span class="copied-flag" data-i18n="contact.copied">Copiado!</span>
+          </button>
+        </div>
+        <p class="visually-hidden" role="status" aria-live="polite" id="copy-status"></p>
+        <p class="contact-note reveal"><span class="badge-dot"></span><span data-i18n="contact.note">Costumo responder em até 24h.</span></p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>Mateus Althiere | Editor de Vídeo</p>
-    <p>&copy; 2026. Todos os direitos reservados.</p>
+    <div class="container">
+      <p class="footer-name">Mateus Althiery <span class="logo-tag" data-i18n="footer.role">| Editor de Vídeo</span></p>
+      <p><a href="mailto:mateusalthiere@gmail.com">mateusalthiere@gmail.com</a></p>
+      <p class="footer-copy" data-i18n="footer.rights">&copy; 2026. Todos os direitos reservados.</p>
+    </div>
   </footer>
 
-  <script src="script.js"></script>
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox-backdrop" data-close></div>
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+      <button class="lightbox-close" type="button" data-close aria-label="Fechar vídeo" data-i18n-aria="lightbox.close">✕</button>
+      <div class="lightbox-stage">
+        <div class="lightbox-glow" aria-hidden="true"></div>
+        <div class="lightbox-frame">
+          <div id="lightbox-mount"></div>
+        </div>
+        <!-- Controles próprios por cima do vídeo. Também servem de escudo:
+             sem o ponteiro chegar no iframe, o YouTube não mostra a barra
+             dele durante a reprodução. -->
+        <div class="player-ui" id="player-ui">
+          <button class="player-hit" type="button" aria-label="Pausar vídeo"></button>
+          <div class="player-bar">
+            <button class="player-toggle" type="button" aria-label="Pausar vídeo">
+              <span class="icon-pause" aria-hidden="true"></span>
+            </button>
+            <div class="player-track" role="slider" tabindex="0" aria-label="Posição do vídeo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="player-fill"></div>
+            </div>
+            <span class="player-time">0:00</span>
+          </div>
+        </div>
+      </div>
+      <div class="lightbox-meta">
+        <h3 class="lightbox-title" id="lightbox-title"></h3>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=mtrpxr8b"></script>
 </body>
 </html>

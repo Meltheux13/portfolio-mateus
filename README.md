@@ -1,4 +1,4 @@
-# Portfólio — Mateus Althiere
+# Portfólio — Mateus Althiery
 
 Site de portfólio pessoal, em HTML/CSS/JS puro.
 

@@ -1,0 +1,613 @@
+<!-- Versão VSL e anúncios. Cópia independente do portfólio principal:
+     mexer aqui não afeta o site da raiz. -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mateus Althiery | VSL &amp; Anúncios</title>
+  <meta name="description" content="Mateus Althiery edita VSL e criativos de anúncio para quem vive de tráfego pago.">
+  <meta name="theme-color" content="#070a12">
+
+  <!-- Prévia ao compartilhar o link no WhatsApp, Instagram, Discord etc.
+       Falta og:image: os leitores de prévia (WhatsApp e Facebook em
+       especial) exigem URL absoluta, que só dá para escrever quando o site
+       tiver domínio. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mateus Althiery | VSL &amp; Anúncios">
+  <meta property="og:description" content="Edição de VSL e criativos de anúncio para tráfego pago.">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- favicon.ico fica na raiz de propósito: é o caminho que o navegador
+       pede sozinho, mesmo sem tag nenhuma, e serve de rede de segurança
+       para quem ignora o PNG ou já guardou em cache que o site não tinha. -->
+  <link rel="icon" href="favicon.ico?v=msxfsxzx" sizes="32x32">
+  <link rel="icon" href="assets/favicon-32.png?v=msxfsxzx" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=msxfsxzx">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=mtwlc90q">
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true">
+    <!-- As manchas em CSS são a reserva: se o WebGL não iniciar, elas
+         continuam à vista e o fundo segue animado. -->
+    <span class="bg-blob blob-1"></span>
+    <span class="bg-blob blob-2"></span>
+    <span class="bg-blob blob-3"></span>
+  </div>
+
+  <!-- Gradiente do selo do Instagram, definido uma vez e reusado nos cards -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <linearGradient id="ig-grad" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#feda75"/>
+        <stop offset="0.25" stop-color="#fa7e1e"/>
+        <stop offset="0.5" stop-color="#d62976"/>
+        <stop offset="0.75" stop-color="#962fbf"/>
+        <stop offset="1" stop-color="#4f5bd5"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="#home" class="logo">
+        <img class="logo-mark" src="assets/avatar.jpg" alt="Foto de Mateus Althiery" width="44" height="44">
+        <span class="logo-text">Mateus Althiery <span class="logo-tag">| Editor</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home">Início</a></li>
+        <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#reviews">Avaliações</a></li>
+        <li><a href="#contact">Contato</a></li>
+      </ul>
+      <div class="nav-end">
+        <a href="#contact" class="btn btn-primary btn-sm">Começar</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <canvas class="bg-canvas" id="bg-canvas" aria-hidden="true"></canvas>
+      <div class="container hero-inner">
+        <p class="hero-badge reveal"><span class="badge-dot"></span><span>Disponível para novos projetos</span></p>
+        <h1 class="reveal">VSL e anúncios<br>que vendem</h1>
+        <p class="hero-subtitle reveal">Edição de VSL e criativos para quem vive de tráfego pago</p>
+        <div class="hero-actions reveal">
+          <a href="#portfolio" class="btn btn-primary"><span>Veja meu trabalho</span> <span class="arrow">↓</span></a>
+          <a href="#contact" class="btn-link">Entre em contato</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Faixa de ferramentas. O <ul> traz os seis itens uma vez; o script
+         clona a lista para a esteira poder rodar em laço. Sem JS, ou com
+         "menos movimento" ligado, ela fica parada e rolável na mão. -->
+    <section class="tools" aria-label="Ferramentas que uso">
+      <p class="tools-eyebrow">FERRAMENTAS DO DIA A DIA</p>
+      <div class="tools-marquee">
+        <ul class="tools-track">
+          <li class="tool">
+            <span class="tool-logo" aria-hidden="true">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="38" height="38" rx="9" fill="#2a0634" stroke="#ea77ff" stroke-width="2"/>
+                <text x="20" y="21" text-anchor="middle" dominant-baseline="central" fill="#ea77ff" font-family="Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Pr</text>
+              </svg>
+            </span>
+            <span class="tool-name">Adobe Premiere Pro</span>
+          </li>
+          <li class="tool">
+            <span class="tool-logo" aria-hidden="true">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="38" height="38" rx="9" fill="#00005b" stroke="#9999ff" stroke-width="2"/>
+                <text x="20" y="21" text-anchor="middle" dominant-baseline="central" fill="#9999ff" font-family="Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Ae</text>
+              </svg>
+            </span>
+            <span class="tool-name">Adobe After Effects</span>
+          </li>
+          <li class="tool">
+            <span class="tool-logo" aria-hidden="true">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="38" height="38" rx="9" fill="#1d0b33" stroke="#c98cff" stroke-width="2"/>
+                <g fill="#c98cff">
+                  <rect x="11" y="17.5" width="2.6" height="5" rx="1.3"/>
+                  <rect x="15.6" y="13.5" width="2.6" height="13" rx="1.3"/>
+                  <rect x="20.2" y="10" width="2.6" height="20" rx="1.3"/>
+                  <rect x="24.8" y="15" width="2.6" height="10" rx="1.3"/>
+                </g>
+              </svg>
+            </span>
+            <span class="tool-name">Adobe Podcast</span>
+          </li>
+          <li class="tool">
+            <span class="tool-logo" aria-hidden="true">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="38" height="38" rx="9" fill="#001e36" stroke="#31a8ff" stroke-width="2"/>
+                <text x="20" y="21" text-anchor="middle" dominant-baseline="central" fill="#31a8ff" font-family="Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Ps</text>
+              </svg>
+            </span>
+            <span class="tool-name">Adobe Photoshop</span>
+          </li>
+          <li class="tool">
+            <span class="tool-logo tool-logo-plain" aria-hidden="true">
+              <svg viewBox="26 25 458 458" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#5c50f5" stroke-linecap="round">
+                <path d="M95 62 C 75 180, 75 330, 95 448" stroke-width="70"/>
+                <path d="M222 112 C 205 200, 205 320, 222 404" stroke-width="66"/>
+                <path d="M336 188 C 328 225, 328 290, 336 325" stroke-width="60"/>
+                <path d="M440 238 L 440 268" stroke-width="52"/>
+              </svg>
+            </span>
+            <span class="tool-name">Frame.io</span>
+          </li>
+          <li class="tool">
+            <span class="tool-logo tool-logo-plain" aria-hidden="true">
+              <svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                <path d="M43.65 25L29.9 1.2c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44A9.06 9.06 0 0 0 0 53h27.5z" fill="#00ac47"/>
+                <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.798l5.852 11.5z" fill="#ea4335"/>
+                <path d="M43.65 25L57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+                <path d="M59.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+                <path d="M73.4 26.5l-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+              </svg>
+            </span>
+            <span class="tool-name">Google Drive</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+      <div class="container">
+        <p class="eyebrow reveal">PORTFÓLIO</p>
+        <h2 class="reveal">VSL e criativos</h2>
+        <p class="section-subtitle reveal">Peças feitas para uma coisa só: transformar visualização em venda.</p>
+
+        <div class="format-toggle reveal" role="tablist" aria-label="Formato dos vídeos">
+          <button class="format-btn is-active" data-format="short" role="tab" aria-selected="true">ADS</button>
+          <button class="format-btn" data-format="long" role="tab" aria-selected="false">VSL</button>
+        </div>
+
+        <div class="cat-filters reveal" data-for="short">
+          <button class="filter-btn is-active" data-cat="all">Todos</button>
+          <button class="filter-btn" data-cat="direct-response">Direct Response</button>
+          <button class="filter-btn" data-cat="personal-brand">Personal Brand</button>
+          <button class="filter-btn" data-cat="marketing">Marketing</button>
+          <button class="filter-btn" data-cat="ia">IA</button>
+        </div>
+
+        <div class="carousel">
+          <button class="rail-nav prev" type="button" aria-label="Ver trabalhos anteriores">‹</button>
+          <button class="rail-nav next" type="button" aria-label="Ver próximos trabalhos">›</button>
+          <div class="portfolio-grid mode-short" tabindex="0" role="group" aria-label="Trabalhos em destaque">
+          <!-- Vídeos curtos -->
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="B1Ph96RbZvU" href="https://youtube.com/shorts/B1Ph96RbZvU" target="_blank" rel="noopener">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/B1Ph96RbZvU/oar1.jpg" alt="Miniatura do vídeo O Mercado Que Me Fez Sair do Zero e Lucrar R$200 Mil em 1 Ano" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">O Mercado Que Me Fez Sair do Zero e Lucrar R$200 Mil em 1 Ano</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+<article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="cpbBHUYB6ok" href="https://youtube.com/shorts/cpbBHUYB6ok" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/cpbBHUYB6ok/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/cpbBHUYB6ok/oardefault.jpg" alt="Miniatura do vídeo O Segredo das Clínicas que Nunca Param de Crescer" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">O Segredo das Clínicas que Nunca Param de Crescer</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+                              <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="_UD3Il69Qkc" href="https://youtube.com/shorts/_UD3Il69Qkc" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/_UD3Il69Qkc/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/_UD3Il69Qkc/oardefault.jpg" alt="Miniatura do vídeo Você Não É Fraco, Você Tá Preso num Loop" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Você Não É Fraco, Você Tá Preso num Loop</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="GDoVMyQNGU0" href="https://youtube.com/shorts/GDoVMyQNGU0" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/GDoVMyQNGU0/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/GDoVMyQNGU0/oardefault.jpg" alt="Miniatura do vídeo 22 Clínicas Faturando: O Método por Trás do Power Clinic" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">22 Clínicas Faturando: O Método por Trás do Power Clinic</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="personal-brand">
+            <a class="card is-vertical" data-video="BJxW_Jw5yh4" href="https://youtube.com/shorts/BJxW_Jw5yh4" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/BJxW_Jw5yh4/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/BJxW_Jw5yh4/oardefault.jpg" alt="Miniatura do vídeo Como Manter a Clareza Mental Sendo Dona de Clínica" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Como Manter a Clareza Mental Sendo Dona de Clínica</h3>
+                <span class="card-cat">Personal Brand</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+<article class="portfolio-item" data-format="short" data-cat="ia">
+            <a class="card is-vertical" data-video="koJ6ztf1IRI" href="https://youtube.com/shorts/koJ6ztf1IRI" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/koJ6ztf1IRI/oardefault.jpg" alt="Miniatura do vídeo Donos de Empresa e Editores de Vídeo" loading="lazy">
+              <span class="yt-badge ig-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#ig-grad)"/><rect x="5.6" y="5.6" width="12.8" height="12.8" rx="4" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="12" r="3.15" fill="none" stroke="#fff" stroke-width="1.7"/><circle cx="16.7" cy="7.4" r="1.05" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Donos de Empresa e Editores de Vídeo</h3>
+                <span class="card-cat">IA</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="EOTc7_WV0Rk" href="https://youtube.com/shorts/EOTc7_WV0Rk" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/EOTc7_WV0Rk/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/EOTc7_WV0Rk/oar1.jpg" alt="Miniatura do vídeo Grupo Valority: Liberte-se do Financiamento Abusivo" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Grupo Valority: Liberte-se do Financiamento Abusivo</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="r6B7DFDPe3g" href="https://youtube.com/shorts/r6B7DFDPe3g" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/r6B7DFDPe3g/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/r6B7DFDPe3g/oar1.jpg" alt="Miniatura do vídeo FC3 Agro: Onde o Trator Trava, o Drone Resolve" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">FC3 Agro: Onde o Trator Trava, o Drone Resolve</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="5Q22KJFLgQY" href="https://youtube.com/shorts/5Q22KJFLgQY" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/5Q22KJFLgQY/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/5Q22KJFLgQY/oar1.jpg" alt="Miniatura do vídeo FP Importados: Experimente Antes de Comprar" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">FP Importados: Experimente Antes de Comprar</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="7inPsi88R_8" href="https://youtube.com/shorts/7inPsi88R_8" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/7inPsi88R_8/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/7inPsi88R_8/oar1.jpg" alt="Miniatura do vídeo Bolsas Artesanais Exclusivas" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Bolsas Artesanais Exclusivas</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="E8WDiTBh5Rc" href="https://youtube.com/shorts/E8WDiTBh5Rc" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/E8WDiTBh5Rc/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/E8WDiTBh5Rc/oar1.jpg" alt="Miniatura do vídeo O Produto Errado Quebra Seu Cabelo" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">O Produto Errado Quebra Seu Cabelo</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="NxnA4LQDp_8" href="https://youtube.com/shorts/NxnA4LQDp_8" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/NxnA4LQDp_8/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/NxnA4LQDp_8/oar1.jpg" alt="Miniatura do vídeo Experimente Antes de Comprar" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Experimente Antes de Comprar</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="ia">
+            <a class="card is-vertical" data-video="b-QnY_jGYyQ" href="https://youtube.com/shorts/b-QnY_jGYyQ" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/b-QnY_jGYyQ/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/b-QnY_jGYyQ/oar1.jpg" alt="Miniatura do vídeo Nexor IA: O Atendente Que Nunca Dorme" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Nexor IA: O Atendente Que Nunca Dorme</h3>
+                <span class="card-cat">IA</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="direct-response">
+            <a class="card is-vertical" data-video="T6G43pMFDV4" href="https://youtube.com/shorts/T6G43pMFDV4" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/T6G43pMFDV4/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/T6G43pMFDV4/oar1.jpg" alt="Miniatura do vídeo Pare de Comer Menos e Malhar Mais" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Pare de Comer Menos e Malhar Mais</h3>
+                <span class="card-cat">Direct Response</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="ia">
+            <a class="card is-vertical" data-video="DrZmFEzAYpQ" href="https://youtube.com/shorts/DrZmFEzAYpQ" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/DrZmFEzAYpQ/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/DrZmFEzAYpQ/oar1.jpg" alt="Miniatura do vídeo Saiam do Piloto Automático" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Saiam do Piloto Automático</h3>
+                <span class="card-cat">IA</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="8svckGJHpG0" href="https://youtube.com/shorts/8svckGJHpG0" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/8svckGJHpG0/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/8svckGJHpG0/oar1.jpg" alt="Miniatura do vídeo Seu Usado Vale Upgrade" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Seu Usado Vale Upgrade</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="UCLhcCiyBIc" href="https://youtube.com/shorts/UCLhcCiyBIc" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/UCLhcCiyBIc/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/UCLhcCiyBIc/oar1.jpg" alt="Miniatura do vídeo Do 12 ao 16 Pro Max" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Do 12 ao 16 Pro Max</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="vH2IeFA0rCo" href="https://youtube.com/shorts/vH2IeFA0rCo" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/vH2IeFA0rCo/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/vH2IeFA0rCo/oar1.jpg" alt="Miniatura do vídeo Avaliação do Seu iPhone em 3 Passos" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Avaliação do Seu iPhone em 3 Passos</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <article class="portfolio-item" data-format="short" data-cat="marketing">
+            <a class="card is-vertical" data-video="mfGIp69XbLk" href="https://youtube.com/shorts/mfGIp69XbLk" target="_blank" rel="noopener">
+              <img class="thumb-bg" width="1080" height="1920" src="https://i.ytimg.com/vi/mfGIp69XbLk/oar1.jpg" alt="" aria-hidden="true" loading="lazy">
+              <img class="thumb" width="1080" height="1920" src="https://i.ytimg.com/vi/mfGIp69XbLk/oar1.jpg" alt="Miniatura do vídeo Por que você se sente um fracasso...?" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">Por que você se sente um fracasso...?</h3>
+                <span class="card-cat">Marketing</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+
+          <!-- VSL -->
+          <article class="portfolio-item" data-format="long" data-cat="vsl">
+            <a class="card" data-video="HZXXPL8nWWQ" href="https://youtu.be/HZXXPL8nWWQ" target="_blank" rel="noopener">
+              <img class="thumb" width="1280" height="720" src="https://i.ytimg.com/vi/HZXXPL8nWWQ/hq720.jpg" alt="Miniatura do vídeo O Ritual Matinal das Celebridades" loading="lazy">
+              <span class="yt-badge" aria-hidden="true"><svg viewBox="0 0 24 17"><rect width="24" height="17" rx="5" fill="#f00"/><path d="M9.6 4.6v7.8L16.4 8.5z" fill="#fff"/></svg></span>
+              <span class="card-overlay">
+                <h3 class="card-title">O Ritual Matinal das Celebridades</h3>
+                <span class="card-cat">VSL</span>
+              </span>
+              <span class="play-cue" aria-hidden="true">▶</span>
+            </a>
+          </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews" class="reviews">
+      <canvas class="bg-canvas bg-canvas-secao" id="bg-canvas-reviews" aria-hidden="true"></canvas>
+      <div class="container reviews-motion">
+        <p class="eyebrow">AVALIAÇÕES</p>
+        <h2>O que dizem os clientes</h2>
+        <div class="review-grid">
+        <figure class="review">
+          <a class="review-foto-faixa" href="https://www.instagram.com/gabrielfgredo/" target="_blank" rel="noopener" aria-label="Abrir o Instagram de Gabriel Figueiredo">
+            <img src="assets/gabrielfgredo.jpg" alt="" width="150" height="150" loading="lazy">
+                      </a>
+          <div class="review-corpo">
+            <span class="review-dados">
+              <span class="review-linha-nome">
+                <span class="review-nome">Gabriel Figueiredo</span>
+                <svg class="review-selo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.00 0.80 L14.38 3.11 L17.60 2.30 L18.51 5.49 L21.70 6.40 L20.89 9.62 L23.20 12.00 L20.89 14.38 L21.70 17.60 L18.51 18.51 L17.60 21.70 L14.38 20.89 L12.00 23.20 L9.62 20.89 L6.40 21.70 L5.49 18.51 L2.30 17.60 L3.11 14.38 L0.80 12.00 L3.11 9.62 L2.30 6.40 L5.49 5.49 L6.40 2.30 L9.62 3.11 Z" fill="#3897f0" stroke="#3897f0" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.6 12.3 10.6 15.2 16.4 9.2" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="review-stars" aria-hidden="true">★★★★★</span>
+              </span>
+              <span class="review-linha-papel">
+                <span class="review-papel">Iron Group</span>
+                <span class="review-plataforma"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg><span>Instagram</span></span>
+              </span>
+            </span>
+            <span class="review-tique" aria-hidden="true"></span>
+            <blockquote class="review-destaque">“Você manda muito, mano<span class="review-ponto">.</span>”</blockquote>
+            <div class="review-texto">
+              <p>O vídeo ficou muito bom! Realmente ficou muito top, parabéns!</p>
+              <p>Curti demais o resultado.</p>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="review">
+          <a class="review-foto-faixa" href="https://www.instagram.com/grupovalorityoficial/" target="_blank" rel="noopener" aria-label="Abrir o Instagram do Grupo Valority">
+            <img src="assets/ana.jpg" alt="" width="400" height="800" loading="lazy">
+          </a>
+          <div class="review-corpo">
+            <span class="review-dados">
+              <span class="review-linha-nome">
+                <span class="review-nome">Ana Laura Lopes</span>
+                <span class="review-stars" aria-hidden="true">★★★★★</span>
+              </span>
+              <span class="review-linha-papel">
+                <span class="review-papel">Grupo Valority</span>
+                <span class="review-plataforma"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg><span>Instagram</span></span>
+              </span>
+            </span>
+            <span class="review-tique" aria-hidden="true"></span>
+            <blockquote class="review-destaque">“Arrasou demais<span class="review-ponto">!</span>”</blockquote>
+            <div class="review-texto">
+              <p>Ficou muito bom, sério.</p>
+              <p>A segunda música foi uma sacada genial.</p>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="review">
+          <a class="review-foto-faixa" href="https://www.instagram.com/nataliabeauty/" target="_blank" rel="noopener" aria-label="Abrir o Instagram de Natalia Martins">
+            <img src="assets/nataliabeauty.jpg" alt="" width="400" height="800" loading="lazy">
+          </a>
+          <div class="review-corpo">
+            <span class="review-dados">
+              <span class="review-linha-nome">
+                <span class="review-nome">Natalia Martins</span>
+                <svg class="review-selo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.00 0.80 L14.38 3.11 L17.60 2.30 L18.51 5.49 L21.70 6.40 L20.89 9.62 L23.20 12.00 L20.89 14.38 L21.70 17.60 L18.51 18.51 L17.60 21.70 L14.38 20.89 L12.00 23.20 L9.62 20.89 L6.40 21.70 L5.49 18.51 L2.30 17.60 L3.11 14.38 L0.80 12.00 L3.11 9.62 L2.30 6.40 L5.49 5.49 L6.40 2.30 L9.62 3.11 Z" fill="#3897f0" stroke="#3897f0" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.6 12.3 10.6 15.2 16.4 9.2" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="review-stars" aria-hidden="true">★★★★★</span>
+              </span>
+              <span class="review-linha-papel">
+                <span class="review-papel">Empreendedora</span>
+                <span class="review-plataforma"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg><span>Instagram</span></span>
+              </span>
+            </span>
+            <span class="review-tique" aria-hidden="true"></span>
+            <blockquote class="review-destaque">“Ficou literalmente perfeito<span class="review-ponto">.</span>”</blockquote>
+            <div class="review-texto">
+              <p>Muito bom o vídeo mesmo.</p>
+              <p>Muito obrigado.</p>
+            </div>
+          </div>
+        </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <canvas class="bg-canvas bg-canvas-secao" id="bg-canvas-contato" aria-hidden="true"></canvas>
+      <div class="container">
+        <p class="eyebrow reveal">CONTATO</p>
+        <h2 class="reveal">Pronto para escalar?</h2>
+        <p class="section-subtitle reveal">Escolha a plataforma de sua preferência para iniciar a conversa.</p>
+        <div class="contact-cards">
+          <a class="contact-card is-whatsapp reveal" href="https://wa.me/5584991848134" target="_blank" rel="noopener">
+            <span class="contact-icon icon-whatsapp" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path fill="#fff" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.18.2-.35.23-.65.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.18-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26A9.88 9.88 0 0 1 18.9 4.95a9.83 9.83 0 0 1 2.9 7 9.88 9.88 0 0 1-9.75 9.84M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.49-8.42"/></svg>
+            </span>
+            <span class="contact-name">WhatsApp</span>
+            <span class="contact-sub">+55 84 99184-8134</span>
+          </a>
+
+          <a class="contact-card is-instagram reveal" href="https://www.instagram.com/mateus_althiery/" target="_blank" rel="noopener">
+            <span class="contact-icon icon-instagram" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="17.1" cy="6.9" r="1.25" fill="#fff"/></svg>
+            </span>
+            <span class="contact-name">Instagram</span>
+            <span class="contact-sub">@mateus_althiery</span>
+          </a>
+
+          <button class="contact-card is-discord reveal" type="button" data-copy="meltheux133">
+            <span class="contact-icon icon-discord" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path fill="#fff" d="M20.32 4.37a19.79 19.79 0 0 0-4.89-1.51.07.07 0 0 0-.7.04c-.22.37-.45.86-.61 1.25a18.27 18.27 0 0 0-5.49 0c-.16-.4-.4-.88-.62-1.25a.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.51.07.07 0 0 0-.4.03C.53 9.05-.32 13.58.1 18.06c0 .02.01.04.03.05a19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .09-.03c.46-.63.87-1.3 1.22-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1 0-.13l.37-.29a.07.07 0 0 1 .08-.01 14.19 14.19 0 0 0 12.06 0 .07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.65-1.88.89a.08.08 0 0 0-.4.11c.36.7.77 1.36 1.22 1.99a.08.08 0 0 0 .09.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.05c.5-5.18-.84-9.68-3.55-13.66a.06.06 0 0 0-.03-.03M8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.96 2.42-2.16 2.42m7.97 0c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.95 2.42-2.16 2.42"/></svg>
+            </span>
+            <span class="contact-name">Discord</span>
+            <span class="contact-sub">meltheux133</span>
+            <span class="copied-flag">Copiado!</span>
+          </button>
+        </div>
+        <p class="visually-hidden" role="status" aria-live="polite" id="copy-status"></p>
+        <p class="contact-note reveal"><span class="badge-dot"></span><span>Costumo responder em até 24h.</span></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-name">Mateus Althiery <span class="logo-tag">| Editor de Vídeo</span></p>
+      <p><a href="mailto:mateusalthiere@gmail.com">mateusalthiere@gmail.com</a></p>
+      <p class="footer-copy">&copy; 2026. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox-backdrop" data-close></div>
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+      <button class="lightbox-close" type="button" data-close aria-label="Fechar vídeo">✕</button>
+      <div class="lightbox-stage">
+        <div class="lightbox-glow" aria-hidden="true"></div>
+        <div class="lightbox-frame">
+          <div id="lightbox-mount"></div>
+        </div>
+        <!-- Controles próprios por cima do vídeo. Também servem de escudo:
+             sem o ponteiro chegar no iframe, o YouTube não mostra a barra
+             dele durante a reprodução. -->
+        <div class="player-ui" id="player-ui">
+          <button class="player-hit" type="button" aria-label="Pausar vídeo"></button>
+          <div class="player-bar">
+            <button class="player-toggle" type="button" aria-label="Pausar vídeo">
+              <span class="icon-pause" aria-hidden="true"></span>
+            </button>
+            <div class="player-track" role="slider" tabindex="0" aria-label="Posição do vídeo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="player-fill"></div>
+            </div>
+            <span class="player-time">0:00</span>
+          </div>
+        </div>
+      </div>
+      <div class="lightbox-meta">
+        <h3 class="lightbox-title" id="lightbox-title"></h3>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=mtwkq60k"></script>
+</body>
+</html>

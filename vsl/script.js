@@ -7,101 +7,6 @@
 // ---------------------------------------------------------------------
 const DEFAULT_VOLUME = 60;
 
-// ---------------------------------------------------------------------
-// Traduções. A chave vem do atributo data-i18n no index.html.
-// O português é o que já está escrito no HTML; aqui mora só a versão em
-// inglês, e voltar ao português é restaurar o texto original.
-// ---------------------------------------------------------------------
-const EN = {
-  "nav.home": "Home",
-  "nav.portfolio": "Portfolio",
-  "nav.services": "Services",
-  "nav.contact": "Contact",
-  "nav.cta": "Get started",
-  "nav.prev": "Previous works",
-  "nav.next": "Next works",
-  "hero.badge": "Available for new projects",
-  "hero.title": "Videos that drive<br>results",
-  "hero.subtitle": "Video editing for content creators and businesses",
-  "hero.cta1": "See my work",
-  "hero.cta2": "Get in touch",
-  "portfolio.eyebrow": "PORTFOLIO",
-  "portfolio.title": "Featured work",
-  "portfolio.subtitle": "A selection of edits made to maximize engagement across different niches and platforms.",
-  "format.short": "Short form",
-  "format.long": "Long form",
-  "cat.all": "All",
-  "cat.direct-response": "Direct Response",
-  "cat.personal-brand": "Personal Brand",
-  "cat.gameplay": "Gameplay",
-  "cat.marketing": "Marketing",
-  "cat.ia": "AI",
-  "cat.business": "Business",
-  "cat.tech": "Tech",
-  "services.eyebrow": "SERVICES",
-  "services.title": "How it works",
-  "step1.title": "Send the footage",
-  "step1.desc": "Send me the raw clips and I take care of the rest.",
-  "step2.title": "Editing",
-  "step2.desc": "Hook, captions, sound and transitions — the full package.",
-  "step3.title": "Review",
-  "step3.desc": "Fast delivery and the revisions we agree on.",
-  "step4.title": "You publish",
-  "step4.desc": "Upload the video and watch the results.",
-  "contact.eyebrow": "CONTACT",
-  "contact.title": "Ready to get results?",
-  "contact.subtitle": "Pick your preferred platform to start the conversation.",
-  "contact.note": "I usually reply within 24h.",
-  "contact.copied": "Copied!",
-  "footer.role": "| Video Editor",
-  "footer.rights": "&copy; 2026. All rights reserved.",
-  "lightbox.close": "Close video",
-};
-
-const langSwitch = document.querySelector(".lang-switch");
-const i18nNodes = document.querySelectorAll("[data-i18n], [data-i18n-html], [data-i18n-aria]");
-
-// guarda o português original, para dispensar um segundo dicionário
-i18nNodes.forEach((node) => {
-  if (node.dataset.i18n) node.dataset.pt = node.textContent;
-  if (node.dataset.i18nHtml) node.dataset.ptHtml = node.innerHTML;
-  if (node.dataset.i18nAria) node.dataset.ptAria = node.getAttribute("aria-label");
-});
-
-function applyLanguage(lang) {
-  const en = lang === "en";
-
-  i18nNodes.forEach((node) => {
-    if (node.dataset.i18n) {
-      node.textContent = en ? EN[node.dataset.i18n] ?? node.dataset.pt : node.dataset.pt;
-    }
-    if (node.dataset.i18nHtml) {
-      node.innerHTML = en ? EN[node.dataset.i18nHtml] ?? node.dataset.ptHtml : node.dataset.ptHtml;
-    }
-    if (node.dataset.i18nAria) {
-      const valor = en ? EN[node.dataset.i18nAria] ?? node.dataset.ptAria : node.dataset.ptAria;
-      node.setAttribute("aria-label", valor);
-    }
-  });
-
-  document.documentElement.lang = en ? "en" : "pt-BR";
-  langSwitch.setAttribute("aria-checked", String(en));
-  langSwitch.setAttribute("aria-label", en ? "Switch language to Portuguese" : "Mudar idioma para inglês");
-  langSwitch.classList.toggle("is-en", en);
-  langSwitch.querySelectorAll(".lang-label").forEach((el) => {
-    el.classList.toggle("is-on", (el.dataset.lang === "en") === en);
-  });
-
-  localStorage.setItem("lang", lang);
-}
-
-langSwitch.addEventListener("click", () => {
-  applyLanguage(document.documentElement.lang === "en" ? "pt" : "en");
-});
-
-// escolha anterior; na primeira visita, segue o idioma do navegador
-const idiomaSalvo = localStorage.getItem("lang");
-applyLanguage(idiomaSalvo || (navigator.language.startsWith("pt") ? "pt" : "en"));
 
 const grid = document.querySelector(".portfolio-grid");
 const formatButtons = document.querySelectorAll(".format-btn");
@@ -671,3 +576,353 @@ catGroups.forEach((group) => {
 });
 
 applyFilters();
+
+// --- Fundo animado em WebGL ---
+// Shader adaptado do site do SalesHookAI, com autorização. Lá ele roda em
+// three.js; aqui foi portado para WebGL puro, porque a biblioteca inteira
+// pesa centenas de KB e o efeito precisa só de um quad em tela cheia.
+// As cores saem do tema, no lugar do roxo do original.
+// Chamada uma vez por canvas: a página tem duas fumaças, a do hero e a de
+// trás das avaliações.
+function montarFumaca(canvas) {
+  const pageBg = document.querySelector(".page-bg");
+  const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const gl = canvas.getContext("webgl", {
+    alpha: true,
+    antialias: false,
+    powerPreference: "low-power",
+  });
+  if (!gl) return;
+
+  const vertexSrc = `
+    attribute vec2 a_pos;
+    varying vec2 vUv;
+    void main() {
+      vUv = a_pos * 0.5 + 0.5;
+      gl_Position = vec4(a_pos, 0.0, 1.0);
+    }
+  `;
+
+  const fragmentSrc = `
+    precision highp float;
+    varying vec2 vUv;
+    uniform float uTime, uAspect;
+    uniform vec3 uA, uB, uC;
+
+    vec2 h2(vec2 p) {
+      p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+      return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+    }
+
+    // ruído de gradiente: mais orgânico que o de valor, que tende a
+    // deixar um xadrez visível nas frequências baixas
+    float noise(vec2 p) {
+      vec2 i = floor(p), f = fract(p);
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(mix(dot(h2(i + vec2(0, 0)), f - vec2(0, 0)),
+                     dot(h2(i + vec2(1, 0)), f - vec2(1, 0)), u.x),
+                 mix(dot(h2(i + vec2(0, 1)), f - vec2(0, 1)),
+                     dot(h2(i + vec2(1, 1)), f - vec2(1, 1)), u.x), u.y);
+    }
+
+    float fbm(vec2 p) {
+      float v = 0.0, a = 0.5;
+      for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.02; a *= 0.5; }
+      return v;
+    }
+
+    void main() {
+      vec2 uv = vUv;
+      vec2 p = (uv - 0.5) * vec2(uAspect, 1.0);
+      float t = uTime * 0.075;
+
+      vec2 warp = vec2(fbm(p * 0.8 + vec2(t, -t * 0.5)),
+                       fbm(p * 0.8 + vec2(-t * 0.6, t * 0.75)));
+      float f = fbm(p * 0.85 + warp * 1.15);
+      float g = fbm(p * 0.62 - warp * 0.75 + vec2(t * 0.4, t * 0.22));
+
+      // amostras espelhadas, para nascer luz dos dois lados
+      vec2 q = vec2(-p.x, p.y);
+      vec2 warpQ = vec2(-warp.x, warp.y);
+      float f2 = fbm(q * 0.85 + warpQ * 1.15 + vec2(4.3, -2.7));
+      float g2 = fbm(q * 0.62 - warpQ * 0.75 + vec2(-5.1 + t * 0.34, 3.6 + t * 0.2));
+
+      // smoothstep curto: campos de cor com borda definida, não degradê mole
+      float m1 = max(smoothstep(-0.08, 0.24, f), smoothstep(-0.08, 0.24, f2));
+      float m2 = max(smoothstep(-0.04, 0.28, g), smoothstep(-0.04, 0.28, g2));
+      // o branco entra só nas cristas do ruído mais fino. Antes ele era
+      // misturado em toda a área de m2 e lavava a fumaça de cinza; no site
+      // de origem o roxo domina e o branco aparece em pontos soltos.
+      float cristas = smoothstep(0.26, 0.44, max(g, g2));
+
+      vec3 col = mix(uB, uA, m1);
+      col = mix(col, uC, cristas * 0.4);
+      col *= max(m1, m2 * 0.8);
+
+      // grão, mais forte nos meios-tons
+      float n = fract(sin(dot(floor(uv * vec2(1600.0, 900.0)), vec2(12.9898, 78.233))) * 43758.5453);
+      float lum = dot(col, vec3(0.299, 0.587, 0.114));
+      col += (n - 0.5) * (0.2 * (1.0 - abs(lum * 2.0 - 1.0)));
+
+      // forte em cima, apagando para baixo. O segundo termo é o que mata a
+      // fumaça na borda de baixo: sem ele o alfa ainda chegava perto de 0.4
+      // ali e o fim do canvas aparecia como um risco reto.
+      float body = smoothstep(-0.25, 0.35, uv.y) * smoothstep(0.0, 0.26, uv.y);
+      float a = clamp(max(m1, m2) * body + (n - 0.5) * 0.06 * body, 0.0, 1.0);
+
+      gl_FragColor = vec4(max(col, vec3(0.0)), a);
+    }
+  `;
+
+  function compilar(tipo, src) {
+    const s = gl.createShader(tipo);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+  }
+
+  const vs = compilar(gl.VERTEX_SHADER, vertexSrc);
+  const fs = compilar(gl.FRAGMENT_SHADER, fragmentSrc);
+  if (!vs || !fs) return;
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+
+  // um triângulo só, grande o bastante para cobrir a tela
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, "a_pos");
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  const uTime = gl.getUniformLocation(prog, "uTime");
+  const uAspect = gl.getUniformLocation(prog, "uAspect");
+
+  // as três cores vêm do tema: mexer em --color-accent muda a fumaça
+  function rgb(varName, padrao) {
+    const hex = getComputedStyle(document.documentElement)
+      .getPropertyValue(varName).trim().replace("#", "");
+    const fonte = hex.length === 6 ? hex : padrao;
+    return [
+      parseInt(fonte.slice(0, 2), 16) / 255,
+      parseInt(fonte.slice(2, 4), 16) / 255,
+      parseInt(fonte.slice(4, 6), 16) / 255,
+    ];
+  }
+
+  gl.uniform3fv(gl.getUniformLocation(prog, "uA"), rgb("--color-accent", "2f7bff"));
+  gl.uniform3fv(gl.getUniformLocation(prog, "uB"), rgb("--color-bg", "070a12"));
+  gl.uniform3fv(gl.getUniformLocation(prog, "uC"), [0.81, 0.88, 1.0]);
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  function redimensionar() {
+    // teto de 1.25x: em tela retina, a resolução cheia dobra o custo sem
+    // diferença visível num efeito borrado
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    const w = Math.floor(canvas.clientWidth * dpr);
+    const h = Math.floor(canvas.clientHeight * dpr);
+    if (canvas.width === w && canvas.height === h) return;
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
+    gl.uniform1f(uAspect, w / h);
+  }
+
+  let quadro = null;
+  let inicio = null;
+  let naTela = false;
+
+  function desenhar(agora) {
+    if (inicio === null) inicio = agora;
+    redimensionar();
+    gl.uniform1f(uTime, (agora - inicio) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    quadro = requestAnimationFrame(desenhar);
+  }
+
+  function ligar() {
+    if (quadro || !naTela || semMovimento.matches || document.hidden) return;
+    quadro = requestAnimationFrame(desenhar);
+  }
+
+  function desligar() {
+    cancelAnimationFrame(quadro);
+    quadro = null;
+  }
+
+  document.addEventListener("visibilitychange", () => (document.hidden ? desligar() : ligar()));
+  semMovimento.addEventListener("change", () => (semMovimento.matches ? desligar() : ligar()));
+
+  redimensionar();
+  // um quadro parado já serve para quem pediu menos movimento
+  gl.uniform1f(uTime, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+  // Fora da tela não precisa desenhar. Com duas fumaças na página, sem isso
+  // as duas girariam o tempo todo e uma delas estaria sempre invisível.
+  new IntersectionObserver(
+    ([entrada]) => {
+      naTela = entrada.isIntersecting;
+      if (naTela) ligar();
+      else desligar();
+    },
+    { rootMargin: "150px" }
+  ).observe(canvas);
+
+  if (pageBg) pageBg.classList.add("has-shader");
+  canvas.classList.add("is-on");
+}
+
+document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
+
+// --- Esteira de ferramentas ---
+// A lista existe uma vez só no HTML; repeti-la aqui é o que permite a faixa
+// correr em laço. Três contas importam:
+//
+// 1. o passo. A esteira desliza exatamente a largura de uma repetição —
+//    os seis itens mais o espaço que vem depois do último. Usar -50%, como
+//    é comum, deixa meio espaço de erro na emenda, porque o vão só existe
+//    entre itens e não depois do último.
+// 2. quantas cópias. A esteira precisa cobrir a janela inteira mesmo no fim
+//    do passo, senão sobra um vazio na direita antes de ela reiniciar.
+// 3. a duração. Se fosse fixa, a faixa correria mais devagar numa tela
+//    larga, com mais px para percorrer no mesmo tempo. Fixando px/s ela
+//    anda igual em qualquer lugar.
+(function () {
+  const track = document.querySelector(".tools-track");
+  if (!track) return;
+
+  const marquee = track.parentElement;
+  const original = Array.from(track.children);
+  const VELOCIDADE = 66; // px/s, o mesmo passo da faixa que serviu de modelo
+
+  function montar() {
+    // volta ao estado do HTML antes de medir, senão as cópias da vez
+    // anterior entrariam na conta
+    track.classList.remove("is-looping");
+    Array.from(track.children).forEach((item, i) => {
+      if (i >= original.length) item.remove();
+    });
+
+    const vao = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const passo = track.scrollWidth + vao;
+    if (passo <= vao) return;
+
+    const copias = Math.max(2, Math.ceil(marquee.clientWidth / passo) + 1);
+    for (let c = 1; c < copias; c++) {
+      original.forEach((item) => {
+        const copia = item.cloneNode(true);
+        // a cópia é decorativa: o leitor de tela já leu a original
+        copia.setAttribute("aria-hidden", "true");
+        track.appendChild(copia);
+      });
+    }
+
+    track.style.setProperty("--tools-passo", passo + "px");
+    track.style.animationDuration = passo / VELOCIDADE + "s";
+    track.classList.add("is-looping");
+  }
+
+  montar();
+
+  // só refaz quando a largura muda de verdade: no celular a barra do
+  // navegador some ao rolar e dispara resize sem nada ter mudado
+  let largura = window.innerWidth;
+  let espera;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === largura) return;
+    largura = window.innerWidth;
+    clearTimeout(espera);
+    espera = setTimeout(montar, 200);
+  });
+})();
+
+// --- Aproximação da seção de avaliações ---
+// Não é um fade que dispara uma vez: o bloco fica preso ao scroll, inclinado
+// para trás e menor, e vai se endireitando conforme sobe na tela — como se
+// viesse na direção de quem lê.
+//
+// Os números saíram de medir a seção da referência em quatro alturas
+// diferentes, não de estimativa. As três propriedades andam juntas, lineares
+// no mesmo progresso; só a opacidade corre mais rápido, resolvida no primeiro
+// quinto do trajeto.
+(function () {
+  const bloco = document.querySelector(".reviews-motion");
+  if (!bloco) return;
+
+  const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const telaEstreita = window.matchMedia("(max-width: 639px)");
+
+  const INICIO = 0.86; // começa quando o topo está a 86% da altura da janela
+  // Curso mais curto que o da referência (lá é 0.8). Com 0.8 a seção só
+  // termina de endireitar quando o topo dela chega quase no topo da janela,
+  // e era preciso rolar demais para o efeito acabar. Com 0.42 ela fica reta
+  // com o bloco ainda no meio da tela.
+  const CURSO = 0.42;
+  const OPACIDADE_ATE = 0.3; // a opacidade fecha no primeiro terço do curso
+
+  let pedido = null;
+  let ligado = false;
+
+  function desenhar() {
+    pedido = null;
+    const topo = bloco.getBoundingClientRect().top;
+    const janela = window.innerHeight;
+    const p = Math.min(1, Math.max(0, (INICIO * janela - topo) / (CURSO * janela)));
+
+    bloco.style.opacity = Math.min(1, p / OPACIDADE_ATE);
+    bloco.style.transform =
+      "translateY(" + (40 * (1 - p)).toFixed(2) + "px)" +
+      " scale(" + (0.82 + 0.18 * p).toFixed(4) + ")" +
+      " rotateX(" + (28 * (1 - p)).toFixed(2) + "deg)";
+  }
+
+  // o scroll dispara muito mais vezes do que há quadros; sem juntar, o
+  // cálculo roda à toa
+  function agendar() {
+    if (pedido === null) pedido = requestAnimationFrame(desenhar);
+  }
+
+  function limpar() {
+    bloco.style.opacity = "";
+    bloco.style.transform = "";
+  }
+
+  function ligar() {
+    if (ligado) return;
+    ligado = true;
+    bloco.classList.add("is-armed");
+    window.addEventListener("scroll", agendar, { passive: true });
+    window.addEventListener("resize", agendar);
+    desenhar();
+  }
+
+  function desligar() {
+    if (!ligado) return;
+    ligado = false;
+    window.removeEventListener("scroll", agendar);
+    window.removeEventListener("resize", agendar);
+    if (pedido !== null) {
+      cancelAnimationFrame(pedido);
+      pedido = null;
+    }
+    bloco.classList.remove("is-armed");
+    limpar();
+  }
+
+  function decidir() {
+    if (semMovimento.matches || telaEstreita.matches) desligar();
+    else ligar();
+  }
+
+  semMovimento.addEventListener("change", decidir);
+  telaEstreita.addEventListener("change", decidir);
+  decidir();
+})();
