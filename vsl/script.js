@@ -952,8 +952,12 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
   const telaEstreita = window.matchMedia("(max-width: 639px)");
 
   const INICIO = 0.86; // começa quando o topo está a 86% da altura da janela
-  const CURSO = 0.8; // e termina 80% de janela depois
-  const OPACIDADE_ATE = 0.22; // a opacidade fecha no primeiro quinto do curso
+  // Curso mais curto que o da referência (lá é 0.8). Com 0.8 a seção só
+  // termina de endireitar quando o topo dela chega quase no topo da janela,
+  // e era preciso rolar demais para o efeito acabar. Com 0.42 ela fica reta
+  // com o bloco ainda no meio da tela.
+  const CURSO = 0.42;
+  const OPACIDADE_ATE = 0.3; // a opacidade fecha no primeiro terço do curso
 
   let pedido = null;
   let ligado = false;
