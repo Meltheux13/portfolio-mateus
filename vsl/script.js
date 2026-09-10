@@ -349,6 +349,10 @@ async function openLightbox(card) {
   // depois de sair do hidden, senão a caixa ainda não tem largura para medir
   ajustarZoomDoPlayer(vertical);
 
+  // a cortina cobre a página inteira: desenhar o fundo agora é gastar GPU
+  // no que ninguém vê, justo enquanto o vídeo precisa dela
+  pausarFundo();
+
   const [YT, loaded] = await Promise.all([loadYouTubeApi(), loadEnvelope(card)]);
   // o visitante pode ter fechado enquanto a API carregava
   if (lightbox.hidden) return;
@@ -394,6 +398,7 @@ async function openLightbox(card) {
 
 function closeLightbox() {
   lightbox.hidden = true;
+  retomarFundo();
   stopGlow();
   pararProgresso();
   zerarProgresso();
@@ -603,8 +608,24 @@ applyFilters();
 // three.js; aqui foi portado para WebGL puro, porque a biblioteca inteira
 // pesa centenas de KB e o efeito precisa só de um quad em tela cheia.
 // As cores saem do tema, no lugar do roxo do original.
-// Chamada uma vez por canvas: a página tem duas fumaças, a do hero e a de
-// trás das avaliações.
+// A página tem três fumaças: o hero, o fundo das avaliações e o do contato.
+// Cada uma já para sozinha quando sai da tela, mas com o vídeo aberto a do
+// hero continuava girando atrás da cortina preta — invisível e cara, que é
+// o pior dos dois mundos. Daí o registro e a chave geral abaixo.
+const fumacas = [];
+let fundoPausado = false;
+
+function pausarFundo() {
+  fundoPausado = true;
+  fumacas.forEach((f) => f.desligar());
+}
+
+function retomarFundo() {
+  fundoPausado = false;
+  fumacas.forEach((f) => f.ligar());
+}
+
+// Chamada uma vez por canvas.
 function montarFumaca(canvas) {
   const pageBg = document.querySelector(".page-bg");
   const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -769,7 +790,7 @@ function montarFumaca(canvas) {
   }
 
   function ligar() {
-    if (quadro || !naTela || semMovimento.matches || document.hidden) return;
+    if (quadro || !naTela || fundoPausado || semMovimento.matches || document.hidden) return;
     quadro = requestAnimationFrame(desenhar);
   }
 
@@ -777,6 +798,8 @@ function montarFumaca(canvas) {
     cancelAnimationFrame(quadro);
     quadro = null;
   }
+
+  fumacas.push({ ligar, desligar });
 
   document.addEventListener("visibilitychange", () => (document.hidden ? desligar() : ligar()));
   semMovimento.addEventListener("change", () => (semMovimento.matches ? desligar() : ligar()));
