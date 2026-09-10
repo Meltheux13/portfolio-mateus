@@ -833,8 +833,6 @@ h1, h2, h3 {
 .review {
   display: flex;
   flex-direction: column;
-  /* o rodapé com o nome desce sozinho, então depoimentos de tamanhos
-     diferentes ainda alinham a assinatura na mesma linha de base */
   gap: 1.25rem;
   padding: 2rem 1.75rem;
   margin: 0;
@@ -849,27 +847,39 @@ h1, h2, h3 {
   border-color: var(--color-border-strong);
 }
 
-.review-stars {
-  color: var(--color-accent);
-  font-size: 0.95rem;
-  letter-spacing: 0.18em;
-  line-height: 1;
-}
-
-.review blockquote {
-  flex: 1;
-  margin: 0;
-  color: var(--color-text);
-  font-size: 1rem;
-  line-height: 1.65;
+/* Quem falou de um lado, as estrelas do outro. O wrap é a saída para o
+   card estreito: em vez de espremer o nome, as estrelas descem para a
+   linha de baixo. */
+.review-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .review-quem {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-border);
+  min-width: 0;
+}
+
+.review-stars {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.review blockquote {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .review-inicial {
