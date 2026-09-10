@@ -38,6 +38,8 @@ const EN = {
   "cat.ia": "AI",
   "reviews.eyebrow": "REVIEWS",
   "reviews.title": "What clients say",
+  "review.vazio.frase": "The standout line",
+  "review.pendente.frase": "His standout line",
   "review.pendente": "Gabriel's testimonial text is still missing.",
   "review.vazio.texto": "Paste the client testimonial here.",
   "review.vazio.nome": "Client name",
@@ -671,10 +673,9 @@ applyFilters();
 // three.js; aqui foi portado para WebGL puro, porque a biblioteca inteira
 // pesa centenas de KB e o efeito precisa só de um quad em tela cheia.
 // As cores saem do tema, no lugar do roxo do original.
-(function () {
-  const canvas = document.getElementById("bg-canvas");
-  if (!canvas) return;
-
+// Chamada uma vez por canvas: a página tem duas fumaças, a do hero e a de
+// trás das avaliações.
+function montarFumaca(canvas) {
   const pageBg = document.querySelector(".page-bg");
   const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
   const gl = canvas.getContext("webgl", {
@@ -827,6 +828,7 @@ applyFilters();
 
   let quadro = null;
   let inicio = null;
+  let naTela = false;
 
   function desenhar(agora) {
     if (inicio === null) inicio = agora;
@@ -837,7 +839,7 @@ applyFilters();
   }
 
   function ligar() {
-    if (quadro || semMovimento.matches || document.hidden) return;
+    if (quadro || !naTela || semMovimento.matches || document.hidden) return;
     quadro = requestAnimationFrame(desenhar);
   }
 
@@ -854,10 +856,22 @@ applyFilters();
   gl.uniform1f(uTime, 0);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
+  // Fora da tela não precisa desenhar. Com duas fumaças na página, sem isso
+  // as duas girariam o tempo todo e uma delas estaria sempre invisível.
+  new IntersectionObserver(
+    ([entrada]) => {
+      naTela = entrada.isIntersecting;
+      if (naTela) ligar();
+      else desligar();
+    },
+    { rootMargin: "150px" }
+  ).observe(canvas);
+
   if (pageBg) pageBg.classList.add("has-shader");
   canvas.classList.add("is-on");
-  ligar();
-})();
+}
+
+document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
 
 // --- Esteira de ferramentas ---
 // A lista existe uma vez só no HTML; repeti-la aqui é o que permite a faixa

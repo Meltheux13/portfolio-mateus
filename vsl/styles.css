@@ -77,22 +77,40 @@ img {
    da página fica no preto liso. */
 .bg-canvas {
   position: absolute;
-  /* Esticado dos dois lados. Em cima, porque a navbar ocupa lugar no fluxo
-     e sem isso sobrava uma faixa preta atrás dela. Embaixo, porque a borda
-     do canvas terminava num corte reto no meio da fumaça — passando dela
-     para dentro da faixa de ferramentas, o shader tem espaço para apagar
-     sozinho e o fim vira um esmaecido, não uma linha. */
-  inset: -5.5rem 0 auto;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   width: 100%;
-  height: calc(100% + 5.5rem + 11rem);
+  height: 100%;
   opacity: 0;
   transition: opacity 1.2s var(--ease);
 }
 
 .bg-canvas.is-on {
   opacity: 1;
+}
+
+/* A do hero é esticada dos dois lados. Em cima, porque a navbar ocupa lugar
+   no fluxo e sem isso sobrava uma faixa preta atrás dela. Embaixo, porque a
+   borda do canvas terminava num corte reto no meio da fumaça — descendo
+   até dentro da faixa de ferramentas, o shader tem espaço para apagar
+   sozinho e o fim vira um esmaecido, não uma linha. */
+.hero .bg-canvas {
+  inset: -5.5rem 0 auto;
+  height: calc(100% + 5.5rem + 11rem);
+}
+
+/* A de trás das avaliações some nas duas pontas por máscara, e não pelo
+   shader: ali ela nasce e morre no meio da página, sem hero nem faixa para
+   esconder as bordas. Fica mais apagada que a do hero, senão brigaria com
+   o texto dos depoimentos por cima. */
+.bg-canvas-reviews {
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 26%, #000 74%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 26%, #000 74%, transparent);
+}
+
+.bg-canvas-reviews.is-on {
+  opacity: 0.5;
 }
 
 .page-bg.has-shader .bg-blob {
@@ -811,8 +829,12 @@ h1, h2, h3 {
 
 /* --- Avaliações --- */
 
-/* Traço só aqui: nas outras seções há um subtítulo logo abaixo do título,
-   e o traço no meio dos dois deixaria o bloco carregado. */
+/* A seção deixa a fumaça aparecer atrás dos cards, então ela precisa ser o
+   referencial do canvas. */
+.reviews {
+  position: relative;
+}
+
 .reviews h2::after {
   content: "";
   display: block;
@@ -823,46 +845,94 @@ h1, h2, h3 {
   background: var(--color-accent);
 }
 
+/* Sem gap e sem fundo: o que separa os cards é o filete entre eles, e o que
+   se vê por trás é a fumaça. Um cartão opaco aqui tamparia ela. */
 .review-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin-top: 3rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .review {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  padding: 2rem 1.75rem;
+  display: grid;
+  grid-template-columns: 84px 1fr;
   margin: 0;
-  background: #0b111e;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+  background: rgba(5, 9, 18, 0.34);
+  transition: background 0.35s var(--ease);
 }
 
 .review:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-border-strong);
+  background: rgba(5, 9, 18, 0.55);
 }
 
-.review-topo {
-  display: flex;
-  align-items: center;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--color-border);
+/* o filete entre os cards; empilhados, ele passa a ser em cima */
+.review + .review {
+  border-left: 1px solid var(--color-border);
 }
 
-.review-quem {
+/* Faixa da foto: ocupa a altura toda do card, como uma lombada. */
+.review-foto-faixa {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text-muted);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.review-foto-faixa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* a foto de perfil vem em 150px; num recorte alto ela precisa de ajuda
+     para não ficar borrada nem cinza demais ao lado do texto */
+  filter: saturate(1.05) contrast(1.05);
+  transition: transform 0.5s var(--ease);
+}
+
+.review:hover .review-foto-faixa img {
+  transform: scale(1.06);
+}
+
+.review-corpo {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.6rem 1.15rem;
   min-width: 0;
 }
 
-/* Compactas de propósito: com o nome do cliente ao lado, cada 0.05rem
-   aqui é o que decide se as duas coisas cabem na mesma linha. */
+.review-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.review-linha-nome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.review-nome {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.review-selo {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex: 0 0 auto;
+}
+
 .review-stars {
   flex: 0 0 auto;
   margin-left: 0.2rem;
@@ -872,67 +942,108 @@ h1, h2, h3 {
   line-height: 1;
 }
 
-.review blockquote {
-  margin: 0;
-  color: var(--color-text);
-  font-size: 1rem;
-  line-height: 1.65;
-}
-
-.review-inicial {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 2.4rem;
-  height: 2.4rem;
-  background: #050912;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
-.review-dados {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.35;
-  min-width: 0;
-}
-
-.review-nome {
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
+/* Miúdo e espaçado, para funcionar como etiqueta e não competir com o
+   nome logo acima. */
 .review-papel {
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-/* Enquanto o depoimento não chegou: borda tracejada e texto apagado, para
-   ninguém publicar sem perceber que o conteúdo ainda é de mentira. Some
-   sozinho quando a classe sair do HTML. */
-.review.is-vazia {
-  border-style: dashed;
-  border-color: rgba(140, 149, 171, 0.35);
+/* Selo da plataforma, no pé da faixa da foto. Ele já esteve na linha do
+   nome, mas em três colunas o card não tem largura para nome, selo de
+   verificado, estrelas e mais um botão na mesma fileira. */
+.review-plataforma {
+  position: absolute;
+  left: 50%;
+  bottom: 0.6rem;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: rgba(5, 9, 18, 0.75);
+  color: var(--color-text);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 
-.review.is-vazia:hover {
-  transform: none;
-  border-color: rgba(140, 149, 171, 0.35);
+.review-plataforma svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
-.review.is-vazia .review-stars,
-.review.is-vazia blockquote,
-.review.is-vazia .review-nome,
-.review.is-vazia .review-papel {
+.review-foto-faixa:hover .review-plataforma {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* A frase de efeito, no peso dos títulos do site. */
+.review-destaque {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.review-destaque::after {
+  content: ".";
+  color: var(--color-accent);
+}
+
+.review-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   color: var(--color-text-muted);
+  font-size: 0.92rem;
 }
 
-.review.is-vazia blockquote,
-.review.is-vazia .review-nome {
+.review-texto p {
+  margin: 0;
+}
+
+/* Enquanto o conteúdo não chegou: itálico apagado nas partes que faltam e
+   tracejado no card inteiro quando nem o cliente existe ainda. Some sozinho
+   quando as classes saírem do HTML. */
+.review-pendente {
+  color: var(--color-text-muted);
   font-style: italic;
   font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.review.is-vazia .review-nome,
+.review.is-vazia .review-papel,
+.review.is-vazia .review-destaque,
+.review.is-vazia .review-texto {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.review.is-vazia .review-destaque {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .review { grid-template-columns: 76px 1fr; }
+  .review-corpo { padding: 1.5rem 1.25rem; }
+}
+
+/* Empilhados, o filete divisor tem de virar horizontal, senão ele aparece
+   colado na lateral de cada card. */
+@media (max-width: 619px) {
+  .review + .review {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+  }
 }
 
 /* --- Contato --- */
