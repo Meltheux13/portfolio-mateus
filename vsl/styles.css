@@ -1036,8 +1036,15 @@ h1, h2, h3 {
   text-transform: uppercase;
 }
 
-.review-destaque::after {
+/* Só nas reservas. No depoimento de verdade a pontuação vem escrita no
+   HTML, porque ali ela fica entre aspas e o ponto precisa de cor própria. */
+.review-destaque.review-pendente::after,
+.review.is-vazia .review-destaque::after {
   content: ".";
+  color: var(--color-accent);
+}
+
+.review-ponto {
   color: var(--color-accent);
 }
 
