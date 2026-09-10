@@ -774,20 +774,23 @@ h1, h2, h3 {
 }
 
 /* Filete marcando onde uma seção acaba e a outra começa. É pseudo-elemento
-   e não border-top porque a seção tem perspective e canvas dentro; uma
-   borda entraria na conta da altura e empurraria a fumaça 1px.
+   e não border-top por dois motivos: a seção tem perspective e canvas
+   dentro, e uma borda entraria na conta da altura empurrando a fumaça 1px;
+   e borda é sólida de ponta a ponta, sem como esmaecer nas laterais.
 
    Para usar em outra seção, basta somar o seletor aqui. */
-.reviews::before {
+.reviews::before,
+.contact::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  /* 12% e não os 8% da --color-border: aqui a linha atravessa a fumaça, e
-     no claro dela a borda padrão sumia */
-  background: rgba(255, 255, 255, 0.12);
+  /* Nasce e morre no transparente, com o pico bem mais forte que os 8% da
+     --color-border: espalhada num degradê, aquela intensidade some — ainda
+     mais aqui, que é por cima da fumaça. */
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2) 50%, transparent);
 }
 
 /* --- Avaliações --- */
@@ -889,12 +892,14 @@ h1, h2, h3 {
   bottom: 0;
   right: 0;
   width: 1px;
-  /* mais forte que a --color-border das outras divisórias: aqui o filete
-     corre sobre a fumaça, e a 8% ele sumia nos trechos claros dela */
-  background: rgba(255, 255, 255, 0.16);
+  /* Esmaece nas duas pontas, como os divisores de seção. Aqui a linha é
+     vertical, então o degradê corre no eixo Y. */
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.22) 50%, transparent);
 }
 
-/* Empilhados, o filete tem de deitar: em pé ele cortaria o card ao meio. */
+/* Empilhados, o filete tem de deitar: em pé ele cortaria o card ao meio.
+   O degradê vira junto — deitado com o eixo antigo, ele esmaeceria na
+   espessura em vez de no comprimento, e a linha sumiria inteira. */
 @media (max-width: 710px) {
   .review:not(:last-child)::after {
     top: auto;
@@ -903,6 +908,7 @@ h1, h2, h3 {
     bottom: 0;
     width: auto;
     height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22) 50%, transparent);
   }
 }
 
