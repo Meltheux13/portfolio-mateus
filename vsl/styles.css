@@ -833,9 +833,41 @@ h1, h2, h3 {
    esquerda, faixa da foto de 100px e a frase em Barlow Condensed 900. */
 
 /* A seção deixa a fumaça aparecer atrás dos cards, então ela precisa ser o
-   referencial do canvas. */
+   referencial do canvas. A perspectiva é do movimento de aproximação: sem
+   ela o rotateX só achataria o bloco, em vez de inclinar. */
 .reviews {
   position: relative;
+  perspective: 1400px;
+}
+
+/* Estado inicial do movimento, igual ao da referência: inclinado para trás,
+   menor e deslocado para baixo. O script mexe nisso a cada quadro conforme
+   a seção sobe; se ele não rodar, fica como está aqui e nada some. */
+.reviews-motion {
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+
+.reviews-motion.is-armed {
+  opacity: 0;
+  transform: translateY(40px) scale(0.82) rotateX(28deg);
+}
+
+/* Abaixo disso o efeito sai: em tela estreita a seção ocupa quase a altura
+   toda e o movimento vira um tremor, não uma aproximação. É o mesmo corte
+   que a referência usa. */
+@media (max-width: 639px) {
+  .reviews-motion.is-armed {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-motion.is-armed {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .reviews h2::after {

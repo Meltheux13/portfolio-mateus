@@ -934,3 +934,82 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
     espera = setTimeout(montar, 200);
   });
 })();
+
+// --- Aproximação da seção de avaliações ---
+// Não é um fade que dispara uma vez: o bloco fica preso ao scroll, inclinado
+// para trás e menor, e vai se endireitando conforme sobe na tela — como se
+// viesse na direção de quem lê.
+//
+// Os números saíram de medir a seção da referência em quatro alturas
+// diferentes, não de estimativa. As três propriedades andam juntas, lineares
+// no mesmo progresso; só a opacidade corre mais rápido, resolvida no primeiro
+// quinto do trajeto.
+(function () {
+  const bloco = document.querySelector(".reviews-motion");
+  if (!bloco) return;
+
+  const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const telaEstreita = window.matchMedia("(max-width: 639px)");
+
+  const INICIO = 0.86; // começa quando o topo está a 86% da altura da janela
+  const CURSO = 0.8; // e termina 80% de janela depois
+  const OPACIDADE_ATE = 0.22; // a opacidade fecha no primeiro quinto do curso
+
+  let pedido = null;
+  let ligado = false;
+
+  function desenhar() {
+    pedido = null;
+    const topo = bloco.getBoundingClientRect().top;
+    const janela = window.innerHeight;
+    const p = Math.min(1, Math.max(0, (INICIO * janela - topo) / (CURSO * janela)));
+
+    bloco.style.opacity = Math.min(1, p / OPACIDADE_ATE);
+    bloco.style.transform =
+      "translateY(" + (40 * (1 - p)).toFixed(2) + "px)" +
+      " scale(" + (0.82 + 0.18 * p).toFixed(4) + ")" +
+      " rotateX(" + (28 * (1 - p)).toFixed(2) + "deg)";
+  }
+
+  // o scroll dispara muito mais vezes do que há quadros; sem juntar, o
+  // cálculo roda à toa
+  function agendar() {
+    if (pedido === null) pedido = requestAnimationFrame(desenhar);
+  }
+
+  function limpar() {
+    bloco.style.opacity = "";
+    bloco.style.transform = "";
+  }
+
+  function ligar() {
+    if (ligado) return;
+    ligado = true;
+    bloco.classList.add("is-armed");
+    window.addEventListener("scroll", agendar, { passive: true });
+    window.addEventListener("resize", agendar);
+    desenhar();
+  }
+
+  function desligar() {
+    if (!ligado) return;
+    ligado = false;
+    window.removeEventListener("scroll", agendar);
+    window.removeEventListener("resize", agendar);
+    if (pedido !== null) {
+      cancelAnimationFrame(pedido);
+      pedido = null;
+    }
+    bloco.classList.remove("is-armed");
+    limpar();
+  }
+
+  function decidir() {
+    if (semMovimento.matches || telaEstreita.matches) desligar();
+    else ligar();
+  }
+
+  semMovimento.addEventListener("change", decidir);
+  telaEstreita.addEventListener("change", decidir);
+  decidir();
+})();
