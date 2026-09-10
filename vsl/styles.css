@@ -843,6 +843,7 @@ h1, h2, h3 {
 }
 
 .review {
+  position: relative;
   display: grid;
   grid-template-columns: 100px 1fr;
   margin: 0;
@@ -855,6 +856,34 @@ h1, h2, h3 {
 .review:hover {
   background: rgba(255, 255, 255, 0.045);
   border-left-color: var(--color-accent);
+}
+
+/* Filete dividindo os cards. O vão de 3px sozinho não separava: sobre o
+   preto os três liam como um bloco só. Fica na borda de dentro, e não no
+   vão, para que o card do fim de uma fileira mostre a linha como se fosse
+   a borda dele em vez de um risco solto no ar. */
+.review:not(:last-child)::after {
+  content: ;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  /* mais forte que a --color-border das outras divisórias: aqui o filete
+     corre sobre a fumaça, e a 8% ele sumia nos trechos claros dela */
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Empilhados, o filete tem de deitar: em pé ele cortaria o card ao meio. */
+@media (max-width: 710px) {
+  .review:not(:last-child)::after {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: 1px;
+  }
 }
 
 /* Faixa da foto: ocupa a altura toda do card, como uma lombada. */
