@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=mtwk4d0e">
+  <link rel="stylesheet" href="styles.css?v=mtwka10g">
 </head>
 <body>
   <div class="page-bg" aria-hidden="true">
@@ -483,20 +483,24 @@
           </div>
         </figure>
 
-        <figure class="review is-vazia">
-          <span class="review-foto-faixa" aria-hidden="true">?</span>
+        <figure class="review">
+          <span class="review-foto-faixa">
+            <img src="assets/ana.jpg" alt="" width="500" height="500" loading="lazy">
+          </span>
           <div class="review-corpo">
             <span class="review-dados">
               <span class="review-linha-nome">
-                <span class="review-nome" data-i18n="review.vazio.nome">Nome do cliente</span>
+                <span class="review-nome">Ana</span>
                 <span class="review-stars" aria-hidden="true">★★★★★</span>
               </span>
-              <span class="review-papel" data-i18n="review.vazio.papel">Empresa ou nicho</span>
+              <span class="review-linha-papel">
+                <span class="review-papel review-pendente" data-i18n="review.ana.papel">Falta a empresa</span>
+              </span>
             </span>
             <span class="review-tique" aria-hidden="true"></span>
-            <blockquote class="review-destaque" data-i18n="review.vazio.frase">A frase de efeito</blockquote>
-            <div class="review-texto">
-              <p data-i18n="review.vazio.texto">Cole aqui o depoimento do cliente.</p>
+            <blockquote class="review-destaque review-pendente" data-i18n="review.ana.frase">A frase de efeito dela</blockquote>
+            <div class="review-texto review-pendente">
+              <p data-i18n="review.ana.texto">Falta o texto do depoimento da Ana.</p>
             </div>
           </div>
         </figure>
@@ -598,6 +602,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=mtwk6f0f"></script>
+  <script src="script.js?v=mtwka10g"></script>
 </body>
 </html>
