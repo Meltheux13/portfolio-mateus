@@ -43,6 +43,8 @@ const EN = {
   "review.ana.papel": "Company still missing",
   "review.ana.frase": "Her standout line",
   "review.ana.texto": "Ana's testimonial text is still missing.",
+  "review.natalia.frase": "Her standout line",
+  "review.natalia.texto": "Natalia's testimonial text is still missing.",
   "review.pendente": "Gabriel's testimonial text is still missing.",
   "review.vazio.texto": "Paste the client testimonial here.",
   "review.vazio.nome": "Client name",
