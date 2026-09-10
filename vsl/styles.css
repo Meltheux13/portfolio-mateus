@@ -1211,12 +1211,27 @@ h1, h2, h3 {
 }
 
 /* --- Rodapé --- */
+/* O traço de cima é um pseudo-elemento, e não border-top: uma borda é
+   sólida de ponta a ponta e batia seca nas laterais da janela. Como
+   gradiente ela nasce e morre no transparente, e o corte some. */
 .site-footer {
+  position: relative;
   text-align: center;
   padding: 3rem 0;
   color: var(--color-text-muted);
   font-size: 0.88rem;
-  border-top: 1px solid var(--color-border);
+}
+
+.site-footer::before {
+  content: ;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  /* Mais forte no meio do que a borda que existia antes: espalhada num
+     degradê, a mesma intensidade de 8% praticamente sumia. */
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2) 50%, transparent);
 }
 
 .footer-name {
