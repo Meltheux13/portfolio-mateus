@@ -854,7 +854,17 @@ function montarFumaca(canvas) {
   canvas.classList.add("is-on");
 }
 
-document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
+// No celular só o hero ganha fumaça. São três telas WebGL na página, e
+// aparelho Android costuma cortar o número de contextos simultâneos bem
+// antes do desktop — quando ele recusa, o getContext devolve null e a
+// fumaça some sem aviso. Uma só cabe em qualquer aparelho, e é a do hero
+// que a pessoa vê primeiro.
+const telaEstreitaFumaca = window.matchMedia("(max-width: 640px)").matches;
+const telasDeFumaca = telaEstreitaFumaca
+  ? document.querySelectorAll(".hero .bg-canvas")
+  : document.querySelectorAll(".bg-canvas");
+
+telasDeFumaca.forEach(montarFumaca);
 
 // --- Esteira de ferramentas ---
 // A lista existe uma vez só no HTML; repeti-la aqui é o que permite a faixa

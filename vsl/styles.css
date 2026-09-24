@@ -26,6 +26,12 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
+  /* O overflow-x do body sozinho não segura a rolagem lateral no celular:
+     quando o html fica em visible, o navegador repassa a rolagem para a
+     janela e a página anda para o lado. Aqui é clip, e não hidden, porque
+     hidden no html transformaria a raiz em contêiner de rolagem e mataria o
+     position: sticky da navbar. */
+  overflow-x: clip;
 }
 
 body {
@@ -1868,6 +1874,26 @@ a.review-quem:hover .review-foto {
   .nav-end { gap: 0.4rem; }
   .nav-end .btn-sm { padding: 0.6rem 0.95rem; font-size: 0.88rem; }
   .nav-toggle { width: 40px; height: 40px; }
+
+  /* Quem cede é sempre o nome, nunca o botão. */
+  .logo { flex: 0 1 auto; min-width: 0; }
+  .logo-text { min-width: 0; }
+  .nav-end { flex: 0 0 auto; }
+}
+
+/* Abaixo de 400px o nome não cabe, e não adianta deixá-lo encolher: a .logo
+   herda white-space: nowrap, então a caixa diminui mas o texto vaza e o
+   botão pinta por cima — foi o que apareceu no aparelho de 360px.
+
+   A conta: a pílula tem a largura da tela menos 32px de respiro; tirando
+   avatar, botão, menu e vãos, sobram 119px para o texto em 360px, e o nome
+   ocupa exatamente 119. Sem folga nenhuma, basta a fonte do sistema render
+   um fio mais larga para invadir. Em 400px sobram 159 e aí cabe. */
+@media (max-width: 400px) {
+  /* .logo .logo-text, e não só .logo-text: a regra que monta o nome em duas
+     linhas mora num @media de 640px mais abaixo no arquivo e ganharia no
+     desempate por ordem. */
+  .logo .logo-text { display: none; }
 }
 
 /* Celular: o cargo vai embaixo do nome, em vez de "| Editor" ao lado */
