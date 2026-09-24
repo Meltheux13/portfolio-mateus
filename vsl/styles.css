@@ -1554,15 +1554,15 @@ body.no-scroll {
 
 /* --- Responsivo --- */
 @media (max-width: 880px) {
-  .nav-links { display: none; }
   .navbar { padding-left: 0.7rem; }
 }
 
 @media (max-width: 640px) {
   section { padding: 5rem 0; }
-  /* avatar + alternador + botão já ocupam a barra inteira; com o nome
-     junto, o botão passava da borda */
-  .logo-text { display: none; }
+  /* o nome entra em fonte menor e sem o "| Editor", para o botão e o
+     menu caberem na barra */
+  .logo { gap: 0.6rem; font-size: 1rem; }
+  .logo-tag { display: none; }
   .navbar { padding-left: 0.75rem; gap: 0.75rem; }
   .nav-end { gap: 0.7rem; }
   /* No celular o carrossel rola com o dedo; as setas só atrapalhariam */
@@ -1741,4 +1741,212 @@ a.review-quem:hover .review-foto {
    fica no limite. Apertar o respiro lateral devolve a folga. */
 @media (max-width: 640px) {
   .review { padding: 1.75rem 1.25rem; }
+}
+
+/* --- Celular: leitura --- */
+/* Os tamanhos de desktop foram pensados para mouse e tela grande; no
+   celular etiquetas de 9 a 11px ficam ilegíveis. Este bloco só aumenta
+   texto e área de toque, sem mexer no que já funciona no desktop. */
+@media (max-width: 640px) {
+  .container { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+  .hero-subtitle { font-size: 1.05rem; line-height: 1.55; }
+  .section-subtitle { font-size: 1rem; }
+
+  .eyebrow { font-size: 0.8rem; }
+  .tools-eyebrow { font-size: 0.75rem; }
+  .tool-name { font-size: 0.95rem; }
+
+  .format-btn,
+  .filter-btn { min-height: 44px; font-size: 0.95rem; }
+  .filter-btn { padding: 0.55rem 1.1rem; }
+
+  .card-title { font-size: 0.98rem; line-height: 1.3; }
+  .card-cat { font-size: 0.82rem; }
+
+  /* Avaliações: mantém a foto na lateral e o texto ao lado, como no
+     desktop. Aqui só sobem as etiquetas miúdas, sem mexer no layout. */
+  .review-papel { font-size: 0.66rem; }
+  .review-plataforma { font-size: 0.64rem; }
+  .review-texto { font-size: 0.92rem; }
+
+  .contact-card { padding: 1.9rem 1.25rem; }
+  .contact-name { font-size: 1.15rem; }
+  .contact-sub { font-size: 1rem; }
+  .contact-note { font-size: 0.95rem; }
+  .footer-copy { font-size: 0.85rem; }
+}
+
+/* --- Menu do celular --- */
+/* Abaixo de 880px os links saem da barra; o botão de três linhas abre o
+   mesmo <ul> como uma lista logo abaixo da pílula. */
+.nav-toggle { display: none; }
+
+@media (max-width: 880px) {
+  .navbar { position: relative; }
+
+  .nav-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-surface);
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform 0.3s var(--ease), opacity 0.2s;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem;
+    background: #0a0f1c;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+  }
+
+  .nav-links.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0.95rem 1.1rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    color: var(--color-text);
+  }
+
+  .nav-links a:active { background: var(--color-accent-soft); }
+}
+
+/* Celular estreito: avatar + nome + botão + menu têm de caber na pílula */
+@media (max-width: 480px) {
+  .site-header { padding: 0 1rem; }
+  .navbar { gap: 0.4rem; padding: 0.55rem 0.55rem 0.55rem 0.6rem; }
+  .logo { gap: 0.5rem; font-size: 0.95rem; min-width: 0; }
+  .logo-mark { width: 38px; height: 38px; }
+  .nav-end { gap: 0.4rem; }
+  .nav-end .btn-sm { padding: 0.6rem 0.95rem; font-size: 0.88rem; }
+  .nav-toggle { width: 40px; height: 40px; }
+}
+
+/* Celular: o cargo vai embaixo do nome, em vez de "| Editor" ao lado */
+.logo-sub { display: none; }
+
+@media (max-width: 640px) {
+  .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .logo-sub {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+}
+
+/* Arrastar o carrossel com o dedo: rolagem lateral nativa, sem puxar a
+   página inteira para o lado quando chega na ponta */
+.portfolio-grid {
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+/* Celular: cabeçalho do portfólio mais compacto. Título, subtítulo, ADS/VSL
+   e chips empilhados gastavam quase uma tela inteira antes do primeiro
+   vídeo. Os botões ficam menores, mas todos à vista. */
+@media (max-width: 640px) {
+  .portfolio { padding: 3rem 0 3.5rem; }
+  .portfolio .eyebrow { margin-bottom: 0.4rem; }
+  .portfolio h2 { font-size: 1.75rem; margin-bottom: 0.4rem; }
+  .portfolio .section-subtitle { font-size: 0.95rem; line-height: 1.45; margin-bottom: 1.1rem; }
+  .format-toggle { margin-bottom: 0.9rem; }
+  .format-btn { min-height: 36px; padding: 0.35rem 1.4rem; font-size: 0.88rem; }
+
+  .cat-filters { gap: 0.4rem; margin-bottom: 0.9rem; }
+  .filter-btn { min-height: 34px; padding: 0.3rem 0.85rem; font-size: 0.8rem; }
+
+  .portfolio-grid { padding-top: 0.25rem; }
+}
+
+/* Celular: rótulos curtos nos filtros para caber tudo numa linha só */
+.lbl-short { display: none; }
+
+@media (max-width: 640px) {
+  .lbl-full { display: none; }
+  .lbl-short { display: inline; }
+  .cat-filters { flex-wrap: nowrap; gap: 0.3rem; }
+  .filter-btn { flex: 0 0 auto; padding: 0.3rem 0.6rem; font-size: 0.78rem; white-space: nowrap; }
+}
+
+/* Celular: contato compacto. Cada plataforma vira uma linha (ícone à
+   esquerda, nome e usuário empilhados), em vez de um cartão alto com tudo
+   centralizado. */
+@media (max-width: 640px) {
+  .contact { padding: 3rem 0 2.5rem; }
+  .contact .eyebrow { margin-bottom: 0.4rem; }
+  .contact h2 { font-size: 1.75rem; margin-bottom: 0.4rem; }
+  .contact .section-subtitle { font-size: 0.95rem; line-height: 1.45; margin-bottom: 1.25rem; }
+
+  .contact-cards { gap: 0.6rem; }
+
+  .contact-card {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    column-gap: 0.9rem;
+    row-gap: 0;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    text-align: left;
+  }
+  .contact-icon {
+    grid-row: 1 / span 2;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 0;
+  }
+  .contact-icon svg { width: 24px; height: 24px; }
+  .contact-name { font-size: 1.05rem; align-self: end; }
+  .contact-sub { font-size: 0.92rem; align-self: start; }
+
+  /* "Copiado!" ocupa o lugar do usuário, agora ao lado do ícone */
+  .copied-flag {
+    left: calc(1rem + 46px + 0.9rem);
+    bottom: 0.8rem;
+    transform: translateY(6px);
+  }
+  .is-discord.is-copied .copied-flag { transform: translateY(0); }
+
+  .contact-note { margin-top: 1.25rem; font-size: 0.9rem; }
+  .site-footer { padding: 2rem 0; }
 }

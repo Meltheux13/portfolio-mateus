@@ -482,6 +482,8 @@ const carousel = document.querySelector(".carousel");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let pointerOver = false;
+let touching = false; // dedo na tela, ou ainda rolando por inércia depois dele
+let touchTimer = null;
 let focusInside = false;
 let inViewport = true;
 let lastFrame = 0;
@@ -494,6 +496,7 @@ function canAutoplay() {
     loopWidth > 0 &&
     !reduceMotion.matches &&
     !pointerOver &&
+    !touching &&
     !focusInside &&
     inViewport &&
     !document.hidden &&
@@ -540,8 +543,35 @@ function resumeAutoplay() {
 }
 
 // Pausa enquanto o visitante está com o mouse em cima ou navegando pelo teclado
-carousel.addEventListener("pointerenter", () => { pointerOver = true; });
-carousel.addEventListener("pointerleave", () => { pointerOver = false; resumeAutoplay(); });
+// O toque fica fora do pointerenter/leave de propósito: no celular o
+// navegador dispara pointercancel + pointerleave assim que o dedo começa a
+// arrastar, o que religava o avanço em plena rolagem e brigava com o dedo.
+carousel.addEventListener("pointerenter", (e) => {
+  if (e.pointerType !== "touch") pointerOver = true;
+});
+carousel.addEventListener("pointerleave", (e) => {
+  if (e.pointerType === "touch") return;
+  pointerOver = false;
+  resumeAutoplay();
+});
+
+// Arrastar com o dedo: o avanço para enquanto ele está na tela e só volta
+// depois que a inércia do arrasto acaba. Reescrever scrollLeft durante essa
+// inércia interromperia o movimento no meio.
+carousel.addEventListener("touchstart", () => {
+  touching = true;
+  clearTimeout(touchTimer);
+}, { passive: true });
+
+function soltouDedo() {
+  clearTimeout(touchTimer);
+  touchTimer = setTimeout(() => {
+    touching = false;
+    resumeAutoplay();
+  }, 3000);
+}
+carousel.addEventListener("touchend", soltouDedo, { passive: true });
+carousel.addEventListener("touchcancel", soltouDedo, { passive: true });
 carousel.addEventListener("focusin", () => { focusInside = true; });
 carousel.addEventListener("focusout", () => { focusInside = false; resumeAutoplay(); });
 
@@ -969,4 +999,30 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
   semMovimento.addEventListener("change", decidir);
   telaEstreita.addEventListener("change", decidir);
   decidir();
+})();
+
+// Menu do celular: abre e fecha a lista de links da barra
+(() => {
+  const botao = document.querySelector(".nav-toggle");
+  const lista = document.getElementById("nav-links");
+  if (!botao || !lista) return;
+
+  function definir(aberto) {
+    botao.setAttribute("aria-expanded", String(aberto));
+    botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+    lista.classList.toggle("is-open", aberto);
+  }
+
+  botao.addEventListener("click", () => {
+    definir(botao.getAttribute("aria-expanded") !== "true");
+  });
+  lista.addEventListener("click", (e) => {
+    if (e.target.closest("a")) definir(false);
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".navbar")) definir(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") definir(false);
+  });
 })();

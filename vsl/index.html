@@ -22,14 +22,14 @@
   <!-- favicon.ico fica na raiz de propósito: é o caminho que o navegador
        pede sozinho, mesmo sem tag nenhuma, e serve de rede de segurança
        para quem ignora o PNG ou já guardou em cache que o site não tinha. -->
-  <link rel="icon" href="favicon.ico?v=msxfsxzx" sizes="32x32">
-  <link rel="icon" href="assets/favicon-32.png?v=msxfsxzx" sizes="32x32" type="image/png">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=msxfsxzx">
+  <link rel="icon" href="favicon.ico?v=mtx9k1az" sizes="32x32" type="image/x-icon">
+  <link rel="icon" href="assets/favicon-32.png?v=mtx9k1az" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=mtx9k1az">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=mtwm5g0x">
+  <link rel="stylesheet" href="styles.css?v=touch7">
 </head>
 <body>
   <div class="page-bg" aria-hidden="true">
@@ -57,9 +57,9 @@
     <nav class="navbar">
       <a href="#home" class="logo">
         <img class="logo-mark" src="assets/avatar.jpg" alt="Foto de Mateus Althiery" width="44" height="44">
-        <span class="logo-text">Mateus Althiery <span class="logo-tag">| Editor</span></span>
+        <span class="logo-text">Mateus Althiery <span class="logo-tag">| Editor</span><span class="logo-sub">Editor de Vídeo</span></span>
       </a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#home">Início</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
         <li><a href="#reviews">Avaliações</a></li>
@@ -67,6 +67,9 @@
       </ul>
       <div class="nav-end">
         <a href="#contact" class="btn btn-primary btn-sm">Começar</a>
+        <button type="button" class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </nav>
   </header>
@@ -174,8 +177,8 @@
 
         <div class="cat-filters reveal" data-for="short">
           <button class="filter-btn is-active" data-cat="all">Todos</button>
-          <button class="filter-btn" data-cat="direct-response">Direct Response</button>
-          <button class="filter-btn" data-cat="personal-brand">Personal Brand</button>
+          <button class="filter-btn" data-cat="direct-response" aria-label="Direct Response"><span class="lbl-full">Direct Response</span><span class="lbl-short" aria-hidden="true">Direct R.</span></button>
+          <button class="filter-btn" data-cat="personal-brand" aria-label="Personal Brand"><span class="lbl-full">Personal Brand</span><span class="lbl-short" aria-hidden="true">Personal</span></button>
           <button class="filter-btn" data-cat="marketing">Marketing</button>
           <button class="filter-btn" data-cat="ia">IA</button>
         </div>
@@ -608,6 +611,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=mtwm5g0x"></script>
+  <script src="script.js?v=touch1"></script>
 </body>
 </html>
