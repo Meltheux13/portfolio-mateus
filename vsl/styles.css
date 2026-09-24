@@ -1111,9 +1111,16 @@ h1, h2, h3 {
   border-left-color: rgba(140, 149, 171, 0.3);
 }
 
+/* No celular o card é estreito e quem paga é a coluna de texto: com a faixa
+   de 96px e o respiro de desktop sobravam 162px, e a frase quebrava em
+   quatro linhas. Faixa mais fina, respiro menor e frase menor devolvem
+   largura ao texto — o card encolhe porque o texto para de quebrar. */
 @media (max-width: 640px) {
-  .review { grid-template-columns: 96px 1fr; min-height: 0; }
-  .review-corpo { padding: 1.5rem 1.2rem; }
+  .review { grid-template-columns: 72px 1fr; min-height: 0; }
+  .review-corpo { padding: 1.15rem 0.95rem; gap: 0.8rem; }
+  .review-destaque { font-size: 1.45rem; }
+  .review-texto { font-size: 0.8rem; }
+  .review-foto-faixa img { object-position: center 20%; }
 }
 
 /* --- Contato --- */
@@ -1755,11 +1762,6 @@ a.review-quem:hover .review-foto {
   font-style: italic;
 }
 
-/* No celular o card é estreito e o nome dividindo a linha com as estrelas
-   fica no limite. Apertar o respiro lateral devolve a folga. */
-@media (max-width: 640px) {
-  .review { padding: 1.75rem 1.25rem; }
-}
 
 /* --- Celular: leitura --- */
 /* Os tamanhos de desktop foram pensados para mouse e tela grande; no
