@@ -1028,10 +1028,12 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
 })();
 
 // --- Carrossel das avaliações ---
-// Trilho simples, sem o avanço contínuo do portfólio: depoimento é para ler,
-// e texto que desliza sozinho atrapalha. As setas andam de um card por vez e
-// somem quando tudo já cabe na tela — com três avaliações num monitor largo
-// não há o que rolar, e seta que não leva a lugar nenhum é ruído.
+// Anda sozinho, mas de card em card com pausa no meio, e não deslizando sem
+// parar como o do portfólio. Lá são miniaturas, que a pessoa reconhece de
+// relance; aqui é texto, e texto que desliza enquanto se lê não se lê.
+//
+// As setas somem quando não há o que rolar, e o avanço automático para junto:
+// num monitor largo os três cards enchem o trilho e não existe para onde ir.
 (function () {
   const trilho = document.querySelector(".review-grid");
   const caixa = document.querySelector(".reviews-carousel");
@@ -1039,6 +1041,13 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
 
   const anterior = caixa.querySelector(".rail-nav.prev");
   const proximo = caixa.querySelector(".rail-nav.next");
+  const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const ESPERA = 4500; // ms parado em cada card, tempo de ler o depoimento
+  let relogio = null;
+  let ponteiroEmCima = false;
+  let focoDentro = false;
+  let naTela = false;
 
   function passo() {
     const card = trilho.querySelector(".review");
@@ -1047,18 +1056,80 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
     return card.getBoundingClientRect().width + vao;
   }
 
-  function atualizar() {
-    const sobra = trilho.scrollWidth - trilho.clientWidth;
+  function sobra() {
     // 2px de folga: o scrollLeft raramente fecha exatamente no fim
-    const temRolagem = sobra > 2;
-
-    caixa.classList.toggle("sem-rolagem", !temRolagem);
-    anterior.disabled = !temRolagem || trilho.scrollLeft <= 2;
-    proximo.disabled = !temRolagem || trilho.scrollLeft >= sobra - 2;
+    return trilho.scrollWidth - trilho.clientWidth;
   }
 
-  anterior.addEventListener("click", () => trilho.scrollBy({ left: -passo() }));
-  proximo.addEventListener("click", () => trilho.scrollBy({ left: passo() }));
+  function atualizar() {
+    const temRolagem = sobra() > 2;
+    caixa.classList.toggle("sem-rolagem", !temRolagem);
+    anterior.disabled = !temRolagem || trilho.scrollLeft <= 2;
+    proximo.disabled = !temRolagem || trilho.scrollLeft >= sobra() - 2;
+  }
+
+  function podeAndar() {
+    return (
+      sobra() > 2 &&
+      naTela &&
+      !ponteiroEmCima &&
+      !focoDentro &&
+      !semMovimento.matches &&
+      !document.hidden &&
+      lightbox.hidden
+    );
+  }
+
+  function avancar() {
+    if (!podeAndar()) return;
+    // no fim, volta ao começo. A volta é suave de propósito: um salto seco
+    // aqui parece falha de carregamento
+    if (trilho.scrollLeft >= sobra() - 2) trilho.scrollTo({ left: 0 });
+    else trilho.scrollBy({ left: passo() });
+  }
+
+  function ligar() {
+    if (relogio) return;
+    relogio = setInterval(avancar, ESPERA);
+  }
+
+  function desligar() {
+    clearInterval(relogio);
+    relogio = null;
+  }
+
+  anterior.addEventListener("click", () => {
+    trilho.scrollBy({ left: -passo() });
+    // o clique reinicia a contagem, senão o avanço automático atropela
+    // quem acabou de escolher um card na mão
+    desligar();
+    ligar();
+  });
+
+  proximo.addEventListener("click", () => {
+    trilho.scrollBy({ left: passo() });
+    desligar();
+    ligar();
+  });
+
+  // Pausa com o ponteiro em cima ou navegando pelo teclado, como no portfólio
+  caixa.addEventListener("pointerenter", () => { ponteiroEmCima = true; });
+  caixa.addEventListener("pointerleave", () => { ponteiroEmCima = false; });
+  caixa.addEventListener("focusin", () => { focoDentro = true; });
+  caixa.addEventListener("focusout", () => { focoDentro = false; });
+
+  // Fora da tela, aba em segundo plano ou vídeo aberto por cima: não anda
+  new IntersectionObserver(
+    ([entrada]) => {
+      naTela = entrada.isIntersecting;
+      if (naTela) ligar();
+      else desligar();
+    },
+    { threshold: 0.2 }
+  ).observe(caixa);
+
+  document.addEventListener("visibilitychange", () => (document.hidden ? desligar() : ligar()));
+  semMovimento.addEventListener("change", () => (semMovimento.matches ? desligar() : ligar()));
 
   trilho.addEventListener("scroll", atualizar, { passive: true });
   window.addEventListener("resize", atualizar);
