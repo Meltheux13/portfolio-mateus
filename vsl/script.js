@@ -1026,3 +1026,41 @@ document.querySelectorAll(".bg-canvas").forEach(montarFumaca);
     if (e.key === "Escape") definir(false);
   });
 })();
+
+// --- Carrossel das avaliações ---
+// Trilho simples, sem o avanço contínuo do portfólio: depoimento é para ler,
+// e texto que desliza sozinho atrapalha. As setas andam de um card por vez e
+// somem quando tudo já cabe na tela — com três avaliações num monitor largo
+// não há o que rolar, e seta que não leva a lugar nenhum é ruído.
+(function () {
+  const trilho = document.querySelector(".review-grid");
+  const caixa = document.querySelector(".reviews-carousel");
+  if (!trilho || !caixa) return;
+
+  const anterior = caixa.querySelector(".rail-nav.prev");
+  const proximo = caixa.querySelector(".rail-nav.next");
+
+  function passo() {
+    const card = trilho.querySelector(".review");
+    if (!card) return trilho.clientWidth;
+    const vao = parseFloat(getComputedStyle(trilho).columnGap) || 0;
+    return card.getBoundingClientRect().width + vao;
+  }
+
+  function atualizar() {
+    const sobra = trilho.scrollWidth - trilho.clientWidth;
+    // 2px de folga: o scrollLeft raramente fecha exatamente no fim
+    const temRolagem = sobra > 2;
+
+    caixa.classList.toggle("sem-rolagem", !temRolagem);
+    anterior.disabled = !temRolagem || trilho.scrollLeft <= 2;
+    proximo.disabled = !temRolagem || trilho.scrollLeft >= sobra - 2;
+  }
+
+  anterior.addEventListener("click", () => trilho.scrollBy({ left: -passo() }));
+  proximo.addEventListener("click", () => trilho.scrollBy({ left: passo() }));
+
+  trilho.addEventListener("scroll", atualizar, { passive: true });
+  window.addEventListener("resize", atualizar);
+  atualizar();
+})();

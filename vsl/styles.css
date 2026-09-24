@@ -853,16 +853,34 @@ h1, h2, h3 {
   max-width: 1240px;
 }
 
-/* Gap de 3px em vez de borda compartilhada: o vão deixa o fundo aparecer
-   entre os cards e é ele que separa, sem precisar de filete. */
-.review-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  gap: 3px;
+/* Trilho rolável no lugar da grade. O gap de 3px continua sendo o que
+   separa os cards — o vão deixa o fundo aparecer entre eles. */
+.reviews-carousel {
   margin-top: 3rem;
 }
 
+.review-grid {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* a barra de rolagem cortaria o pé dos cards e apareceria só no hover em
+     parte dos sistemas, o que faz o trilho saltar de altura */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.review-grid::-webkit-scrollbar {
+  display: none;
+}
+
 .review {
+  /* Piso de 300px para o card não virar uma tira no celular, teto de 420
+     para ele não esticar demais quando sobram poucas avaliações. Entre os
+     dois, três cabem lado a lado como antes. */
+  flex: 0 0 clamp(300px, calc((100% - 6px) / 3), 420px);
+  scroll-snap-align: start;
   position: relative;
   display: grid;
   grid-template-columns: 118px 1fr;
@@ -1949,4 +1967,10 @@ a.review-quem:hover .review-foto {
 
   .contact-note { margin-top: 1.25rem; font-size: 0.9rem; }
   .site-footer { padding: 2rem 0; }
+}
+
+/* Sem nada para rolar, as setas saem de cena em vez de ficarem desabilitadas
+   ocupando espaço ao lado dos cards. */
+.reviews-carousel.sem-rolagem .rail-nav {
+  display: none;
 }
